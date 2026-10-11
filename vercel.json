@@ -15,7 +15,11 @@
       "destination": "/api"
     },
     {
-      "source": "/(.*)",
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/((?!api/).*)",
       "destination": "/public/$1"
     }
   ]

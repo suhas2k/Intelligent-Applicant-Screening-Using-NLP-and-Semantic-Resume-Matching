@@ -21,7 +21,7 @@ app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
 // Health check endpoint - immediate 200 OK without blocking on DB initialization
-app.get(['/api/health', '/health'], (req, res) => {
+app.get(['/api/health', '/health', '/api', '/api/'], (req, res) => {
   res.json({
     status: 'ok',
     name: 'Intelligent Applicant Screening API',
