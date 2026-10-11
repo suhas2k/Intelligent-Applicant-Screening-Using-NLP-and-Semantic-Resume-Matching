@@ -1,8 +1,39 @@
-const natural = require('natural');
 const { DEGREE_LEVELS } = require('./nlpParser.service');
 
-const stemmer = natural.PorterStemmer;
-const tokenizer = new natural.WordTokenizer();
+// Load natural submodules directly to avoid top-level ESM afinn-165 collision in Node 20 / serverless
+let stemmer;
+try {
+  stemmer = require('natural/lib/natural/stemmers/porter_stemmer');
+} catch (e1) {
+  try {
+    stemmer = require('natural').PorterStemmer;
+  } catch (e2) {
+    stemmer = {
+      stem: (token) => {
+        if (!token || token.length < 3) return token ? token.toString().toLowerCase() : '';
+        return token.toLowerCase().replace(/(ing|ed|ly|es|s|tion|ment)$/i, '');
+      }
+    };
+  }
+}
+
+let WordTokenizer;
+try {
+  WordTokenizer = require('natural/lib/natural/tokenizers/regexp_tokenizer').WordTokenizer;
+} catch (e1) {
+  try {
+    WordTokenizer = require('natural').WordTokenizer;
+  } catch (e2) {
+    WordTokenizer = class {
+      tokenize(text) {
+        return (text || '').match(/\w+/g) || [];
+      }
+    };
+  }
+}
+const tokenizer = new WordTokenizer();
+const natural = { PorterStemmer: stemmer, WordTokenizer };
+
 
 // Standard English Stopwords to exclude from TF-IDF
 const STOPWORDS = new Set([
