@@ -1,0 +1,61 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1979 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+50 750 Td
+(ALEX MORGAN) '
+(Senior Full Stack Engineer) '
+(alex.morgan.dev@gmail.com | \(555\) 382-9014 | San Francisco, CA) '
+(LinkedIn: linkedin.com/in/alexmorgan-dev | GitHub: github.com/alexmorgan) '
+(PROFESSIONAL SUMMARY) '
+(Results-driven Full Stack Engineer with over 6 years of professional experience architecting scalable web applications using the MERN stack \(MongoDB, Express.js, React, Node.js\). Proven track record leading microservices migrations, optimizing database queries, and deploying containerized applications on AWS.) '
+(TECHNICAL SKILLS) '
+(Languages: JavaScript \(ES6+\), TypeScript, Python, HTML5, CSS3, SQL) '
+(Frontend: React, Redux, Next.js, AngularJS, Bootstrap, TailwindCSS, Webpack) '
+(Backend: Node.js, Express, RESTful APIs, GraphQL, Microservices, NestJS) '
+(Databases: MongoDB, Mongoose, PostgreSQL, Redis) '
+(Cloud & DevOps: Docker, Kubernetes, AWS \(EC2, S3, Lambda\), CI/CD, GitHub Actions) '
+(Testing & Methods: Jest, Mocha, Agile, Scrum, TDD, Git) '
+(PROFESSIONAL EXPERIENCE) '
+(Senior Software Engineer | TechScale Solutions \(2021 – Present\)) '
+(- Architected enterprise cloud platforms using Node.js, Express, and React, reducing page latency by 42%.) '
+(- Designed distributed MongoDB aggregations and indexing schemas handling 2M+ daily active requests.) '
+(- Integrated automated CI/CD pipelines via GitHub Actions and Docker containers deployed to AWS ECS.) '
+(- Mentored 5 junior and mid-level engineers in code quality, TDD, and clean architecture.) '
+(Full Stack Developer | CloudNova Inc. \(2018 – 2021\)) '
+(- Developed responsive single-page applications using React, HTML5, CSS3, and Node.js.) '
+(- Implemented secure JWT authentication and role-based access control across multi-tenant APIs.) '
+(- Built automated test suites using Jest and Cypress achieving 88% test coverage.) '
+(EDUCATION) '
+(Bachelor of Science in Computer Science | University of California, Berkeley \(2014 – 2018\)) '
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000002265 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2335
+%%EOF

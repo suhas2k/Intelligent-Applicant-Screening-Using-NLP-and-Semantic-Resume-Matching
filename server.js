@@ -20,6 +20,18 @@ app.use(cors());
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
+// Health check endpoint - immediate 200 OK without blocking on DB initialization
+app.get(['/api/health', '/health'], (req, res) => {
+  res.json({
+    status: 'ok',
+    name: 'Intelligent Applicant Screening API',
+    database: getDBStatus(),
+    environment: process.env.NODE_ENV || 'development',
+    serverless: Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME),
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Lazy warm-up/initialization for both local server and Vercel serverless environments
 let isInitialized = false;
 let initPromise = null;
@@ -44,43 +56,49 @@ async function ensureInitialized() {
   return initPromise;
 }
 
-// Ensure database and demo data are initialized before handling any route
+// Ensure database and demo data are initialized before handling API routes
 app.use(async (req, res, next) => {
   try {
     await ensureInitialized();
-    next();
   } catch (err) {
-    next(err);
+    console.warn('[Initialization error]:', err.message);
   }
+  next();
 });
 
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 app.use('/uploads', express.static(uploadDir || path.join(__dirname, 'uploads')));
 app.use('/sample_resumes', express.static(path.join(__dirname, 'sample_resumes')));
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    name: 'Intelligent Applicant Screening API',
-    database: getDBStatus(),
-    environment: process.env.NODE_ENV || 'development',
-    serverless: Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME),
-    timestamp: new Date().toISOString()
-  });
-});
-
-// API Routes
+// API Routes with both /api prefix and direct mount (in case Vercel rewrites strip /api)
 app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
+
 app.use('/api/jobs', jobRoutes);
+app.use('/jobs', jobRoutes);
+
 app.use('/api/applicants', applicantRoutes);
+app.use('/applicants', applicantRoutes);
+
 app.use('/api/analytics', analyticsRoutes);
+app.use('/analytics', analyticsRoutes);
 
 // SPA fallback: send index.html for non-API client routes
 app.use((req, res, next) => {
   if (req.method === 'GET' && !req.path.startsWith('/api')) {
-    return res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    const candidates = [
+      path.join(__dirname, 'public', 'index.html'),
+      path.join(__dirname, 'index.html'),
+      path.join(process.cwd(), 'public', 'index.html'),
+      path.join(process.cwd(), 'index.html')
+    ];
+    for (const p of candidates) {
+      if (fs.existsSync(p)) {
+        return res.sendFile(p);
+      }
+    }
   }
   next();
 });

@@ -1,0 +1,58 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1845 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+50 750 Td
+(PRIYA SHARMA) '
+(Lead NLP & Machine Learning Engineer) '
+(priya.sharma.ai@outlook.com | +1 \(555\) 724-1189 | New York, NY) '
+(GitHub: github.com/priyasharma-nlp | Google Scholar: scholar.google.com/priyasharma) '
+(SUMMARY) '
+(Innovative AI & Machine Learning Specialist with 6+ years of industry experience developing state-of-the-art NLP pipelines, semantic search engines, and transformer-based language models. Passionate about bringing cutting-edge LLMs and statistical text mining to production.) '
+(CORE COMPETENCIES) '
+(AI & NLP: Natural Language Processing, Machine Learning, Deep Learning, Transformers, BERT, LLMs, Text Mining, Vector Databases, FAISS, LangChain, Hugging Face) '
+(Languages: Python, C++, SQL, Bash) '
+(Frameworks: PyTorch, TensorFlow, Scikit-learn, Pandas, NumPy, Keras, FastAPI, Flask) '
+(DevOps & Cloud: Docker, Kubernetes, AWS, GCP, MLflow, Git, CI/CD) '
+(EXPERIENCE) '
+(Lead Machine Learning Engineer | DeepCognition Labs \(2020 – Present\)) '
+(- Engineered large-scale NLP information extraction pipeline utilizing PyTorch, Hugging Face Transformers, and BERT.) '
+(- Deployed high-throughput semantic similarity and vector retrieval engines using Scikit-learn and FAISS.) '
+(- Supervised end-to-end model training, validation, and containerized deployment with Docker and Kubernetes on GCP.) '
+(Senior Data Scientist | DataVenture Analytics \(2018 – 2020\)) '
+(- Designed machine learning classification and sentiment analysis algorithms using Python, Scikit-learn, and Pandas.) '
+(- Fine-tuned transformer models for biomedical entity recognition with 94.2% F1 score.) '
+(EDUCATION) '
+(Master of Science in Artificial Intelligence & Computer Science | Columbia University \(2016 – 2018\)) '
+(Bachelor of Technology in Computer Engineering | IIT Delhi \(2012 – 2016\)) '
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000002129 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2199
+%%EOF

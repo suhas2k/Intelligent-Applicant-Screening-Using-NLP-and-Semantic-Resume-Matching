@@ -1,0 +1,25 @@
+DAVID KIM
+Frontend Web Developer
+david.kim.frontend@yahoo.com | (555) 912-4433 | Austin, TX
+Portfolio: davidkim-dev.io | GitHub: github.com/davidkim-fe
+
+PROFILE
+Passionate Frontend Developer with 2 years of experience creating dynamic, responsive web applications. Strong foundation in JavaScript, HTML5, CSS3, AngularJS, and Bootstrap with a keen eye for accessible UI/UX and seamless responsive styling.
+
+SKILLS
+Languages: JavaScript, HTML5, CSS3, TypeScript
+Frameworks & Libraries: AngularJS, Angular, Bootstrap, jQuery, SASS
+Tools & Practices: Git, GitHub, REST APIs, JSON, Responsive Web Design, NPM, Webpack
+
+EXPERIENCE
+Junior Frontend Developer | PixelCraft Interactive (2022 – Present)
+- Developed and maintained responsive recruiter and client portal dashboards using AngularJS 1.x, HTML5, and Bootstrap.
+- Integrated RESTful backend endpoints with AngularJS $http services and dependency injection.
+- Optimized UI components ensuring WCAG 2.1 AA accessibility and cross-browser responsiveness.
+
+Web Development Intern | NovaTech Agency (2021 – 2022)
+- Built interactive landing pages and reusable UI widgets using HTML5, CSS3, and JavaScript.
+- Collaborated in daily Agile/Scrum standups and managed code versions with Git.
+
+EDUCATION
+Bachelor of Science in Information Technology | University of Texas at Austin (2018 – 2022)
