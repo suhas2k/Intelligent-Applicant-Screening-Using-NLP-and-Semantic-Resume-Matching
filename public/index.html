@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="screeningApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResumeIQ - Intelligent Applicant Screening & Semantic Matching</title>
+  <meta name="description" content="ResumeIQ: High-clarity recruitment screening SaaS using NLP and semantic resume matching built on Node.js, Express, MongoDB, AngularJS 1.x, and Bootstrap.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- ResumeIQ Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-shell" ng-controller="NavController as nav">
+    
+    <!-- Left Navigation Sidebar (Only when Authenticated) -->
+    <aside class="app-sidebar" ng-if="nav.isAuthenticated()">
+      <div>
+        <!-- Brand Header -->
+        <a class="brand-box" href="#!/dashboard">
+          <div class="brand-icon">
+            <i class="bi bi-stars"></i>
+          </div>
+          <div>
+            <div class="brand-title">ResumeIQ</div>
+            <div class="brand-tagline">Talent Intelligence</div>
+          </div>
+        </a>
+
+        <!-- Main Navigation Links -->
+        <nav aria-label="Main Navigation">
+          <ul class="sidebar-nav">
+            <li>
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/dashboard')}" href="#!/dashboard">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-grid-1x2-fill"></i>
+                  <span>Dashboard</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/jobs')}" href="#!/jobs">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-briefcase-fill"></i>
+                  <span>Job Postings</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/applicants')}" href="#!/applicants">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-people-fill"></i>
+                  <span>Applicant Pool</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Recruiter Profile & Logout Pill -->
+      <div>
+        <div class="sidebar-profile">
+          <div class="d-flex align-items-center gap-2">
+            <div class="profile-avatar">
+              {{ (nav.getUser().name || 'R').charAt(0) }}
+            </div>
+            <div style="line-height: 1.2;">
+              <div class="fw-semibold text-truncate" style="max-width: 130px; font-size: 0.85rem;">
+                {{ nav.getUser().name || 'Recruiter' }}
+              </div>
+              <div class="text-muted text-truncate" style="max-width: 130px; font-size: 0.72rem;">
+                {{ nav.getUser().company || 'Talent Lead' }}
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-outline-iq py-1 px-2 text-danger" title="Sign Out" ng-click="nav.logout()">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main-content" ng-style="!nav.isAuthenticated() && {'margin-left': '0'}">
+      
+      <!-- Top Bar (When Authenticated) -->
+      <header class="app-topbar" ng-if="nav.isAuthenticated()">
+        <div class="topbar-search">
+          <div class="search-input-wrapper">
+            <i class="bi bi-search"></i>
+            <input type="text" class="search-input-clean" placeholder="Search candidates, skills, jobs..." onclick="window.location.hash='#!/applicants'">
+            <span class="search-shortcut">⌘K</span>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+          <!-- Database Mode Pill -->
+          <span class="badge bg-white border border-secondary border-opacity-25 text-secondary px-3 py-2 small fw-normal d-none d-sm-inline-flex align-items-center">
+            <span class="pulse-indicator pulse-emerald"></span> Live Screening Engine
+          </span>
+
+          <a href="#!/jobs" class="btn btn-primary-iq">
+            <i class="bi bi-plus-lg"></i>
+            <span class="d-none d-sm-inline">Post Job</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Minimal Header for Unauthenticated Views -->
+      <header class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center" ng-if="!nav.isAuthenticated()">
+        <a class="brand-box mb-0 py-0" href="#!/login">
+          <div class="brand-icon" style="width: 32px; height: 32px; font-size: 1rem;">
+            <i class="bi bi-stars"></i>
+          </div>
+          <div>
+            <div class="brand-title" style="font-size: 1.05rem;">ResumeIQ</div>
+          </div>
+        </a>
+        <div class="d-flex gap-2">
+          <a href="#!/login" class="btn btn-sm btn-outline-iq">Sign In</a>
+          <a href="#!/register" class="btn btn-sm btn-primary-iq">Register Company</a>
+        </div>
+      </header>
+
+      <!-- Global Alerts / Notifications -->
+      <div class="position-fixed top-0 end-0 p-3" style="z-index: 2100; max-width: 420px;">
+        <div ng-repeat="alert in alerts track by alert.id" 
+             class="alert alert-{{ alert.type }} alert-dismissible fade show shadow-sm surface-card mb-2" 
+             role="alert"
+             style="border-left: 4px solid;">
+          <div class="d-flex align-items-center gap-2">
+            <i ng-if="alert.type === 'success'" class="bi bi-check-circle-fill text-success fs-5"></i>
+            <i ng-if="alert.type === 'danger'" class="bi bi-exclamation-triangle-fill text-danger fs-5"></i>
+            <i ng-if="alert.type === 'info'" class="bi bi-info-circle-fill text-primary fs-5"></i>
+            <i ng-if="alert.type === 'warning'" class="bi bi-exclamation-circle-fill text-warning fs-5"></i>
+            <span class="small fw-medium">{{ alert.message }}</span>
+          </div>
+          <button type="button" class="btn-close" ng-click="$root.AlertService.close(alert.id)" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+
+      <!-- AngularJS Routed Views (SPA) -->
+      <main class="flex-grow-1 p-3 p-md-4">
+        <div ng-view></div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="py-3 px-4 border-top bg-white d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 small text-muted">
+        <div>
+          <strong class="text-dark">ResumeIQ</strong> &bull; Intelligent Applicant Screening & Semantic Matching
+        </div>
+        <div>
+          Powered by Node.js &bull; Express &bull; MongoDB &bull; AngularJS 1.x &bull; Bootstrap
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="vendor/bootstrap.bundle.min.js"></script>
+  <script src="vendor/angular.min.js"></script>
+  <script src="vendor/angular-route.min.js"></script>
+
+  <!-- Application Modules & Routes -->
+  <script src="app/app.module.js"></script>
+  <script src="app/app.routes.js"></script>
+
+  <!-- Services -->
+  <script src="app/services/alert.service.js"></script>
+  <script src="app/services/auth.service.js"></script>
+  <script src="app/services/job.service.js"></script>
+  <script src="app/services/applicant.service.js"></script>
+
+  <!-- Directives -->
+  <script src="app/directives/file-model.directive.js"></script>
+
+  <!-- Controllers -->
+  <script src="app/controllers/nav.controller.js"></script>
+  <script src="app/controllers/auth.controller.js"></script>
+  <script src="app/controllers/dashboard.controller.js"></script>
+  <script src="app/controllers/jobs.controller.js"></script>
+  <script src="app/controllers/job-detail.controller.js"></script>
+  <script src="app/controllers/applicants.controller.js"></script>
+  <script src="app/controllers/applicant-detail.controller.js"></script>
+</body>
+</html>

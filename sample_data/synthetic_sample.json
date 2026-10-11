@@ -1,0 +1,1463 @@
+{
+  "metadata": {
+    "source": "https://huggingface.co/datasets/michaelozon/candidate-matching-synthetic",
+    "citation": "michaelozon/candidate-matching-synthetic (Qwen 2.5 generated)",
+    "license": "MIT",
+    "jobs_count": 5,
+    "resumes_count": 50,
+    "benchmark_rule": "Dataset considers >=60% overlap in must_have_skills as relevant; unlisted resumes are not confirmed negative matches."
+  },
+  "jobs": [
+    {
+      "job_id": "J_000004",
+      "job_title": "Associate Product Manager",
+      "seniority": "Senior",
+      "industry": "SaaS",
+      "must_have_skills": [
+        "A/B Testing",
+        "PRD",
+        "Product Strategy",
+        "Agile",
+        "Prioritization"
+      ],
+      "nice_to_have_skills": [
+        "User Research"
+      ],
+      "description": "We are hiring a Associate Product Manager to support teams in SaaS.",
+      "responsibilities": [
+        "Deliver high-quality work aligned with goals and timelines",
+        "Collaborate with stakeholders and communicate progress clearly",
+        "Improve processes and contribute to measurable outcomes"
+      ],
+      "requirements": [
+        "Relevant experience and ability to learn quickly",
+        "Strong communication and ownership mindset",
+        "Comfort working with tools, data, and cross-functional teams"
+      ]
+    },
+    {
+      "job_id": "J_000016",
+      "job_title": "Financial Analyst",
+      "seniority": "Mid",
+      "industry": "EdTech",
+      "must_have_skills": [
+        "Valuation",
+        "Excel",
+        "Reporting",
+        "Financial Modeling",
+        "Cash Flow"
+      ],
+      "nice_to_have_skills": [
+        "Forecasting"
+      ],
+      "description": "We are hiring a Financial Analyst to support teams in EdTech.",
+      "responsibilities": [
+        "Deliver high-quality work aligned with goals and timelines",
+        "Collaborate with stakeholders and communicate progress clearly",
+        "Improve processes and contribute to measurable outcomes"
+      ],
+      "requirements": [
+        "Relevant experience and ability to learn quickly",
+        "Strong communication and ownership mindset",
+        "Comfort working with tools, data, and cross-functional teams"
+      ]
+    },
+    {
+      "job_id": "J_000029",
+      "job_title": "Data Analyst",
+      "seniority": "Junior",
+      "industry": "Healthcare",
+      "must_have_skills": [
+        "A/B Testing",
+        "Excel",
+        "Statistics",
+        "Tableau",
+        "SQL"
+      ],
+      "nice_to_have_skills": [
+        "Pandas"
+      ],
+      "description": "We are hiring a Data Analyst to support teams in Healthcare.",
+      "responsibilities": [
+        "Deliver high-quality work aligned with goals and timelines",
+        "Collaborate with stakeholders and communicate progress clearly",
+        "Improve processes and contribute to measurable outcomes"
+      ],
+      "requirements": [
+        "Relevant experience and ability to learn quickly",
+        "Strong communication and ownership mindset",
+        "Comfort working with tools, data, and cross-functional teams"
+      ]
+    },
+    {
+      "job_id": "J_000033",
+      "job_title": "Software Engineer",
+      "seniority": "Mid",
+      "industry": "Travel",
+      "must_have_skills": [
+        "OOP",
+        "Python",
+        "Git",
+        "Unit Testing"
+      ],
+      "nice_to_have_skills": [
+        "Docker"
+      ],
+      "description": "We are hiring a Software Engineer to support teams in Travel.",
+      "responsibilities": [
+        "Deliver high-quality work aligned with goals and timelines",
+        "Collaborate with stakeholders and communicate progress clearly",
+        "Improve processes and contribute to measurable outcomes"
+      ],
+      "requirements": [
+        "Relevant experience and ability to learn quickly",
+        "Strong communication and ownership mindset",
+        "Comfort working with tools, data, and cross-functional teams"
+      ]
+    },
+    {
+      "job_id": "J_000114",
+      "job_title": "Marketing Manager",
+      "seniority": "Senior",
+      "industry": "Healthcare",
+      "must_have_skills": [
+        "A/B Testing",
+        "Content Marketing",
+        "Landing Pages"
+      ],
+      "nice_to_have_skills": [
+        "SEO"
+      ],
+      "description": "We are hiring a Marketing Manager to support teams in Healthcare.",
+      "responsibilities": [
+        "Deliver high-quality work aligned with goals and timelines",
+        "Collaborate with stakeholders and communicate progress clearly",
+        "Improve processes and contribute to measurable outcomes"
+      ],
+      "requirements": [
+        "Relevant experience and ability to learn quickly",
+        "Strong communication and ownership mindset",
+        "Comfort working with tools, data, and cross-functional teams"
+      ]
+    }
+  ],
+  "matches": [
+    {
+      "job_id": "J_000004",
+      "relevant_resume_ids": [
+        "R_002908",
+        "R_003365",
+        "R_008335",
+        "R_005987",
+        "R_006550",
+        "R_008237",
+        "R_006290",
+        "R_002333",
+        "R_003323",
+        "R_004592",
+        "R_001502",
+        "R_001841",
+        "R_002792",
+        "R_007781",
+        "R_001864",
+        "R_009132",
+        "R_004683",
+        "R_002071",
+        "R_007955",
+        "R_002230",
+        "R_009346",
+        "R_006414",
+        "R_000690",
+        "R_000568",
+        "R_002737",
+        "R_007974",
+        "R_004337",
+        "R_008775",
+        "R_000497",
+        "R_003801"
+      ]
+    },
+    {
+      "job_id": "J_000016",
+      "relevant_resume_ids": [
+        "R_008933",
+        "R_009097",
+        "R_003813",
+        "R_003736",
+        "R_000942",
+        "R_006866",
+        "R_000743",
+        "R_001422",
+        "R_008591",
+        "R_007256",
+        "R_004397",
+        "R_005527",
+        "R_007683",
+        "R_009775",
+        "R_000870",
+        "R_000770",
+        "R_002628",
+        "R_000320",
+        "R_004678",
+        "R_001248",
+        "R_008668",
+        "R_004751",
+        "R_009957",
+        "R_000295",
+        "R_006877",
+        "R_007301",
+        "R_000909",
+        "R_006872",
+        "R_001724",
+        "R_004227"
+      ]
+    },
+    {
+      "job_id": "J_000029",
+      "relevant_resume_ids": [
+        "R_003258",
+        "R_004025",
+        "R_001825",
+        "R_009593",
+        "R_004834",
+        "R_006662",
+        "R_003972",
+        "R_009699",
+        "R_003469",
+        "R_001181",
+        "R_000688",
+        "R_002893",
+        "R_003594",
+        "R_008300",
+        "R_008767",
+        "R_007126",
+        "R_003681",
+        "R_005588",
+        "R_001174",
+        "R_009329",
+        "R_004070",
+        "R_004320",
+        "R_005901",
+        "R_009798",
+        "R_005963",
+        "R_005115",
+        "R_001268",
+        "R_001261",
+        "R_003283",
+        "R_003274"
+      ]
+    },
+    {
+      "job_id": "J_000033",
+      "relevant_resume_ids": [
+        "R_008208",
+        "R_002724",
+        "R_000832",
+        "R_008900",
+        "R_005653",
+        "R_001348",
+        "R_009543",
+        "R_005403",
+        "R_008663",
+        "R_006275",
+        "R_006109",
+        "R_007723",
+        "R_007821",
+        "R_004419",
+        "R_006159",
+        "R_005725",
+        "R_000560",
+        "R_000055",
+        "R_007385",
+        "R_002395",
+        "R_005179",
+        "R_002364",
+        "R_004992",
+        "R_001893",
+        "R_002816",
+        "R_003203",
+        "R_007681",
+        "R_008496",
+        "R_004151",
+        "R_008146"
+      ]
+    },
+    {
+      "job_id": "J_000114",
+      "relevant_resume_ids": [
+        "R_001985",
+        "R_003244",
+        "R_005746",
+        "R_007665",
+        "R_002181",
+        "R_001716",
+        "R_004640",
+        "R_006867",
+        "R_000421",
+        "R_005010",
+        "R_003510",
+        "R_000783",
+        "R_003139",
+        "R_000882",
+        "R_007535",
+        "R_004395",
+        "R_007811",
+        "R_007266",
+        "R_008003",
+        "R_005849",
+        "R_009929",
+        "R_000444",
+        "R_008729",
+        "R_001159",
+        "R_008234",
+        "R_004135",
+        "R_007920",
+        "R_007714",
+        "R_005288",
+        "R_000773"
+      ]
+    }
+  ],
+  "resumes": [
+    {
+      "resume_id": "R_000000",
+      "role": "Software Engineer",
+      "seniority": "Senior",
+      "years_experience": 12,
+      "industry": "EdTech",
+      "education": "BSc",
+      "skills": [
+        "OOP",
+        "Databases",
+        "Git",
+        "Docker",
+        "Python",
+        "Unit Testing",
+        "Java"
+      ],
+      "summary": "Software Engineer with 12 years of experience in EdTech.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000001",
+      "role": "Marketing Manager",
+      "seniority": "Junior",
+      "years_experience": 2,
+      "industry": "E-commerce",
+      "education": "BSc",
+      "skills": [
+        "Content Marketing",
+        "Meta Ads",
+        "Conversion Optimization",
+        "SEO",
+        "Landing Pages"
+      ],
+      "summary": "Marketing Manager with 2 years of experience in E-commerce.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000002",
+      "role": "Full Stack Engineer",
+      "seniority": "Mid",
+      "years_experience": 6,
+      "industry": "FinTech",
+      "education": "BA",
+      "skills": [
+        "Databases",
+        "OOP",
+        "Git",
+        "Docker",
+        "JavaScript",
+        "Python"
+      ],
+      "summary": "Full Stack Engineer with 6 years of experience in FinTech.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000003",
+      "role": "Data Analyst",
+      "seniority": "Junior",
+      "years_experience": 0,
+      "industry": "Healthcare",
+      "education": "BSc",
+      "skills": [
+        "Excel",
+        "A/B Testing",
+        "Tableau",
+        "Pandas",
+        "Power BI",
+        "Data Visualization"
+      ],
+      "summary": "Data Analyst with 0 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000004",
+      "role": "BI Analyst",
+      "seniority": "Junior",
+      "years_experience": 0,
+      "industry": "Gaming",
+      "education": "BA",
+      "skills": [
+        "Statistics",
+        "SQL",
+        "Power BI",
+        "Pandas",
+        "Excel"
+      ],
+      "summary": "BI Analyst with 0 years of experience in Gaming.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000005",
+      "role": "Financial Analyst",
+      "seniority": "Mid",
+      "years_experience": 3,
+      "industry": "Travel",
+      "education": "BA",
+      "skills": [
+        "Forecasting",
+        "KPIs",
+        "Valuation",
+        "Reporting",
+        "Variance Analysis",
+        "Excel",
+        "Accounting"
+      ],
+      "summary": "Financial Analyst with 3 years of experience in Travel.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000006",
+      "role": "Sales Representative",
+      "seniority": "Junior",
+      "years_experience": 0,
+      "industry": "Retail",
+      "education": "High School",
+      "skills": [
+        "Discovery Calls",
+        "Account Management",
+        "Prospecting",
+        "Negotiation",
+        "CRM",
+        "Closing",
+        "Pipeline Management"
+      ],
+      "summary": "Sales Representative with 0 years of experience in Retail.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000007",
+      "role": "Technical Support Specialist",
+      "seniority": "Junior",
+      "years_experience": 1,
+      "industry": "Healthcare",
+      "education": "MSc",
+      "skills": [
+        "Troubleshooting",
+        "Root Cause Analysis",
+        "Customer Satisfaction",
+        "SLA",
+        "Zendesk"
+      ],
+      "summary": "Technical Support Specialist with 1 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000008",
+      "role": "Customer Support Specialist",
+      "seniority": "Junior",
+      "years_experience": 1,
+      "industry": "Retail",
+      "education": "High School",
+      "skills": [
+        "Ticketing",
+        "SLA",
+        "Zendesk",
+        "Escalations",
+        "Customer Satisfaction",
+        "Documentation",
+        "Troubleshooting",
+        "Communication"
+      ],
+      "summary": "Customer Support Specialist with 1 years of experience in Retail.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000009",
+      "role": "Backend Engineer",
+      "seniority": "Mid",
+      "years_experience": 6,
+      "industry": "Travel",
+      "education": "High School",
+      "skills": [
+        "Unit Testing",
+        "JavaScript",
+        "CI/CD",
+        "Python",
+        "Databases",
+        "Docker",
+        "Java"
+      ],
+      "summary": "Backend Engineer with 6 years of experience in Travel.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000010",
+      "role": "Sales Representative",
+      "seniority": "Senior",
+      "years_experience": 10,
+      "industry": "Logistics",
+      "education": "BSc",
+      "skills": [
+        "Prospecting",
+        "Pipeline Management",
+        "Negotiation",
+        "Forecasting",
+        "CRM",
+        "Outbound Outreach",
+        "Lead Generation"
+      ],
+      "summary": "Sales Representative with 10 years of experience in Logistics.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000011",
+      "role": "Backend Engineer",
+      "seniority": "Junior",
+      "years_experience": 2,
+      "industry": "Gaming",
+      "education": "High School",
+      "skills": [
+        "Python",
+        "Java",
+        "Databases",
+        "Unit Testing",
+        "JavaScript",
+        "Docker",
+        "OOP",
+        "Git"
+      ],
+      "summary": "Backend Engineer with 2 years of experience in Gaming.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000012",
+      "role": "Full Stack Engineer",
+      "seniority": "Mid",
+      "years_experience": 5,
+      "industry": "E-commerce",
+      "education": "MSc",
+      "skills": [
+        "Git",
+        "CI/CD",
+        "Unit Testing",
+        "Java",
+        "Python",
+        "Databases",
+        "OOP",
+        "Docker"
+      ],
+      "summary": "Full Stack Engineer with 5 years of experience in E-commerce.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000013",
+      "role": "Product Manager",
+      "seniority": "Senior",
+      "years_experience": 7,
+      "industry": "Logistics",
+      "education": "BA",
+      "skills": [
+        "Product Strategy",
+        "Roadmap",
+        "A/B Testing",
+        "PRD",
+        "Agile",
+        "User Research",
+        "Stakeholder Management",
+        "Scrum"
+      ],
+      "summary": "Product Manager with 7 years of experience in Logistics.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000014",
+      "role": "Associate Product Manager",
+      "seniority": "Senior",
+      "years_experience": 12,
+      "industry": "Travel",
+      "education": "MBA",
+      "skills": [
+        "User Research",
+        "Scrum",
+        "A/B Testing",
+        "Stakeholder Management",
+        "PRD",
+        "Roadmap",
+        "Product Strategy",
+        "Prioritization"
+      ],
+      "summary": "Associate Product Manager with 12 years of experience in Travel.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000743",
+      "role": "Junior Accountant",
+      "seniority": "Mid",
+      "years_experience": 4,
+      "industry": "FinTech",
+      "education": "High School",
+      "skills": [
+        "Cash Flow",
+        "Valuation",
+        "Forecasting",
+        "Financial Modeling",
+        "Reporting",
+        "Accounting",
+        "Variance Analysis",
+        "Budgeting"
+      ],
+      "summary": "Junior Accountant with 4 years of experience in FinTech.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000832",
+      "role": "Full Stack Engineer",
+      "seniority": "Junior",
+      "years_experience": 1,
+      "industry": "FinTech",
+      "education": "MSc",
+      "skills": [
+        "OOP",
+        "CI/CD",
+        "Python",
+        "JavaScript",
+        "Unit Testing"
+      ],
+      "summary": "Full Stack Engineer with 1 years of experience in FinTech.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_000942",
+      "role": "Junior Accountant",
+      "seniority": "Senior",
+      "years_experience": 8,
+      "industry": "FinTech",
+      "education": "High School",
+      "skills": [
+        "Cash Flow",
+        "Forecasting",
+        "Financial Modeling",
+        "Reporting",
+        "Accounting"
+      ],
+      "summary": "Junior Accountant with 8 years of experience in FinTech.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_001348",
+      "role": "Full Stack Engineer",
+      "seniority": "Mid",
+      "years_experience": 6,
+      "industry": "Retail",
+      "education": "BSc",
+      "skills": [
+        "Python",
+        "OOP",
+        "JavaScript",
+        "CI/CD",
+        "Unit Testing",
+        "Git",
+        "Docker"
+      ],
+      "summary": "Full Stack Engineer with 6 years of experience in Retail.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_001716",
+      "role": "Marketing Manager",
+      "seniority": "Senior",
+      "years_experience": 10,
+      "industry": "Cybersecurity",
+      "education": "MSc",
+      "skills": [
+        "SEO",
+        "Google Ads",
+        "Conversion Optimization",
+        "Content Marketing",
+        "Landing Pages",
+        "Marketing Analytics",
+        "Copywriting"
+      ],
+      "summary": "Marketing Manager with 10 years of experience in Cybersecurity.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_001825",
+      "role": "BI Analyst",
+      "seniority": "Junior",
+      "years_experience": 2,
+      "industry": "Logistics",
+      "education": "High School",
+      "skills": [
+        "Tableau",
+        "Excel",
+        "ETL",
+        "Pandas",
+        "SQL",
+        "Statistics"
+      ],
+      "summary": "BI Analyst with 2 years of experience in Logistics.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_001985",
+      "role": "Marketing Manager",
+      "seniority": "Junior",
+      "years_experience": 0,
+      "industry": "Travel",
+      "education": "MSc",
+      "skills": [
+        "Marketing Analytics",
+        "Conversion Optimization",
+        "Meta Ads",
+        "Copywriting",
+        "Email Marketing",
+        "A/B Testing",
+        "Google Ads",
+        "Content Marketing"
+      ],
+      "summary": "Marketing Manager with 0 years of experience in Travel.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_002181",
+      "role": "Marketing Manager",
+      "seniority": "Senior",
+      "years_experience": 8,
+      "industry": "Travel",
+      "education": "High School",
+      "skills": [
+        "Google Ads",
+        "Meta Ads",
+        "Marketing Analytics",
+        "Content Marketing",
+        "Copywriting",
+        "Email Marketing",
+        "Landing Pages",
+        "Conversion Optimization"
+      ],
+      "summary": "Marketing Manager with 8 years of experience in Travel.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_002724",
+      "role": "Backend Engineer",
+      "seniority": "Mid",
+      "years_experience": 3,
+      "industry": "Travel",
+      "education": "High School",
+      "skills": [
+        "Docker",
+        "Git",
+        "OOP",
+        "Python",
+        "Databases",
+        "JavaScript",
+        "Unit Testing",
+        "CI/CD"
+      ],
+      "summary": "Backend Engineer with 3 years of experience in Travel.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_002908",
+      "role": "Technical Product Manager",
+      "seniority": "Senior",
+      "years_experience": 11,
+      "industry": "Healthcare",
+      "education": "BSc",
+      "skills": [
+        "Agile",
+        "Product Strategy",
+        "Prioritization",
+        "PRD",
+        "Roadmap",
+        "Analytics",
+        "Scrum",
+        "User Research"
+      ],
+      "summary": "Technical Product Manager with 11 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_003244",
+      "role": "Performance Marketer",
+      "seniority": "Junior",
+      "years_experience": 1,
+      "industry": "SaaS",
+      "education": "MSc",
+      "skills": [
+        "Marketing Analytics",
+        "Landing Pages",
+        "Copywriting",
+        "Google Ads",
+        "Meta Ads",
+        "Content Marketing",
+        "SEO",
+        "Email Marketing"
+      ],
+      "summary": "Performance Marketer with 1 years of experience in SaaS.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_003258",
+      "role": "BI Analyst",
+      "seniority": "Junior",
+      "years_experience": 1,
+      "industry": "SaaS",
+      "education": "MSc",
+      "skills": [
+        "Tableau",
+        "Statistics",
+        "SQL",
+        "Python",
+        "Pandas",
+        "Data Visualization",
+        "Power BI"
+      ],
+      "summary": "BI Analyst with 1 years of experience in SaaS.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_003365",
+      "role": "Associate Product Manager",
+      "seniority": "Junior",
+      "years_experience": 0,
+      "industry": "SaaS",
+      "education": "BSc",
+      "skills": [
+        "A/B Testing",
+        "Stakeholder Management",
+        "Prioritization",
+        "PRD",
+        "Roadmap",
+        "Product Strategy",
+        "Scrum",
+        "Analytics"
+      ],
+      "summary": "Associate Product Manager with 0 years of experience in SaaS.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_003736",
+      "role": "Financial Analyst",
+      "seniority": "Mid",
+      "years_experience": 6,
+      "industry": "SaaS",
+      "education": "BA",
+      "skills": [
+        "Accounting",
+        "Valuation",
+        "KPIs",
+        "Forecasting",
+        "Cash Flow",
+        "Excel"
+      ],
+      "summary": "Financial Analyst with 6 years of experience in SaaS.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_003813",
+      "role": "Junior Accountant",
+      "seniority": "Junior",
+      "years_experience": 1,
+      "industry": "Logistics",
+      "education": "BA",
+      "skills": [
+        "Variance Analysis",
+        "Budgeting",
+        "Financial Modeling",
+        "Excel",
+        "Cash Flow",
+        "KPIs"
+      ],
+      "summary": "Junior Accountant with 1 years of experience in Logistics.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_003972",
+      "role": "Data Analyst",
+      "seniority": "Mid",
+      "years_experience": 2,
+      "industry": "Healthcare",
+      "education": "High School",
+      "skills": [
+        "Excel",
+        "Statistics",
+        "Pandas",
+        "Tableau",
+        "Power BI"
+      ],
+      "summary": "Data Analyst with 2 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_004025",
+      "role": "BI Analyst",
+      "seniority": "Junior",
+      "years_experience": 2,
+      "industry": "Travel",
+      "education": "BSc",
+      "skills": [
+        "Data Visualization",
+        "ETL",
+        "Statistics",
+        "A/B Testing",
+        "Tableau"
+      ],
+      "summary": "BI Analyst with 2 years of experience in Travel.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_004640",
+      "role": "Performance Marketer",
+      "seniority": "Senior",
+      "years_experience": 12,
+      "industry": "Healthcare",
+      "education": "High School",
+      "skills": [
+        "Meta Ads",
+        "SEO",
+        "A/B Testing",
+        "Google Ads",
+        "Landing Pages"
+      ],
+      "summary": "Performance Marketer with 12 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_004834",
+      "role": "BI Analyst",
+      "seniority": "Mid",
+      "years_experience": 3,
+      "industry": "EdTech",
+      "education": "MBA",
+      "skills": [
+        "Power BI",
+        "Python",
+        "SQL",
+        "A/B Testing",
+        "Tableau",
+        "Pandas"
+      ],
+      "summary": "BI Analyst with 3 years of experience in EdTech.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_005653",
+      "role": "Software Engineer",
+      "seniority": "Mid",
+      "years_experience": 6,
+      "industry": "Healthcare",
+      "education": "BA",
+      "skills": [
+        "Git",
+        "Docker",
+        "Python",
+        "OOP",
+        "REST APIs",
+        "Databases",
+        "CI/CD",
+        "Java"
+      ],
+      "summary": "Software Engineer with 6 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_005746",
+      "role": "Content Marketer",
+      "seniority": "Mid",
+      "years_experience": 5,
+      "industry": "Cybersecurity",
+      "education": "High School",
+      "skills": [
+        "SEO",
+        "Landing Pages",
+        "Content Marketing",
+        "Copywriting",
+        "A/B Testing",
+        "Meta Ads",
+        "Email Marketing"
+      ],
+      "summary": "Content Marketer with 5 years of experience in Cybersecurity.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_005987",
+      "role": "Associate Product Manager",
+      "seniority": "Junior",
+      "years_experience": 1,
+      "industry": "Healthcare",
+      "education": "BSc",
+      "skills": [
+        "Stakeholder Management",
+        "PRD",
+        "Product Strategy",
+        "A/B Testing",
+        "Analytics",
+        "Roadmap"
+      ],
+      "summary": "Associate Product Manager with 1 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_006290",
+      "role": "Technical Product Manager",
+      "seniority": "Mid",
+      "years_experience": 3,
+      "industry": "EdTech",
+      "education": "BA",
+      "skills": [
+        "PRD",
+        "Product Strategy",
+        "User Research",
+        "Analytics",
+        "A/B Testing",
+        "Prioritization"
+      ],
+      "summary": "Technical Product Manager with 3 years of experience in EdTech.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_006550",
+      "role": "Associate Product Manager",
+      "seniority": "Mid",
+      "years_experience": 3,
+      "industry": "Travel",
+      "education": "MBA",
+      "skills": [
+        "Agile",
+        "Stakeholder Management",
+        "Scrum",
+        "Prioritization",
+        "Roadmap",
+        "Analytics",
+        "PRD",
+        "A/B Testing"
+      ],
+      "summary": "Associate Product Manager with 3 years of experience in Travel.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_006662",
+      "role": "BI Analyst",
+      "seniority": "Junior",
+      "years_experience": 2,
+      "industry": "Cybersecurity",
+      "education": "High School",
+      "skills": [
+        "Python",
+        "Tableau",
+        "ETL",
+        "Power BI",
+        "Data Visualization",
+        "A/B Testing",
+        "Pandas",
+        "Statistics"
+      ],
+      "summary": "BI Analyst with 2 years of experience in Cybersecurity.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_006866",
+      "role": "Junior Accountant",
+      "seniority": "Mid",
+      "years_experience": 5,
+      "industry": "Healthcare",
+      "education": "BA",
+      "skills": [
+        "Budgeting",
+        "Forecasting",
+        "Accounting",
+        "Valuation",
+        "Excel",
+        "Reporting",
+        "Variance Analysis"
+      ],
+      "summary": "Junior Accountant with 5 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_007665",
+      "role": "Marketing Manager",
+      "seniority": "Senior",
+      "years_experience": 9,
+      "industry": "Healthcare",
+      "education": "High School",
+      "skills": [
+        "Content Marketing",
+        "Meta Ads",
+        "Landing Pages",
+        "A/B Testing",
+        "Email Marketing"
+      ],
+      "summary": "Marketing Manager with 9 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_008208",
+      "role": "Backend Engineer",
+      "seniority": "Junior",
+      "years_experience": 1,
+      "industry": "FinTech",
+      "education": "MSc",
+      "skills": [
+        "Python",
+        "CI/CD",
+        "OOP",
+        "REST APIs",
+        "JavaScript",
+        "Docker",
+        "Git"
+      ],
+      "summary": "Backend Engineer with 1 years of experience in FinTech.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_008237",
+      "role": "Product Manager",
+      "seniority": "Senior",
+      "years_experience": 12,
+      "industry": "SaaS",
+      "education": "MBA",
+      "skills": [
+        "User Research",
+        "A/B Testing",
+        "Analytics",
+        "PRD",
+        "Product Strategy",
+        "Agile",
+        "Scrum"
+      ],
+      "summary": "Product Manager with 12 years of experience in SaaS.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_008335",
+      "role": "Product Manager",
+      "seniority": "Mid",
+      "years_experience": 5,
+      "industry": "Healthcare",
+      "education": "BA",
+      "skills": [
+        "Analytics",
+        "Prioritization",
+        "Roadmap",
+        "A/B Testing",
+        "Stakeholder Management",
+        "Scrum",
+        "Agile",
+        "Product Strategy"
+      ],
+      "summary": "Product Manager with 5 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_008900",
+      "role": "Full Stack Engineer",
+      "seniority": "Senior",
+      "years_experience": 6,
+      "industry": "Gaming",
+      "education": "MBA",
+      "skills": [
+        "Git",
+        "OOP",
+        "Docker",
+        "Java",
+        "JavaScript",
+        "Databases",
+        "Python",
+        "CI/CD"
+      ],
+      "summary": "Full Stack Engineer with 6 years of experience in Gaming.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_008933",
+      "role": "FP&A Analyst",
+      "seniority": "Junior",
+      "years_experience": 0,
+      "industry": "E-commerce",
+      "education": "BSc",
+      "skills": [
+        "Cash Flow",
+        "Accounting",
+        "Financial Modeling",
+        "Forecasting",
+        "Reporting",
+        "Excel",
+        "Variance Analysis",
+        "KPIs"
+      ],
+      "summary": "FP&A Analyst with 0 years of experience in E-commerce.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_009097",
+      "role": "Junior Accountant",
+      "seniority": "Mid",
+      "years_experience": 4,
+      "industry": "Healthcare",
+      "education": "MBA",
+      "skills": [
+        "Budgeting",
+        "Financial Modeling",
+        "Variance Analysis",
+        "Excel",
+        "Accounting",
+        "Cash Flow"
+      ],
+      "summary": "Junior Accountant with 4 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_009543",
+      "role": "Backend Engineer",
+      "seniority": "Senior",
+      "years_experience": 12,
+      "industry": "Cybersecurity",
+      "education": "High School",
+      "skills": [
+        "Unit Testing",
+        "Docker",
+        "JavaScript",
+        "OOP",
+        "Git",
+        "CI/CD",
+        "Java",
+        "REST APIs"
+      ],
+      "summary": "Backend Engineer with 12 years of experience in Cybersecurity.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    },
+    {
+      "resume_id": "R_009593",
+      "role": "Data Analyst",
+      "seniority": "Junior",
+      "years_experience": 2,
+      "industry": "Healthcare",
+      "education": "MBA",
+      "skills": [
+        "Tableau",
+        "SQL",
+        "Python",
+        "Excel",
+        "Pandas"
+      ],
+      "summary": "Data Analyst with 2 years of experience in Healthcare.",
+      "experience_bullets": [
+        "Delivered results using structured workflows and clear communication",
+        "Collaborated with stakeholders to define needs and execute tasks",
+        "Maintained reporting and documentation to support team performance"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,275 @@
+<div class="container-fluid px-0">
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+      <h1 class="h3 fw-bold mb-1">Job Postings Management</h1>
+      <p class="text-muted small mb-0">Define job requirements, configure NLP matching weights, and screen candidate pools</p>
+    </div>
+    <div>
+      <button class="btn btn-primary-iq" ng-click="vm.openCreateModal()">
+        <i class="bi bi-plus-circle me-1"></i> Create Job Posting
+      </button>
+    </div>
+  </div>
+
+  <!-- Search & Filter Bar -->
+  <div class="surface-card p-3 mb-4">
+    <div class="row g-2 align-items-center">
+      <div class="col-12 col-md-6">
+        <div class="search-input-wrapper">
+          <i class="bi bi-search"></i>
+          <input type="text" class="search-input-clean" ng-model="vm.searchQuery" ng-change="vm.loadJobs()" placeholder="Search jobs by title, department, or required skill...">
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <select class="form-select form-select-iq" ng-model="vm.filterStatus" ng-change="vm.loadJobs()">
+          <option value="All">All Statuses</option>
+          <option value="Active">Active</option>
+          <option value="Draft">Draft</option>
+          <option value="Closed">Closed</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-3 text-end text-muted small">
+        Showing <strong>{{ vm.jobs.length }}</strong> position(s)
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div ng-if="vm.isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted small mt-2">Loading positions...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div ng-if="!vm.isLoading && vm.jobs.length === 0" class="surface-card p-5 text-center">
+    <div class="upload-icon-circle-clean">
+      <i class="bi bi-briefcase text-muted"></i>
+    </div>
+    <h3 class="h5 fw-bold text-dark mt-3 mb-1">No Job Postings Found</h3>
+    <p class="text-muted small mb-3">Create a job posting to start uploading and ranking applicant resumes.</p>
+    <button class="btn btn-primary-iq" ng-click="vm.openCreateModal()">
+      <i class="bi bi-plus-lg me-1"></i> Create First Job Posting
+    </button>
+  </div>
+
+  <!-- Jobs Grid -->
+  <div ng-if="!vm.isLoading && vm.jobs.length > 0" class="row g-3">
+    <div class="col-12 col-lg-6" ng-repeat="job in vm.jobs track by job._id">
+      <div class="surface-card surface-card-interactive p-4 h-100 d-flex flex-column justify-content-between">
+        <div>
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <span class="badge bg-light border text-primary small mb-1 fw-semibold">
+                {{ job.department }}
+              </span>
+              <h3 class="h5 fw-bold text-dark mb-1">{{ job.title }}</h3>
+              <div class="small text-muted">
+                <i class="bi bi-geo-alt me-1 text-secondary"></i> {{ job.location }} &bull;
+                <i class="bi bi-clock me-1 text-secondary"></i> {{ job.employmentType }} &bull;
+                <i class="bi bi-mortarboard me-1 text-secondary"></i> {{ job.education }}
+              </div>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-iq" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm border">
+                <li><a class="dropdown-item small" href="javascript:void(0)" ng-click="vm.viewJobDetail(job._id)"><i class="bi bi-eye me-2 text-primary"></i>View Candidates</a></li>
+                <li><a class="dropdown-item small" href="javascript:void(0)" ng-click="vm.openEditModal(job)"><i class="bi bi-pencil me-2 text-secondary"></i>Edit Job & Weights</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item small text-danger" href="javascript:void(0)" ng-click="vm.deleteJob(job, $event)"><i class="bi bi-trash me-2"></i>Delete Job</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="text-muted small mb-3" style="font-size: 0.85rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+            {{ job.description }}
+          </p>
+
+          <!-- Required Skills -->
+          <div class="mb-2">
+            <span class="small fw-semibold text-secondary" style="font-size: 0.75rem;">Required Competencies:</span>
+            <div class="mt-1">
+              <span ng-repeat="skill in job.requiredSkills" class="skill-chip skill-chip-matched">
+                <i class="bi bi-check me-1"></i>{{ skill }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Preferred Skills -->
+          <div ng-if="job.preferredSkills && job.preferredSkills.length > 0" class="mb-3">
+            <span class="small fw-semibold text-secondary" style="font-size: 0.75rem;">Preferred Bonus:</span>
+            <div class="mt-1">
+              <span ng-repeat="skill in job.preferredSkills" class="skill-chip skill-chip-preferred">
+                + {{ skill }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Matching Weights Indicator -->
+          <div class="p-2 rounded-2 mb-3 bg-light border border-subtle">
+            <div class="d-flex justify-content-between align-items-center small text-muted" style="font-size: 0.75rem;">
+              <span class="fw-semibold text-secondary">NLP Weights:</span>
+              <span>Skills: <strong>{{ job.weights.skills }}%</strong> | JD: <strong>{{ job.weights.similarity }}%</strong> | Exp: <strong>{{ job.weights.experience }}%</strong> | Edu: <strong>{{ job.weights.education }}%</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer / Metrics -->
+        <div class="pt-3 border-top border-light d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <div class="d-flex gap-3 small">
+            <div>
+              <span class="text-muted" style="font-size: 0.75rem;">Applicants:</span>
+              <strong class="text-dark ms-1">{{ job.applicantCount || 0 }}</strong>
+            </div>
+            <div>
+              <span class="text-muted" style="font-size: 0.75rem;">Shortlisted:</span>
+              <strong class="text-success ms-1">{{ job.shortlistedCount || 0 }}</strong>
+            </div>
+            <div>
+              <span class="text-muted" style="font-size: 0.75rem;">Avg Match:</span>
+              <strong class="text-primary ms-1">{{ job.avgScore || 0 }}%</strong>
+            </div>
+          </div>
+
+          <button class="btn btn-sm btn-primary-iq" ng-click="vm.viewJobDetail(job._id)">
+            Screen Resumes <i class="bi bi-arrow-right ms-1"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create / Edit Job Modal -->
+  <div class="modal fade" id="jobModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content modal-content-clean">
+        <div class="modal-header modal-header-clean">
+          <div class="d-flex align-items-center gap-2">
+            <div class="kpi-icon kpi-icon-indigo mb-0" style="width: 32px; height: 32px; font-size: 1rem;">
+              <i class="bi bi-briefcase"></i>
+            </div>
+            <h5 class="modal-title fw-bold text-dark mb-0">
+              {{ vm.isEditing ? 'Edit Job Posting & Criteria' : 'Create New Job Requisition' }}
+            </h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form novalidate>
+            <div class="row g-3 mb-3">
+              <div class="col-12 col-md-8">
+                <label class="form-label-iq">Job Title *</label>
+                <input type="text" class="form-control form-control-iq" ng-model="vm.jobForm.title" placeholder="e.g. Senior Full Stack Engineer" required>
+              </div>
+              <div class="col-12 col-md-4">
+                <label class="form-label-iq">Department</label>
+                <input type="text" class="form-control form-control-iq" ng-model="vm.jobForm.department" placeholder="Engineering">
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-12 col-md-4">
+                <label class="form-label-iq">Location</label>
+                <input type="text" class="form-control form-control-iq" ng-model="vm.jobForm.location" placeholder="Remote / New York, NY">
+              </div>
+              <div class="col-12 col-md-4">
+                <label class="form-label-iq">Employment Type</label>
+                <select class="form-select form-select-iq" ng-model="vm.jobForm.employmentType">
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Internship">Internship</option>
+                </select>
+              </div>
+              <div class="col-12 col-md-4">
+                <label class="form-label-iq">Status</label>
+                <select class="form-select form-select-iq" ng-model="vm.jobForm.status">
+                  <option value="Active">Active</option>
+                  <option value="Draft">Draft</option>
+                  <option value="Closed">Closed</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label-iq">Job Description *</label>
+              <textarea class="form-control form-control-iq" rows="4" ng-model="vm.jobForm.description" placeholder="Describe the responsibilities, project scope, technical stack, and day-to-day requirements..." required></textarea>
+              <div class="form-text text-muted small">The semantic NLP model vectorizes this full description for TF-IDF cosine similarity against parsed resumes.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label-iq">Required Competencies (Comma-separated) *</label>
+              <input type="text" class="form-control form-control-iq" ng-model="vm.jobForm.requiredSkillsInput" placeholder="JavaScript, Node.js, Express, MongoDB, AngularJS" required>
+              <div class="form-text text-muted small">Core requirements. Missing required skills directly lowers candidate skills score.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label-iq">Preferred Bonus Skills (Comma-separated)</label>
+              <input type="text" class="form-control form-control-iq" ng-model="vm.jobForm.preferredSkillsInput" placeholder="TypeScript, Docker, AWS, GraphQL">
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-md-6">
+                <label class="form-label-iq">Minimum Professional Experience (Years)</label>
+                <input type="number" min="0" max="30" class="form-control form-control-iq" ng-model="vm.jobForm.minExperience">
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label-iq">Education Requirement</label>
+                <select class="form-select form-select-iq" ng-model="vm.jobForm.education">
+                  <option value="Any">Any Education Level</option>
+                  <option value="High School">High School</option>
+                  <option value="Associate">Associate Degree</option>
+                  <option value="Bachelor">Bachelor's Degree</option>
+                  <option value="Master">Master's Degree</option>
+                  <option value="PhD">Doctorate / PhD</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Configurable Score Weights Section -->
+            <div class="p-3 rounded-3 mb-2 bg-light border border-subtle">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.95rem;">
+                  <i class="bi bi-sliders me-1 text-primary"></i> Configurable Match Weights
+                </h6>
+                <button type="button" class="btn btn-sm btn-outline-iq py-1 px-2" ng-click="vm.normalizeWeights()" style="font-size: 0.75rem;">
+                  Reset to Standard (40-30-20-10)
+                </button>
+              </div>
+
+              <div class="row g-3">
+                <div class="col-6 col-md-3">
+                  <label class="form-label-iq small">Skills: <strong>{{ vm.jobForm.weights.skills }}%</strong></label>
+                  <input type="range" class="form-range" min="0" max="100" step="5" ng-model="vm.jobForm.weights.skills">
+                </div>
+                <div class="col-6 col-md-3">
+                  <label class="form-label-iq small">JD Similarity: <strong>{{ vm.jobForm.weights.similarity }}%</strong></label>
+                  <input type="range" class="form-range" min="0" max="100" step="5" ng-model="vm.jobForm.weights.similarity">
+                </div>
+                <div class="col-6 col-md-3">
+                  <label class="form-label-iq small">Experience: <strong>{{ vm.jobForm.weights.experience }}%</strong></label>
+                  <input type="range" class="form-range" min="0" max="100" step="5" ng-model="vm.jobForm.weights.experience">
+                </div>
+                <div class="col-6 col-md-3">
+                  <label class="form-label-iq small">Education: <strong>{{ vm.jobForm.weights.education }}%</strong></label>
+                  <input type="range" class="form-range" min="0" max="100" step="5" ng-model="vm.jobForm.weights.education">
+                </div>
+              </div>
+              <div class="mt-2 small text-muted text-end" style="font-size: 0.75rem;">
+                Total Weight: <strong>{{ vm.getTotalWeight() }}%</strong> (normalized to 100% in engine)
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer modal-footer-clean">
+          <button type="button" class="btn btn-secondary-iq" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary-iq" ng-click="vm.saveJob()">
+            <i class="bi bi-check2 me-1"></i> {{ vm.isEditing ? 'Save Changes' : 'Create Job Requisition' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

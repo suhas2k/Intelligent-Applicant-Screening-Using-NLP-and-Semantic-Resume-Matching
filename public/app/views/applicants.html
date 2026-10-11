@@ -1,0 +1,198 @@
+<div class="container-fluid px-0">
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+      <h1 class="h3 fw-bold mb-1">Applicant Directory & Rankings</h1>
+      <p class="text-muted small mb-0">Search, filter, and compare candidate resumes across all job positions</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-secondary-iq" ng-click="vm.printShortlist()">
+        <i class="bi bi-printer me-1"></i> Print / Export Report
+      </button>
+      <a href="#!/jobs" class="btn btn-primary-iq">
+        <i class="bi bi-cloud-arrow-up me-1"></i> Screen More Resumes
+      </a>
+    </div>
+  </div>
+
+  <!-- Filter & Search Panel -->
+  <div class="surface-card p-4 mb-4">
+    <div class="row g-3 align-items-end">
+      <!-- Search Keyword -->
+      <div class="col-12 col-md-4">
+        <label class="form-label-iq">Search Keyword</label>
+        <div class="search-input-wrapper">
+          <i class="bi bi-search"></i>
+          <input type="text" class="search-input-clean" ng-model="vm.filters.search" ng-change="vm.applyFilters()" placeholder="Candidate name, email, or skill...">
+        </div>
+      </div>
+
+      <!-- Filter by Job -->
+      <div class="col-12 col-md-3">
+        <label class="form-label-iq">Filter by Job Requisition</label>
+        <select class="form-select form-select-iq" ng-model="vm.filters.jobId" ng-change="vm.applyFilters()">
+          <option value="All">All Jobs (Global Pool)</option>
+          <option ng-repeat="job in vm.jobs" value="{{ job._id }}">{{ job.title }}</option>
+        </select>
+      </div>
+
+      <!-- Filter by Status -->
+      <div class="col-6 col-md-2">
+        <label class="form-label-iq">Status</label>
+        <select class="form-select form-select-iq" ng-model="vm.filters.status" ng-change="vm.applyFilters()">
+          <option value="All">All Statuses</option>
+          <option value="New">New</option>
+          <option value="Reviewed">Reviewed</option>
+          <option value="Shortlisted">Shortlisted</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
+      <!-- Sort By -->
+      <div class="col-6 col-md-2">
+        <label class="form-label-iq">Sort By</label>
+        <select class="form-select form-select-iq" ng-model="vm.filters.sortBy" ng-change="vm.applyFilters()">
+          <option value="score">Match Score</option>
+          <option value="experience">Experience Yrs</option>
+          <option value="date">Date Screened</option>
+          <option value="name">Name (A-Z)</option>
+        </select>
+      </div>
+
+      <!-- Reset -->
+      <div class="col-12 col-md-1">
+        <button class="btn btn-outline-iq w-100 py-2" title="Reset Filters" ng-click="vm.resetFilters()">
+          <i class="bi bi-arrow-counterclockwise"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Minimum Score Slider -->
+    <div class="row mt-3 pt-3 border-top border-light align-items-center">
+      <div class="col-12 col-md-8 d-flex align-items-center gap-3">
+        <span class="small text-secondary text-nowrap fw-semibold">
+          Min Match Threshold: <strong class="text-primary">{{ vm.filters.minScore }}%</strong>
+        </span>
+        <input type="range" class="form-range" min="0" max="100" step="5" ng-model="vm.filters.minScore" ng-change="vm.applyFilters()">
+      </div>
+      <div class="col-12 col-md-4 text-md-end text-muted small mt-2 mt-md-0">
+        Showing <strong>{{ vm.applicants.length }}</strong> matching candidate(s)
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div ng-if="vm.isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted small mt-2">Loading candidates...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div ng-if="!vm.isLoading && vm.applicants.length === 0" class="surface-card p-5 text-center">
+    <div class="upload-icon-circle-clean">
+      <i class="bi bi-person-x text-muted"></i>
+    </div>
+    <h3 class="h5 fw-bold text-dark mt-3 mb-1">No Matching Candidates Found</h3>
+    <p class="text-muted small mb-3">Adjust your search query, status filters, or minimum score threshold slider.</p>
+    <button class="btn btn-secondary-iq" ng-click="vm.resetFilters()">Reset All Filters</button>
+  </div>
+
+  <!-- Applicants Table -->
+  <div ng-if="!vm.isLoading && vm.applicants.length > 0" class="surface-card p-4">
+    <div class="table-responsive">
+      <table class="table-editorial">
+        <thead>
+          <tr>
+            <th>Applicant</th>
+            <th>Associated Job</th>
+            <th>Match Score</th>
+            <th>Extracted Skills</th>
+            <th>Experience / Degree</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="app in vm.applicants track by app._id">
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="profile-avatar">
+                  {{ app.fullName.charAt(0) }}
+                </div>
+                <div>
+                  <div class="fw-bold text-dark d-flex align-items-center gap-1 flex-wrap">
+                    {{ app.fullName }}
+                    <span ng-if="app.benchmark && app.benchmark.syntheticResumeId" 
+                          class="badge bg-light text-secondary border font-monospace py-0 px-1" 
+                          style="font-size: 0.68rem;" 
+                          title="Synthetic Dataset ID: {{ app.benchmark.syntheticResumeId }} ({{ app.benchmark.seniority }}, {{ app.benchmark.industry }})">
+                      {{ app.benchmark.syntheticResumeId }}
+                    </span>
+                    <span ng-if="app.benchmark && app.benchmark.isBenchmarkMatch" 
+                          class="badge bg-success-subtle text-success border border-success-subtle py-0 px-1" 
+                          style="font-size: 0.65rem;" 
+                          title="Ground-truth match in synthetic benchmark dataset (&ge;60% must-have skills overlap)">
+                      Benchmark Match
+                    </span>
+                  </div>
+                  <div class="small text-muted" style="font-size: 0.75rem;">
+                    {{ app.email || app.resumeFile.originalName }}
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="small text-dark fw-semibold">{{ app.jobId.title || 'Position' }}</div>
+              <div class="small text-muted" style="font-size: 0.75rem;">{{ app.jobId.department || 'Dept' }}</div>
+            </td>
+            <td>
+              <span class="score-pill" ng-class="vm.getScoreBadgeClass(app.matchAnalysis.overallScore)">
+                <i class="bi bi-lightning-charge-fill me-1"></i> {{ app.matchAnalysis.overallScore }}%
+              </span>
+            </td>
+            <td style="max-width: 260px;">
+              <div>
+                <span ng-repeat="skill in (app.matchAnalysis.matchedRequiredSkills || app.extractedData.skills).slice(0, 3)" 
+                      class="skill-chip skill-chip-matched">
+                  {{ skill }}
+                </span>
+                <span ng-if="app.matchAnalysis.missingRequiredSkills.length > 0" 
+                      class="skill-chip skill-chip-missing">
+                  {{ app.matchAnalysis.missingRequiredSkills[0] }}
+                </span>
+                <span ng-if="(app.matchAnalysis.matchedRequiredSkills.length + app.matchAnalysis.missingRequiredSkills.length) > 4" class="small text-muted" style="font-size: 0.75rem;">
+                  +more
+                </span>
+              </div>
+            </td>
+            <td>
+              <div class="small fw-semibold text-dark">{{ app.extractedData.experienceYears || 0 }} Yrs Exp</div>
+              <div class="small text-muted" style="font-size: 0.75rem;">{{ app.extractedData.educationLevel || 'Degree' }}</div>
+            </td>
+            <td>
+              <select class="form-select form-select-sm form-select-iq" 
+                      style="width: 130px; font-size: 0.8rem; padding: 0.3rem 0.6rem !important;"
+                      ng-model="app.status" 
+                      ng-change="vm.updateStatus(app, app.status)">
+                <option value="New">New</option>
+                <option value="Reviewed">Reviewed</option>
+                <option value="Shortlisted">Shortlisted</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </td>
+            <td class="text-end">
+              <div class="d-flex justify-content-end gap-1">
+                <button class="btn btn-sm btn-outline-iq" title="View Detailed Breakdown" ng-click="vm.viewDetail(app._id)">
+                  <i class="bi bi-eye"></i> Details
+                </button>
+                <button class="btn btn-sm btn-outline-iq text-danger" title="Delete Applicant" ng-click="vm.deleteApplicant(app, $event)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
