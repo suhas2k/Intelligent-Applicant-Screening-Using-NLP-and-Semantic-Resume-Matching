@@ -1,7 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 const mammoth = require('mammoth');
-const pdfModule = require('pdf-parse');
+require('../utils/polyfills');
+
+let pdfModule = null;
+function getPdfModule() {
+  if (!pdfModule) {
+    try {
+      require('../utils/polyfills');
+      pdfModule = require('pdf-parse');
+    } catch (err) {
+      console.warn('[PDF Module Warning] Could not load pdf-parse:', err.message);
+    }
+  }
+  return pdfModule;
+}
 
 /**
  * Clean and normalize extracted raw text
@@ -32,20 +45,38 @@ async function extractResumeText(filePath, originalName) {
 
   try {
     if (ext === '.pdf') {
-      // Check for pdf-parse v2 class structure
-      if (pdfModule.PDFParse) {
-        const parser = new pdfModule.PDFParse({ data: fileBuffer });
+      const pdf = getPdfModule();
+      if (pdf && pdf.PDFParse) {
+        const parser = new pdf.PDFParse({ data: fileBuffer });
         const res = await parser.getText();
         extractedText = res.text || '';
         if (typeof parser.destroy === 'function') {
           await parser.destroy();
         }
-      } else if (typeof pdfModule === 'function') {
-        // Fallback for pdf-parse v1
-        const res = await pdfModule(fileBuffer);
+      } else if (typeof pdf === 'function') {
+        const res = await pdf(fileBuffer);
         extractedText = res.text || '';
       } else {
-        throw new Error('Incompatible pdf-parse library structure');
+        // Resilient fallback for serverless environments:
+        // Extract raw text streams and printable strings from PDF buffer directly
+        const rawString = fileBuffer.toString('latin1');
+        const textBlocks = [];
+        const btRegex = /BT[\s\S]*?ET/g;
+        let match;
+        while ((match = btRegex.exec(rawString)) !== null) {
+          const tjMatches = match[0].match(/\((.*?)\)\s*Tj|\[(.*?)\]\s*TJ/g);
+          if (tjMatches) {
+            tjMatches.forEach(tj => {
+              const cleaned = tj.replace(/^\[|\(?TJ\)?|\(?Tj\)?|\]$/g, '').replace(/\\([()\\])/g, '$1');
+              textBlocks.push(cleaned);
+            });
+          }
+        }
+        if (textBlocks.length > 0) {
+          extractedText = textBlocks.join(' ');
+        } else {
+          extractedText = rawString.replace(/[^\x20-\x7E\n\r\t]/g, ' ');
+        }
       }
     } else if (ext === '.docx' || ext === '.doc') {
       const res = await mammoth.extractRawText({ buffer: fileBuffer });

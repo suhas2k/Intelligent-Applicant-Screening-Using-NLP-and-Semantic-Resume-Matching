@@ -2,6 +2,7 @@ let app;
 let initError = null;
 
 try {
+  require('../utils/polyfills');
   app = require('../server.js');
 } catch (err) {
   initError = err;
