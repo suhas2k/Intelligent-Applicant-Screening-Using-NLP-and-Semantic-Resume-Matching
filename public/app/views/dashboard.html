@@ -28,56 +28,56 @@
     </span>
   </div>
 
-  <!-- KPI Metric Cards -->
-  <div class="row g-3 mb-4">
-    <div class="col-12 col-sm-6 col-xl-3">
+  <!-- KPI Metric Cards (2x2 Grid on Mobile, 4 Columns on Desktop) -->
+  <div class="row g-2 g-sm-3 mb-4">
+    <div class="col-6 col-lg-3">
       <div class="kpi-card h-100">
         <div class="kpi-icon kpi-icon-indigo">
           <i class="bi bi-briefcase"></i>
         </div>
         <div class="kpi-value">{{ vm.stats.activeJobs || 0 }}</div>
-        <div class="kpi-label">Active Job Openings</div>
-        <div class="small text-muted mt-2 pt-2 border-top border-light" style="font-size: 0.775rem;">
-          <i class="bi bi-folder-check me-1 text-primary"></i> {{ vm.stats.totalJobs || 0 }} total positions created
+        <div class="kpi-label">Active Openings</div>
+        <div class="small text-muted mt-2 pt-2 border-top border-light d-none d-sm-block" style="font-size: 0.775rem;">
+          <i class="bi bi-folder-check me-1 text-primary"></i> {{ vm.stats.totalJobs || 0 }} total positions
         </div>
       </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-xl-3">
+    <div class="col-6 col-lg-3">
       <div class="kpi-card h-100">
         <div class="kpi-icon kpi-icon-cyan">
           <i class="bi bi-file-earmark-person"></i>
         </div>
         <div class="kpi-value">{{ vm.stats.totalApplicants || 0 }}</div>
-        <div class="kpi-label">Resumes Screened</div>
-        <div class="small text-muted mt-2 pt-2 border-top border-light" style="font-size: 0.775rem;">
-          <i class="bi bi-clock-history me-1 text-info"></i> {{ vm.stats.statusCounts.New || 0 }} awaiting recruiter review
+        <div class="kpi-label">Screened CVs</div>
+        <div class="small text-muted mt-2 pt-2 border-top border-light d-none d-sm-block" style="font-size: 0.775rem;">
+          <i class="bi bi-clock-history me-1 text-info"></i> {{ vm.stats.statusCounts.New || 0 }} awaiting review
         </div>
       </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-xl-3">
+    <div class="col-6 col-lg-3">
       <div class="kpi-card h-100">
         <div class="kpi-icon kpi-icon-emerald">
           <i class="bi bi-star"></i>
         </div>
         <div class="kpi-value">{{ vm.stats.statusCounts.Shortlisted || 0 }}</div>
-        <div class="kpi-label">Shortlisted Candidates</div>
-        <div class="small text-muted mt-2 pt-2 border-top border-light" style="font-size: 0.775rem;">
-          <i class="bi bi-check2-circle me-1 text-success"></i> {{ vm.stats.highScoreCount || 0 }} scored &ge; 75% match
+        <div class="kpi-label">Shortlisted</div>
+        <div class="small text-muted mt-2 pt-2 border-top border-light d-none d-sm-block" style="font-size: 0.775rem;">
+          <i class="bi bi-check2-circle me-1 text-success"></i> {{ vm.stats.highScoreCount || 0 }} scored &ge; 75%
         </div>
       </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-xl-3">
+    <div class="col-6 col-lg-3">
       <div class="kpi-card h-100">
         <div class="kpi-icon kpi-icon-amber">
           <i class="bi bi-speedometer2"></i>
         </div>
         <div class="kpi-value">{{ vm.stats.avgScore || 0 }}%</div>
-        <div class="kpi-label">Average Match Score</div>
-        <div class="small text-muted mt-2 pt-2 border-top border-light" style="font-size: 0.775rem;">
-          <i class="bi bi-graph-up me-1 text-warning"></i> Multi-factor weighted NLP
+        <div class="kpi-label">Avg Match Score</div>
+        <div class="small text-muted mt-2 pt-2 border-top border-light d-none d-sm-block" style="font-size: 0.775rem;">
+          <i class="bi bi-graph-up me-1 text-warning"></i> Multi-factor NLP
         </div>
       </div>
     </div>

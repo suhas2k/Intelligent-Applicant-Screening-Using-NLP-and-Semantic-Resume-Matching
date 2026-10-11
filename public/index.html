@@ -2,7 +2,7 @@
 <html lang="en" ng-app="screeningApp">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>ResumeIQ - Intelligent Applicant Screening & Semantic Matching</title>
   <meta name="description" content="ResumeIQ: High-clarity recruitment screening SaaS using NLP and semantic resume matching built on Node.js, Express, MongoDB, AngularJS 1.x, and Bootstrap.">
 
@@ -26,25 +26,30 @@
 
   <div class="app-shell" ng-controller="NavController as nav">
     
-    <!-- Left Navigation Sidebar (Only when Authenticated) -->
-    <aside class="app-sidebar" ng-if="nav.isAuthenticated()">
+    <!-- Left Navigation Sidebar / Mobile Offcanvas Drawer (Only when Authenticated) -->
+    <aside class="app-sidebar" ng-class="{'mobile-open': nav.isMobileMenuOpen}" ng-if="nav.isAuthenticated()">
       <div>
-        <!-- Brand Header -->
-        <a class="brand-box" href="#!/dashboard">
-          <div class="brand-icon">
-            <i class="bi bi-stars"></i>
-          </div>
-          <div>
-            <div class="brand-title">ResumeIQ</div>
-            <div class="brand-tagline">Talent Intelligence</div>
-          </div>
-        </a>
+        <!-- Brand Header & Mobile Close Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <a class="brand-box py-0 mb-0" href="#!/dashboard" ng-click="nav.closeMobileMenu()">
+            <div class="brand-icon">
+              <i class="bi bi-stars"></i>
+            </div>
+            <div>
+              <div class="brand-title">ResumeIQ</div>
+              <div class="brand-tagline">Talent Intelligence</div>
+            </div>
+          </a>
+          <button class="btn btn-sm btn-icon text-muted d-lg-none" ng-click="nav.closeMobileMenu()" aria-label="Close Navigation" style="font-size: 1.2rem; padding: 0.25rem 0.5rem;">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
 
         <!-- Main Navigation Links -->
         <nav aria-label="Main Navigation">
           <ul class="sidebar-nav">
             <li>
-              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/dashboard')}" href="#!/dashboard">
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/dashboard')}" href="#!/dashboard" ng-click="nav.closeMobileMenu()">
                 <div class="d-flex align-items-center">
                   <i class="bi bi-grid-1x2-fill"></i>
                   <span>Dashboard</span>
@@ -52,7 +57,7 @@
               </a>
             </li>
             <li>
-              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/jobs')}" href="#!/jobs">
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/jobs')}" href="#!/jobs" ng-click="nav.closeMobileMenu()">
                 <div class="d-flex align-items-center">
                   <i class="bi bi-briefcase-fill"></i>
                   <span>Job Postings</span>
@@ -60,7 +65,7 @@
               </a>
             </li>
             <li>
-              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/applicants')}" href="#!/applicants">
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/applicants')}" href="#!/applicants" ng-click="nav.closeMobileMenu()">
                 <div class="d-flex align-items-center">
                   <i class="bi bi-people-fill"></i>
                   <span>Applicant Pool</span>
@@ -94,26 +99,44 @@
       </div>
     </aside>
 
+    <!-- Mobile Drawer Backdrop Overlay -->
+    <div class="mobile-drawer-backdrop" ng-if="nav.isAuthenticated() && nav.isMobileMenuOpen" ng-click="nav.closeMobileMenu()"></div>
+
     <!-- Main Content Area -->
     <div class="app-main-content" ng-style="!nav.isAuthenticated() && {'margin-left': '0'}">
       
       <!-- Top Bar (When Authenticated) -->
       <header class="app-topbar" ng-if="nav.isAuthenticated()">
-        <div class="topbar-search">
-          <div class="search-input-wrapper">
-            <i class="bi bi-search"></i>
-            <input type="text" class="search-input-clean" placeholder="Search candidates, skills, jobs..." onclick="window.location.hash='#!/applicants'">
-            <span class="search-shortcut">⌘K</span>
+        <div class="d-flex align-items-center gap-2">
+          <!-- Mobile Drawer Hamburger Toggle Button -->
+          <button class="btn btn-outline-iq py-1 px-2 d-lg-none" ng-click="nav.toggleMobileMenu()" aria-label="Open Navigation Menu">
+            <i class="bi bi-list fs-5"></i>
+          </button>
+
+          <!-- Mobile Brand Mark -->
+          <a class="brand-box py-0 mb-0 d-lg-none" href="#!/dashboard">
+            <div class="brand-icon" style="width: 32px; height: 32px; font-size: 0.95rem;">
+              <i class="bi bi-stars"></i>
+            </div>
+            <span class="brand-title" style="font-size: 1.05rem;">ResumeIQ</span>
+          </a>
+
+          <div class="topbar-search d-none d-md-block">
+            <div class="search-input-wrapper">
+              <i class="bi bi-search"></i>
+              <input type="text" class="search-input-clean" placeholder="Search candidates, skills, jobs..." onclick="window.location.hash='#!/applicants'">
+              <span class="search-shortcut">⌘K</span>
+            </div>
           </div>
         </div>
 
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2 gap-sm-3">
           <!-- Database Mode Pill -->
-          <span class="badge bg-white border border-secondary border-opacity-25 text-secondary px-3 py-2 small fw-normal d-none d-sm-inline-flex align-items-center">
-            <span class="pulse-indicator pulse-emerald"></span> Live Screening Engine
+          <span class="badge bg-white border border-secondary border-opacity-25 text-secondary px-2 px-sm-3 py-1 py-sm-2 small fw-normal d-none d-sm-inline-flex align-items-center">
+            <span class="pulse-indicator pulse-emerald"></span> Live Engine
           </span>
 
-          <a href="#!/jobs" class="btn btn-primary-iq">
+          <a href="#!/jobs" class="btn btn-primary-iq py-1 px-3">
             <i class="bi bi-plus-lg"></i>
             <span class="d-none d-sm-inline">Post Job</span>
           </a>
@@ -168,6 +191,26 @@
         </div>
       </footer>
     </div>
+
+    <!-- Mobile Bottom Quick Navigation Bar (Sticky at bottom on phones/tablets) -->
+    <nav class="mobile-bottom-nav d-lg-none" ng-if="nav.isAuthenticated()" aria-label="Mobile Bottom Navigation">
+      <a href="#!/dashboard" class="mobile-nav-item" ng-class="{'active': nav.isActive('/dashboard')}">
+        <i class="bi bi-grid-1x2-fill"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="#!/jobs" class="mobile-nav-item" ng-class="{'active': nav.isActive('/jobs')}">
+        <i class="bi bi-briefcase-fill"></i>
+        <span>Jobs</span>
+      </a>
+      <a href="#!/applicants" class="mobile-nav-item" ng-class="{'active': nav.isActive('/applicants')}">
+        <i class="bi bi-people-fill"></i>
+        <span>Applicants</span>
+      </a>
+      <button class="mobile-nav-item border-0 bg-transparent" ng-click="nav.toggleMobileMenu()" aria-label="Open User Menu">
+        <i class="bi bi-person-circle"></i>
+        <span>Menu</span>
+      </button>
+    </nav>
   </div>
 
   <!-- Scripts -->

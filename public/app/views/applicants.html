@@ -97,8 +97,8 @@
     <button class="btn btn-secondary-iq" ng-click="vm.resetFilters()">Reset All Filters</button>
   </div>
 
-  <!-- Applicants Table -->
-  <div ng-if="!vm.isLoading && vm.applicants.length > 0" class="surface-card p-4">
+  <!-- Applicants Desktop View (Table on Tablets and Desktops) -->
+  <div ng-if="!vm.isLoading && vm.applicants.length > 0" class="surface-card p-4 d-none d-md-block">
     <div class="table-responsive">
       <table class="table-editorial">
         <thead>
@@ -193,6 +193,68 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- Applicants Mobile Touch Cards View (Smartphones < 768px) -->
+  <div ng-if="!vm.isLoading && vm.applicants.length > 0" class="d-md-none">
+    <div ng-repeat="app in vm.applicants track by app._id" class="applicant-card-mobile">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <div class="d-flex align-items-center gap-2">
+          <div class="profile-avatar">
+            {{ app.fullName.charAt(0) }}
+          </div>
+          <div>
+            <div class="fw-bold text-dark" style="font-size: 0.95rem;">
+              {{ app.fullName }}
+            </div>
+            <div class="text-muted" style="font-size: 0.75rem;">
+              {{ app.jobId.title || 'Position' }} &bull; {{ app.jobId.department || 'Dept' }}
+            </div>
+          </div>
+        </div>
+        <span class="score-pill" ng-class="vm.getScoreBadgeClass(app.matchAnalysis.overallScore)">
+          <i class="bi bi-lightning-charge-fill me-1"></i> {{ app.matchAnalysis.overallScore }}%
+        </span>
+      </div>
+
+      <!-- Benchmark Badges if applicable -->
+      <div ng-if="app.benchmark && app.benchmark.syntheticResumeId" class="mb-2 d-flex gap-1 flex-wrap">
+        <span class="badge bg-light text-secondary border font-monospace py-0 px-1" style="font-size: 0.68rem;">
+          {{ app.benchmark.syntheticResumeId }}
+        </span>
+        <span ng-if="app.benchmark.isBenchmarkMatch" class="badge bg-success-subtle text-success border border-success-subtle py-0 px-1" style="font-size: 0.65rem;">
+          Benchmark Match
+        </span>
+      </div>
+
+      <!-- Skills Chips -->
+      <div class="mb-2">
+        <span ng-repeat="skill in (app.matchAnalysis.matchedRequiredSkills || app.extractedData.skills).slice(0, 3)" class="skill-chip skill-chip-matched">
+          {{ skill }}
+        </span>
+        <span ng-if="app.matchAnalysis.missingRequiredSkills.length > 0" class="skill-chip skill-chip-missing">
+          {{ app.matchAnalysis.missingRequiredSkills[0] }}
+        </span>
+      </div>
+
+      <!-- Experience & Status & Actions Row -->
+      <div class="d-flex justify-content-between align-items-center pt-2 border-top border-light gap-2">
+        <div class="small text-muted" style="font-size: 0.75rem;">
+          <i class="bi bi-briefcase me-1"></i>{{ app.extractedData.experienceYears || 0 }} yrs &bull; {{ app.extractedData.educationLevel || 'Degree' }}
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <select class="form-select form-select-sm form-select-iq py-1" style="width: 105px; font-size: 0.75rem;" ng-model="app.status" ng-change="vm.updateStatus(app, app.status)">
+            <option value="New">New</option>
+            <option value="Reviewed">Reviewed</option>
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+          <button class="btn btn-sm btn-outline-iq py-1 px-2" ng-click="vm.viewDetail(app._id)" title="View Details">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
