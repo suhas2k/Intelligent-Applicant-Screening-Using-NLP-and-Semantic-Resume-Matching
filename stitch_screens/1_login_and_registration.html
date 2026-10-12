@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>ResumeIQ - Recruiter Authentication & Registration</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary-container": "#4f46e5",
+            "on-surface-variant": "#464555",
+            "on-surface": "#131b2e",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f4f6fb",
+            "surface-container": "#eaedff",
+            "surface-container-high": "#e2e7ff",
+            "outline-variant": "#e2e8f0",
+            "outline": "#777587",
+            "primary": "#3525cd",
+            "secondary": "#006c49",
+            "secondary-fixed": "#6ffbbe",
+            "background": "#f8fafc"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            heading: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans antialiased">
+  <div class="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-12 bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden">
+    
+    <!-- Left Hero & Trust Panel (Deep Navy) -->
+    <div class="lg:col-span-5 bg-gradient-to-br from-[#0c1527] via-[#111c35] to-[#090e1a] p-8 sm:p-10 flex flex-col justify-between text-white relative overflow-hidden">
+      <div class="absolute -top-24 -left-24 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-teal-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10">
+        <!-- Brand -->
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-11 h-11 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/30 text-white">
+            <span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+          </div>
+          <div>
+            <div class="font-heading font-bold text-2xl tracking-tight leading-tight">ResumeIQ</div>
+            <div class="text-xs font-medium text-slate-300">Intelligent Applicant Screening</div>
+          </div>
+        </div>
+
+        <h2 class="font-heading font-extrabold text-2xl sm:text-3xl leading-snug tracking-tight mb-4">
+          Precision Recruiting Intelligence with Real-Time NLP
+        </h2>
+        <p class="text-slate-300 text-sm leading-relaxed mb-8">
+          Algorithmic candidate scoring, TF-IDF semantic resume matching, and multi-factor ranking designed for enterprise talent leaders.
+        </p>
+
+        <!-- Feature Points -->
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span>
+            </div>
+            <div class="text-xs text-slate-200">
+              <strong class="font-semibold text-white">Multi-Factor Semantic Engine:</strong> Evaluates skills, semantic relevance, experience, and education.
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-[16px]">verified_user</span>
+            </div>
+            <div class="text-xs text-slate-200">
+              <strong class="font-semibold text-white">Bias-Conscious Heuristics:</strong> Protected demographic attributes are excluded from algorithmic models.
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-[16px]">dataset</span>
+            </div>
+            <div class="text-xs text-slate-200">
+              <strong class="font-semibold text-white">Synthetic Benchmark Validated:</strong> Ground-truth tested on 50+ diverse enterprise resumes.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Quote -->
+      <div class="pt-8 mt-8 border-t border-slate-700/60 relative z-10 flex items-center justify-between text-xs text-slate-400">
+        <span>© 2026 ResumeIQ Platform</span>
+        <span class="inline-flex items-center gap-1.5 text-emerald-400 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Engine Online
+        </span>
+      </div>
+    </div>
+
+    <!-- Right Interactive Form Area -->
+    <div class="lg:col-span-7 p-8 sm:p-10 lg:p-12 flex flex-col justify-center">
+      <div class="max-w-md w-full mx-auto">
+        
+        <!-- Header -->
+        <div class="mb-6">
+          <h1 class="font-heading font-bold text-2xl text-slate-900 tracking-tight">Recruiter Sign In</h1>
+          <p class="text-sm text-slate-500 mt-1">Access your talent pipeline, scorecards, and candidate rankings</p>
+        </div>
+
+        <!-- 1-Click Demo Access Callout -->
+        <div class="mb-6 p-4 rounded-xl bg-indigo-50/70 border border-indigo-100 flex flex-col gap-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-indigo-700 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]">bolt</span> Quick Demo Credentials
+            </span>
+            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">Pre-Configured</span>
+          </div>
+          <p class="text-xs text-indigo-900/80 leading-relaxed">
+            Instantly explore live match scores and synthetic candidate datasets:
+          </p>
+          <button type="button" class="w-full py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-[16px]">login</span> Sign In as Demo Recruiter (recruiter@demo.com)
+          </button>
+        </div>
+
+        <div class="relative my-6 text-center">
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+          <span class="relative bg-white px-3 text-xs text-slate-400 font-medium">or continue with work email</span>
+        </div>
+
+        <!-- Form -->
+        <form class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Work Email</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                <span class="material-symbols-outlined text-[18px]">mail</span>
+              </span>
+              <input type="email" class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder:text-slate-400" placeholder="recruiter@demo.com" value="recruiter@demo.com"/>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-semibold text-slate-700">Password</label>
+              <a href="#" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Forgot?</a>
+            </div>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                <span class="material-symbols-outlined text-[18px]">lock</span>
+              </span>
+              <input type="password" class="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" value="••••••••"/>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-semibold shadow-sm transition-all flex items-center justify-center gap-2 mt-2">
+            <span>Sign In to Screening Workspace</span>
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </button>
+        </form>
+
+        <div class="mt-6 pt-5 border-t border-slate-200 text-center text-xs text-slate-500">
+          New to ResumeIQ? <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-700">Create an organization account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

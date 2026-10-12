@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>ResumeIQ - Enterprise Applicant Directory</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary-container": "#4f46e5",
+            "on-surface": "#131b2e",
+            "outline-variant": "#e2e8f0"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            heading: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex font-sans antialiased">
+  
+  <!-- Sidebar -->
+  <aside class="w-64 min-h-screen p-4 flex flex-col justify-between shrink-0 bg-[#0c1527] border-r border-slate-800 fixed top-0 left-0 h-screen z-30 text-white">
+    <div class="flex flex-col gap-6">
+      <div class="flex items-center gap-3 px-2 py-2">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-600/30">
+          <span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-heading font-bold text-lg text-white tracking-tight">ResumeIQ</span>
+          <span class="text-xs text-slate-400 font-medium">Talent Intelligence</span>
+        </div>
+      </div>
+      <nav class="flex flex-col gap-1.5">
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium" href="#dashboard">
+          <span class="material-symbols-outlined text-[20px]">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all text-sm font-medium" href="#jobs">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[20px]">work</span>
+            <span>Job Postings</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-800 text-slate-300">8</span>
+        </a>
+        <a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-indigo-600/20 text-indigo-400 font-semibold border-r-2 border-indigo-400 transition-all text-sm" href="#applicants">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">group</span>
+            <span>Applicants Pool</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/20 text-indigo-300">53</span>
+        </a>
+      </nav>
+    </div>
+    <div class="pt-4 border-t border-slate-800">
+      <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-xs text-white">SL</div>
+          <div><div class="text-xs font-bold text-white">Sarah Lin</div><div class="text-[11px] text-slate-400">Recruiter</div></div>
+        </div>
+        <span class="material-symbols-outlined text-[18px] text-slate-400">logout</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 ml-64 flex flex-col min-w-0">
+    <header class="sticky top-0 w-full h-16 z-20 bg-white border-b border-slate-200 shadow-sm flex items-center justify-between px-8">
+      <div class="flex items-center gap-4 flex-1 max-w-md">
+        <div class="relative w-full">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+            <span class="material-symbols-outlined text-[18px]">search</span>
+          </span>
+          <input class="w-full h-9 pl-9 pr-4 rounded-lg bg-slate-50 border border-slate-200 text-xs focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400" placeholder="Search across all 53 candidates, skills, or benchmark IDs... ⌘K"/>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-semibold">
+          <span class="material-symbols-outlined text-[16px]">print</span>
+          <span>Export Shortlist Report</span>
+        </button>
+        <button class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition-all">
+          <span class="material-symbols-outlined text-[16px]">upload_file</span>
+          <span>Screen Resumes</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 p-8 max-w-7xl w-full mx-auto flex flex-col gap-6">
+      
+      <!-- Page Title -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 class="font-heading font-extrabold text-2xl text-slate-900 tracking-tight">Applicant Directory & Rankings</h1>
+          <p class="text-xs text-slate-500 mt-1">Cross-requisition talent search, multi-attribute filtering, and ground-truth benchmark comparison</p>
+        </div>
+      </div>
+
+      <!-- Overview Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
+          <div><span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Pool</span><div class="font-heading text-2xl font-bold text-slate-900 mt-0.5">53</div></div>
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center"><span class="material-symbols-outlined text-[20px]">groups</span></div>
+        </div>
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
+          <div><span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">High Fit (&ge;75%)</span><div class="font-heading text-2xl font-bold text-emerald-600 mt-0.5">6</div></div>
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><span class="material-symbols-outlined text-[20px]">stars</span></div>
+        </div>
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
+          <div><span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Awaiting Review</span><div class="font-heading text-2xl font-bold text-amber-600 mt-0.5">14</div></div>
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"><span class="material-symbols-outlined text-[20px]">pending_actions</span></div>
+        </div>
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
+          <div><span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Shortlisted</span><div class="font-heading text-2xl font-bold text-teal-600 mt-0.5">9</div></div>
+          <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center"><span class="material-symbols-outlined text-[20px]">verified</span></div>
+        </div>
+      </div>
+
+      <!-- Advanced Filter & Search Toolbar -->
+      <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
+          <div class="lg:col-span-4">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Search Keywords</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                <span class="material-symbols-outlined text-[16px]">search</span>
+              </span>
+              <input type="text" class="w-full pl-8 pr-3 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" placeholder="Candidate name, email, skill, or ID..."/>
+            </div>
+          </div>
+          <div class="lg:col-span-3">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Requisition</label>
+            <select class="w-full py-2 px-3 rounded-lg border border-slate-200 text-xs text-slate-700 font-medium">
+              <option>All Positions (Global Pool)</option>
+              <option>Senior Full Stack Engineer (MERN)</option>
+              <option>Lead Product Designer</option>
+              <option>AI Research Engineer</option>
+            </select>
+          </div>
+          <div class="lg:col-span-2">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Pipeline Status</label>
+            <select class="w-full py-2 px-3 rounded-lg border border-slate-200 text-xs text-slate-700 font-medium">
+              <option>All Statuses</option>
+              <option>New</option>
+              <option>Reviewed</option>
+              <option>Shortlisted</option>
+              <option>Rejected</option>
+            </select>
+          </div>
+          <div class="lg:col-span-2">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Sort By</label>
+            <select class="w-full py-2 px-3 rounded-lg border border-slate-200 text-xs text-slate-700 font-medium">
+              <option>Highest Match Score</option>
+              <option>Most Experience</option>
+              <option>Recently Screened</option>
+              <option>Candidate Name (A-Z)</option>
+            </select>
+          </div>
+          <div class="lg:col-span-1">
+            <button class="w-full py-2 rounded-lg border border-slate-200 hover:border-slate-300 text-slate-600 text-xs font-semibold flex items-center justify-center">
+              <span class="material-symbols-outlined text-[18px]">restart_alt</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Slider Bar -->
+        <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-3 flex-1 max-w-md">
+            <span class="text-slate-600 font-semibold shrink-0">Min Match Threshold: <strong class="text-indigo-600">0%</strong></span>
+            <input type="range" class="w-full accent-indigo-600" min="0" max="100" value="0"/>
+          </div>
+          <span class="text-slate-500">Displaying <strong class="text-slate-900 font-semibold">53</strong> candidates matching active filters</span>
+        </div>
+      </section>
+
+      <!-- Data Table -->
+      <section class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="text-slate-400 uppercase tracking-wider border-b border-slate-200">
+                <th class="py-3 px-3">Applicant</th>
+                <th class="py-3 px-3">Requisition</th>
+                <th class="py-3 px-3">Match Score</th>
+                <th class="py-3 px-3">Extracted Skills</th>
+                <th class="py-3 px-3">Experience</th>
+                <th class="py-3 px-3">Status</th>
+                <th class="py-3 px-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr class="hover:bg-slate-50/80 transition-colors">
+                <td class="py-3.5 px-3">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs">DK</div>
+                    <div>
+                      <div class="font-bold text-slate-900 flex items-center gap-1.5">
+                        David Kim
+                        <span class="px-1.5 py-0.2 rounded text-[10px] bg-slate-100 border border-slate-200 font-mono text-slate-600">R_002908</span>
+                        <span class="px-1.5 py-0.2 rounded text-[10px] bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">Benchmark Match</span>
+                      </div>
+                      <div class="text-[11px] text-slate-400">david.kim.frontend@yahoo.com</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3.5 px-3">
+                  <div class="font-semibold text-slate-800">Junior Frontend Developer</div>
+                  <div class="text-[11px] text-slate-400">Design & UX</div>
+                </td>
+                <td class="py-3.5 px-3">
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-emerald-600 text-sm">79.8%</span>
+                    <div class="w-14 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-full bg-emerald-500 rounded-full" style="width: 80%;"></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3.5 px-3">
+                  <div class="flex flex-wrap gap-1 max-w-xs">
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-[10px] text-slate-700 font-medium">JavaScript</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-[10px] text-slate-700 font-medium">AngularJS</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-[10px] text-slate-700 font-medium">CSS</span>
+                  </div>
+                </td>
+                <td class="py-3.5 px-3 font-medium text-slate-700">3 Yrs &bull; Bachelor</td>
+                <td class="py-3.5 px-3">
+                  <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-teal-50 text-teal-700 border border-teal-200">Reviewed</span>
+                </td>
+                <td class="py-3.5 px-3 text-right">
+                  <button class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 font-semibold text-slate-700 transition-colors">
+                    Dossier &rarr;
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

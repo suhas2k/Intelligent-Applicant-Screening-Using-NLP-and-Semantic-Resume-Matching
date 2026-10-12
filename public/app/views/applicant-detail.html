@@ -1,8 +1,9 @@
 <div class="container-fluid px-0">
+  
   <!-- Back Link & Header Actions -->
   <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
     <a href="#!/applicants" class="btn btn-outline-iq btn-sm">
-      <i class="bi bi-arrow-left me-1"></i> Back to Applicants
+      <i class="bi bi-arrow-left me-1"></i> Back to Applicants Pool
     </a>
     <div class="d-flex gap-2">
       <button class="btn btn-sm btn-outline-iq" ng-click="vm.reEvaluate()">
@@ -20,27 +21,28 @@
   </div>
 
   <div ng-if="!vm.isLoading && vm.applicant">
+    
     <!-- Candidate Dossier Header Card -->
     <div class="surface-card p-4 mb-4">
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
-        <div class="d-flex align-items-start gap-3">
-          <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" 
-               style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary) 0%, #3730a3 100%); color: #ffffff; font-size: 1.5rem; flex-shrink: 0;">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-4">
+        <div class="d-flex align-items-start gap-3.5">
+          <div class="rounded-2xl d-flex align-items-center justify-content-center fw-bold text-white shadow-sm flex-shrink-0" 
+               style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, #312e81 100%); font-size: 1.6rem; border-radius: var(--radius-lg);">
             {{ vm.applicant.fullName.charAt(0) }}
           </div>
           <div>
             <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-              <h1 class="h3 fw-bold text-dark mb-0">{{ vm.applicant.fullName }}</h1>
+              <h1 class="h3 fw-bold text-dark mb-0" style="letter-spacing: -0.03em;">{{ vm.applicant.fullName }}</h1>
               <span class="status-pill" ng-class="vm.getStatusClass(vm.applicant.status)">
                 {{ vm.applicant.status }}
               </span>
             </div>
             <div class="text-muted small mb-2">
               Applied for: <a href="#!/jobs/{{ vm.applicant.jobId._id }}" class="fw-semibold text-primary">{{ vm.applicant.jobId.title }}</a>
-              &bull; File: <span class="text-dark fw-medium">{{ vm.applicant.resumeFile.originalName }}</span>
+              &bull; File: <span class="text-dark fw-medium font-monospace">{{ vm.applicant.resumeFile.originalName }}</span>
               ({{ (vm.applicant.resumeFile.size / 1024).toFixed(1) }} KB)
             </div>
-            <div class="d-flex flex-wrap gap-3 small text-muted">
+            <div class="d-flex flex-wrap gap-4 small text-muted">
               <span ng-if="vm.applicant.email"><i class="bi bi-envelope me-1 text-secondary"></i> {{ vm.applicant.email }}</span>
               <span ng-if="vm.applicant.phone"><i class="bi bi-telephone me-1 text-secondary"></i> {{ vm.applicant.phone }}</span>
               <span><i class="bi bi-calendar3 me-1 text-secondary"></i> Screened: {{ vm.applicant.createdAt | date:'mediumDate' }}</span>
@@ -49,8 +51,8 @@
         </div>
 
         <!-- Status Change Button Group -->
-        <div class="d-flex flex-column align-items-md-end gap-2">
-          <label class="form-label-iq small mb-0">Pipeline Stage</label>
+        <div class="d-flex flex-column align-items-md-end gap-1.5 shrink-0">
+          <label class="form-label-iq small mb-0">Hiring Pipeline Stage</label>
           <div class="btn-group shadow-sm" role="group">
             <button type="button" class="btn btn-sm" 
                     ng-class="vm.applicant.status === 'New' ? 'btn-primary-iq' : 'btn-secondary-iq'" 
@@ -73,22 +75,22 @@
     <div ng-if="vm.applicant.benchmark && vm.applicant.benchmark.syntheticResumeId" class="surface-card p-4 mb-4 border-start border-4 border-primary">
       <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
         <div class="d-flex align-items-center gap-2 flex-wrap">
-          <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Synthetic Benchmark Record</span>
+          <span class="badge bg-primary-subtle text-primary border border-primary-subtle fw-semibold">Hugging Face Synthetic Benchmark Record</span>
           <span class="fw-bold text-dark font-monospace">{{ vm.applicant.benchmark.syntheticResumeId }}</span>
-          <span class="text-muted small">&bull; {{ vm.applicant.benchmark.seniority }} &bull; {{ vm.applicant.benchmark.industry }}</span>
+          <span class="text-muted small">&bull; {{ vm.applicant.benchmark.seniority }} Level &bull; {{ vm.applicant.benchmark.industry }} Industry</span>
         </div>
-        <span ng-if="vm.applicant.benchmark.isBenchmarkMatch" class="badge bg-success-subtle text-success border border-success-subtle">
+        <span ng-if="vm.applicant.benchmark.isBenchmarkMatch" class="badge bg-success-subtle text-success border border-success-subtle fw-semibold">
           <i class="bi bi-check-circle-fill me-1"></i> Ground-Truth Relevant Match
         </span>
         <span ng-if="!vm.applicant.benchmark.isBenchmarkMatch" class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
-          <i class="bi bi-info-circle me-1"></i> Unlisted in Benchmark Set
+          <i class="bi bi-info-circle me-1"></i> Evaluated by Engine
         </span>
       </div>
       <p class="small text-muted mb-1">
-        <strong>Dataset Source:</strong> <a href="https://huggingface.co/datasets/michaelozon/candidate-matching-synthetic" target="_blank" rel="noopener" class="text-primary">michaelozon/candidate-matching-synthetic (Hugging Face)</a>
+        <strong>Dataset Reference:</strong> <a href="https://huggingface.co/datasets/michaelozon/candidate-matching-synthetic" target="_blank" rel="noopener" class="text-primary">michaelozon/candidate-matching-synthetic (Hugging Face)</a>
       </p>
       <p class="small text-secondary mb-0">
-        <strong>Benchmark Evaluation Rule:</strong> In the synthetic benchmark dataset, candidate resumes are considered relevant when having &ge;60% must-have skills overlap. Resumes unlisted in the benchmark reference set are evaluated by ResumeIQ's local TF-IDF semantic engine and are not confirmed negatives.
+        <strong>Benchmark Evaluation Rule:</strong> Candidates in reference benchmark are classified as ground-truth relevant when possessing &ge;60% must-have skills overlap. Resumes unlisted in benchmark set are evaluated in real time by ResumeIQ's local TF-IDF semantic engine.
       </p>
     </div>
 
@@ -97,22 +99,22 @@
       <!-- Master Score Dial Card -->
       <div class="col-12 col-lg-4">
         <div class="surface-card p-4 text-center h-100 d-flex flex-column justify-content-center">
-          <h2 class="h6 fw-bold text-uppercase text-muted mb-3" style="letter-spacing: 0.05em;">
-            Composite Match Score
+          <h2 class="h6 fw-bold text-uppercase text-muted mb-3" style="letter-spacing: 0.05em; font-size: 0.78rem;">
+            Composite Match Index
           </h2>
 
           <div class="score-dial-box my-3" ng-class="vm.getScoreDialClass(vm.applicant.matchAnalysis.overallScore)">
             <div class="score-dial-value">{{ vm.applicant.matchAnalysis.overallScore }}%</div>
-            <div class="score-dial-unit">Match Index</div>
+            <div class="score-dial-unit">Match Score</div>
           </div>
 
           <div class="mt-2">
             <span class="score-pill py-2 px-3 fw-bold" ng-class="vm.getScoreBadgeClass(vm.applicant.matchAnalysis.overallScore)">
-              {{ vm.applicant.matchAnalysis.overallScore >= 80 ? 'Highly Recommended Match' : (vm.applicant.matchAnalysis.overallScore >= 65 ? 'Good Alignment' : (vm.applicant.matchAnalysis.overallScore >= 50 ? 'Fair Match' : 'Low Alignment')) }}
+              {{ vm.applicant.matchAnalysis.overallScore >= 80 ? 'Highly Recommended Match' : (vm.applicant.matchAnalysis.overallScore >= 65 ? 'Good Alignment' : (vm.applicant.matchAnalysis.overallScore >= 50 ? 'Fair Alignment' : 'Low Fit')) }}
             </span>
           </div>
 
-          <p class="small text-muted mt-3 mb-0" style="font-size: 0.8rem; line-height: 1.5;">
+          <p class="small text-muted mt-3 mb-0" style="font-size: 0.785rem; line-height: 1.5;">
             Calculated via locally-executed TF-IDF vector space modeling, entity tokenization, and multi-factor weighted scoring.
           </p>
         </div>
@@ -120,64 +122,66 @@
 
       <!-- Sub-Scores Component Progress Bars -->
       <div class="col-12 col-lg-8">
-        <div class="surface-card p-4 h-100">
-          <h2 class="h6 fw-bold text-uppercase text-muted mb-3" style="letter-spacing: 0.05em;">
-            Transparent Multi-Factor Score Breakdown
-          </h2>
+        <div class="surface-card p-4 h-100 d-flex flex-column justify-content-between">
+          <div>
+            <h2 class="h6 fw-bold text-uppercase text-muted mb-3" style="letter-spacing: 0.05em; font-size: 0.78rem;">
+              Transparent Multi-Factor Score Breakdown
+            </h2>
 
-          <!-- 1. Skills Match -->
-          <div class="mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="small fw-semibold text-dark">
-                <i class="bi bi-cpu text-success me-1"></i> Skills Match Score
-                <span class="text-muted fw-normal" style="font-size: 0.75rem;">(Weight: {{ vm.applicant.matchAnalysis.weightsUsed.skills }}%)</span>
-              </span>
-              <strong class="text-dark">{{ vm.applicant.matchAnalysis.skillsScore }}%</strong>
+            <!-- 1. Skills Match -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small fw-semibold text-dark">
+                  <i class="bi bi-cpu text-success me-1"></i> Skills Match Score
+                  <span class="text-muted fw-normal" style="font-size: 0.75rem;">(Weight: {{ vm.applicant.matchAnalysis.weightsUsed.skills }}%)</span>
+                </span>
+                <strong class="text-dark">{{ vm.applicant.matchAnalysis.skillsScore }}%</strong>
+              </div>
+              <div class="progress-iq">
+                <div class="h-100 progress-bar-emerald" style="width: {{ vm.applicant.matchAnalysis.skillsScore }}%;"></div>
+              </div>
             </div>
-            <div class="progress-iq">
-              <div class="h-100 progress-bar-emerald" style="width: {{ vm.applicant.matchAnalysis.skillsScore }}%;"></div>
-            </div>
-          </div>
 
-          <!-- 2. Job Description Semantic Similarity -->
-          <div class="mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="small fw-semibold text-dark">
-                <i class="bi bi-file-earmark-text text-info me-1"></i> Job Description Semantic Similarity (TF-IDF Vector Space)
-                <span class="text-muted fw-normal" style="font-size: 0.75rem;">(Weight: {{ vm.applicant.matchAnalysis.weightsUsed.similarity }}%)</span>
-              </span>
-              <strong class="text-dark">{{ vm.applicant.matchAnalysis.similarityScore }}%</strong>
+            <!-- 2. Job Description Semantic Similarity -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small fw-semibold text-dark">
+                  <i class="bi bi-file-earmark-text text-info me-1"></i> Job Description Semantic Similarity (TF-IDF Vector Space)
+                  <span class="text-muted fw-normal" style="font-size: 0.75rem;">(Weight: {{ vm.applicant.matchAnalysis.weightsUsed.similarity }}%)</span>
+                </span>
+                <strong class="text-dark">{{ vm.applicant.matchAnalysis.similarityScore }}%</strong>
+              </div>
+              <div class="progress-iq">
+                <div class="h-100 progress-bar-cyan" style="width: {{ vm.applicant.matchAnalysis.similarityScore }}%;"></div>
+              </div>
             </div>
-            <div class="progress-iq">
-              <div class="h-100 progress-bar-cyan" style="width: {{ vm.applicant.matchAnalysis.similarityScore }}%;"></div>
-            </div>
-          </div>
 
-          <!-- 3. Experience Match -->
-          <div class="mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="small fw-semibold text-dark">
-                <i class="bi bi-briefcase text-primary me-1"></i> Professional Experience
-                <span class="text-muted fw-normal" style="font-size: 0.75rem;">(Candidate: ~{{ vm.applicant.extractedData.experienceYears || 0 }} yrs vs Req: {{ vm.applicant.jobId.minExperience || 0 }} yrs &bull; Weight: {{ vm.applicant.matchAnalysis.weightsUsed.experience }}%)</span>
-              </span>
-              <strong class="text-dark">{{ vm.applicant.matchAnalysis.experienceScore }}%</strong>
+            <!-- 3. Experience Match -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small fw-semibold text-dark">
+                  <i class="bi bi-briefcase text-primary me-1"></i> Professional Experience
+                  <span class="text-muted fw-normal" style="font-size: 0.75rem;">(Candidate: ~{{ vm.applicant.extractedData.experienceYears || 0 }} yrs vs Req: {{ vm.applicant.jobId.minExperience || 0 }} yrs &bull; Weight: {{ vm.applicant.matchAnalysis.weightsUsed.experience }}%)</span>
+                </span>
+                <strong class="text-dark">{{ vm.applicant.matchAnalysis.experienceScore }}%</strong>
+              </div>
+              <div class="progress-iq">
+                <div class="h-100 progress-bar-indigo" style="width: {{ vm.applicant.matchAnalysis.experienceScore }}%;"></div>
+              </div>
             </div>
-            <div class="progress-iq">
-              <div class="h-100 progress-bar-indigo" style="width: {{ vm.applicant.matchAnalysis.experienceScore }}%;"></div>
-            </div>
-          </div>
 
-          <!-- 4. Education Match -->
-          <div class="mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="small fw-semibold text-dark">
-                <i class="bi bi-mortarboard text-warning me-1"></i> Education Level
-                <span class="text-muted fw-normal" style="font-size: 0.75rem;">(Candidate: {{ vm.applicant.extractedData.educationLevel }} vs Req: {{ vm.applicant.jobId.education }} &bull; Weight: {{ vm.applicant.matchAnalysis.weightsUsed.education }}%)</span>
-              </span>
-              <strong class="text-dark">{{ vm.applicant.matchAnalysis.educationScore }}%</strong>
-            </div>
-            <div class="progress-iq">
-              <div class="h-100 progress-bar-amber" style="width: {{ vm.applicant.matchAnalysis.educationScore }}%;"></div>
+            <!-- 4. Education Match -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small fw-semibold text-dark">
+                  <i class="bi bi-mortarboard text-warning me-1"></i> Education Level
+                  <span class="text-muted fw-normal" style="font-size: 0.75rem;">(Candidate: {{ vm.applicant.extractedData.educationLevel }} vs Req: {{ vm.applicant.jobId.education }} &bull; Weight: {{ vm.applicant.matchAnalysis.weightsUsed.education }}%)</span>
+                </span>
+                <strong class="text-dark">{{ vm.applicant.matchAnalysis.educationScore }}%</strong>
+              </div>
+              <div class="progress-iq">
+                <div class="h-100 progress-bar-amber" style="width: {{ vm.applicant.matchAnalysis.educationScore }}%;"></div>
+              </div>
             </div>
           </div>
 
@@ -194,7 +198,7 @@
       </div>
     </div>
 
-    <!-- Skills Match & Gap Audit -->
+    <!-- Skills Match & Gap Audit Grid -->
     <div class="surface-card p-4 mb-4">
       <h2 class="h5 fw-bold text-dark mb-3">
         <i class="bi bi-check2-all text-primary me-2"></i>Competency Audit & Skill Gap Analysis
@@ -203,7 +207,7 @@
       <div class="row g-4">
         <!-- Matched Required Skills -->
         <div class="col-12 col-md-6">
-          <div class="p-3 rounded-3 h-100" style="background-color: var(--emerald-subtle); border: 1px solid var(--emerald-border);">
+          <div class="p-3.5 rounded-3 h-100" style="background-color: var(--emerald-subtle); border: 1px solid var(--emerald-border);">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <span class="small fw-bold text-success">
                 <i class="bi bi-check-circle-fill me-1"></i> Matched Required Skills ({{ vm.applicant.matchAnalysis.matchedRequiredSkills.length }})
@@ -222,7 +226,7 @@
 
         <!-- Missing Required Skills -->
         <div class="col-12 col-md-6">
-          <div class="p-3 rounded-3 h-100" style="background-color: var(--rose-subtle); border: 1px solid var(--rose-border);">
+          <div class="p-3.5 rounded-3 h-100" style="background-color: var(--rose-subtle); border: 1px solid var(--rose-border);">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <span class="small fw-bold text-danger">
                 <i class="bi bi-exclamation-triangle-fill me-1"></i> Missing Required Requirements ({{ vm.applicant.matchAnalysis.missingRequiredSkills.length }})
@@ -241,8 +245,8 @@
 
         <!-- Matched Preferred Skills -->
         <div class="col-12 col-md-6" ng-if="vm.applicant.matchAnalysis.matchedPreferredSkills && vm.applicant.matchAnalysis.matchedPreferredSkills.length > 0">
-          <div class="p-3 rounded-3" style="background-color: var(--purple-subtle); border: 1px solid var(--purple-border);">
-            <span class="small fw-bold text-purple d-block mb-2">
+          <div class="p-3 rounded-3" style="background-color: #f0fdfa; border: 1px solid #99f6e4;">
+            <span class="small fw-bold text-teal d-block mb-2" style="color: #0f766e;">
               <i class="bi bi-stars me-1"></i> Bonus Preferred Skills Matched ({{ vm.applicant.matchAnalysis.matchedPreferredSkills.length }})
             </span>
             <div>
@@ -273,19 +277,24 @@
     <div class="row g-4 mb-4">
       <!-- Recruiter Notes Notepad -->
       <div class="col-12 col-lg-6">
-        <div class="surface-card p-4 h-100">
-          <h2 class="h5 fw-bold text-dark mb-2">
-            <i class="bi bi-journal-text text-primary me-2"></i>Recruiter Internal Notes
-          </h2>
-          <p class="text-muted small mb-3">Add private screening notes, interview feedback, or compensation notes.</p>
+        <div class="surface-card p-4 h-100 d-flex flex-column justify-content-between">
+          <div>
+            <h2 class="h5 fw-bold text-dark mb-1">
+              <i class="bi bi-journal-text text-primary me-2"></i>Recruiter Internal Notes
+            </h2>
+            <p class="text-muted small mb-3">Add private screening notes, interview feedback, or panel remarks.</p>
 
-          <textarea class="form-control form-control-iq mb-3" rows="6" 
-                    ng-model="vm.applicant.recruiterNotes" 
-                    placeholder="e.g. Scheduled for technical interview. Strong architectural background in microservices and high-throughput systems..."></textarea>
+            <textarea class="form-control form-control-iq mb-3" rows="6" 
+                      ng-model="vm.applicant.recruiterNotes" 
+                      placeholder="e.g. Scheduled for panel technical interview. Strong architectural background in microservices and high-throughput systems..."></textarea>
+          </div>
 
-          <button class="btn btn-primary-iq btn-sm" ng-click="vm.saveNotes()" ng-disabled="vm.isSavingNotes">
-            <i class="bi bi-check2 me-1"></i> {{ vm.isSavingNotes ? 'Saving...' : 'Save Recruiter Notes' }}
-          </button>
+          <div class="d-flex justify-content-between align-items-center">
+            <button class="btn btn-primary-iq btn-sm" ng-click="vm.saveNotes()" ng-disabled="vm.isSavingNotes">
+              <i class="bi bi-check2 me-1"></i> {{ vm.isSavingNotes ? 'Saving...' : 'Save Recruiter Notes' }}
+            </button>
+            <span class="small text-muted" ng-if="vm.applicant.recruiterNotes">Notes recorded</span>
+          </div>
         </div>
       </div>
 
@@ -315,7 +324,7 @@
       </div>
     </div>
 
-    <!-- NLP Methodology & Ethical Limitations Notice Box -->
+    <!-- Ethical Limitations Notice Box -->
     <div class="ethics-banner p-4">
       <h2 class="h6 fw-bold text-dark mb-2">
         <i class="bi bi-shield-lock text-primary me-2"></i>NLP Methodology, Limitations & Responsible AI Notice

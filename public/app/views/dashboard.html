@@ -1,102 +1,214 @@
 <div class="container-fluid px-0">
-  <!-- Page Header -->
+  
+  <!-- Page Header & Actions -->
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
     <div>
-      <h1 class="h3 fw-bold mb-1">Recruiter Intelligence Dashboard</h1>
+      <h1 class="h3 fw-bold mb-1 text-dark" style="letter-spacing: -0.03em;">Recruiter Intelligence Dashboard</h1>
       <p class="text-muted small mb-0">Overview of active postings, candidate rankings, and NLP semantic matching performance</p>
     </div>
     <div class="d-flex gap-2">
       <a href="#!/jobs" class="btn btn-primary-iq">
-        <i class="bi bi-briefcase-fill"></i> Manage Jobs
+        <i class="bi bi-plus-lg"></i> Post New Job
       </a>
       <a href="#!/applicants" class="btn btn-secondary-iq">
-        <i class="bi bi-people-fill"></i> View All Applicants
+        <i class="bi bi-people-fill"></i> View All Applicants ({{ vm.stats.totalApplicants || 0 }})
       </a>
     </div>
   </div>
 
   <!-- Ethical Decision Support Notice Banner -->
-  <div class="ethics-banner mb-4 d-flex align-items-center justify-content-between flex-wrap gap-2">
+  <div class="ethics-banner mb-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+    <div class="d-flex align-items-center gap-2.5">
+      <div class="w-8 h-8 rounded-circle bg-white d-flex align-items-center justify-content-center text-primary shadow-sm flex-shrink-0" style="width: 32px; height: 32px;">
+        <i class="bi bi-shield-check fs-6 text-primary"></i>
+      </div>
+      <div>
+        <strong class="text-dark">Ethical AI Decision Support Active:</strong> Match scores represent algorithmic semantic heuristics to accelerate screening. Final hiring decisions remain fully in the recruiter's hands. Demographic attributes are excluded from scoring.
+      </div>
+    </div>
     <div class="d-flex align-items-center gap-2">
-      <i class="bi bi-shield-check text-primary fs-5"></i>
-      <span>
-        <strong>Decision Support Notice:</strong> Match scores represent algorithmic semantic heuristics for candidate prioritization. Recruiters make final hiring decisions. Protected demographic characteristics are excluded from evaluation.
+      <span class="badge bg-white border border-primary border-opacity-25 text-primary small py-1 px-2.5 fw-semibold shadow-sm">
+        <span class="pulse-indicator pulse-emerald"></span> Algorithmic Scoring Active
+      </span>
+      <span class="badge bg-white border text-secondary small py-1 px-2.5 shadow-sm">
+        {{ vm.database.mode || 'In-Memory Engine' }}
       </span>
     </div>
-    <span class="badge rounded-pill bg-white border text-secondary small py-2 px-3 shadow-sm">
-      <span class="pulse-indicator pulse-emerald"></span> Engine: {{ vm.database.mode || 'Active' }}
-    </span>
   </div>
 
-  <!-- KPI Metric Cards (2x2 Grid on Mobile, 4 Columns on Desktop) -->
-  <div class="row g-2 g-sm-3 mb-4">
+  <!-- 4 Top KPI Metric Cards -->
+  <div class="row g-3 mb-4">
+    <!-- Card 1: Active Openings -->
     <div class="col-6 col-lg-3">
       <div class="kpi-card h-100">
-        <div class="kpi-icon kpi-icon-indigo">
-          <i class="bi bi-briefcase"></i>
-        </div>
-        <div class="kpi-value">{{ vm.stats.activeJobs || 0 }}</div>
-        <div class="kpi-label">Active Openings</div>
-        <div class="small text-muted mt-2 pt-2 border-top border-light d-none d-sm-block" style="font-size: 0.775rem;">
-          <i class="bi bi-folder-check me-1 text-primary"></i> {{ vm.stats.totalJobs || 0 }} total positions
-        </div>
-      </div>
-    </div>
-
-    <div class="col-6 col-lg-3">
-      <div class="kpi-card h-100">
-        <div class="kpi-icon kpi-icon-cyan">
-          <i class="bi bi-file-earmark-person"></i>
-        </div>
-        <div class="kpi-value">{{ vm.stats.totalApplicants || 0 }}</div>
-        <div class="kpi-label">Screened CVs</div>
-        <div class="small text-muted mt-2 pt-2 border-top border-light d-none d-sm-block" style="font-size: 0.775rem;">
-          <i class="bi bi-clock-history me-1 text-info"></i> {{ vm.stats.statusCounts.New || 0 }} awaiting review
-        </div>
-      </div>
-    </div>
-
-    <div class="col-6 col-lg-3">
-      <div class="kpi-card h-100">
-        <div class="kpi-icon kpi-icon-emerald">
-          <i class="bi bi-star"></i>
-        </div>
-        <div class="kpi-value">{{ vm.stats.statusCounts.Shortlisted || 0 }}</div>
-        <div class="kpi-label">Shortlisted</div>
-        <div class="small text-muted mt-2 pt-2 border-top border-light d-none d-sm-block" style="font-size: 0.775rem;">
-          <i class="bi bi-check2-circle me-1 text-success"></i> {{ vm.stats.highScoreCount || 0 }} scored &ge; 75%
-        </div>
-      </div>
-    </div>
-
-    <div class="col-6 col-lg-3">
-      <div class="kpi-card h-100">
-        <div class="kpi-icon kpi-icon-amber">
-          <i class="bi bi-speedometer2"></i>
-        </div>
-        <div class="kpi-value">{{ vm.stats.avgScore || 0 }}%</div>
-        <div class="kpi-label">Avg Match Score</div>
-        <div class="small text-muted mt-2 pt-2 border-top border-light d-none d-sm-block" style="font-size: 0.775rem;">
-          <i class="bi bi-graph-up me-1 text-warning"></i> Multi-factor NLP
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row g-4">
-    <!-- Top-Matching Candidates Leaderboard -->
-    <div class="col-12 col-lg-8">
-      <div class="surface-card p-4">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-          <div>
-            <h2 class="h5 fw-bold mb-1">
-              <i class="bi bi-award text-amber me-2"></i>Top Matching Candidates
-            </h2>
-            <p class="text-muted small mb-0">Prioritized algorithmic ranking based on configured criteria</p>
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="kpi-label">Active Openings</span>
+          <div class="kpi-icon kpi-icon-indigo mb-0">
+            <i class="bi bi-briefcase-fill"></i>
           </div>
-          <a href="#!/applicants" class="btn btn-outline-iq btn-sm">
-            View All ({{ vm.stats.totalApplicants || 0 }}) &rarr;
-          </a>
+        </div>
+        <div class="d-flex align-items-baseline gap-2">
+          <div class="kpi-value">{{ vm.stats.activeJobs || 0 }}</div>
+          <span class="small text-success fw-bold d-none d-sm-inline">
+            <i class="bi bi-arrow-up-short"></i> Active
+          </span>
+        </div>
+        <div class="small text-muted mt-2 pt-2 border-top border-light" style="font-size: 0.75rem;">
+          {{ vm.stats.totalJobs || 0 }} total requisitions configured
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Resumes Screened -->
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card h-100">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="kpi-label">Resumes Screened</span>
+          <div class="kpi-icon kpi-icon-cyan mb-0">
+            <i class="bi bi-file-earmark-person-fill"></i>
+          </div>
+        </div>
+        <div class="d-flex align-items-baseline gap-2">
+          <div class="kpi-value">{{ vm.stats.totalApplicants || 0 }}</div>
+          <span class="small text-info fw-bold d-none d-sm-inline">
+            <i class="bi bi-clock-history"></i> {{ vm.stats.statusCounts.New || 0 }} new
+          </span>
+        </div>
+        <div class="small text-muted mt-2 pt-2 border-top border-light" style="font-size: 0.75rem;">
+          NLP Ingestion processing rate: &lt;0.4s
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Shortlisted -->
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card h-100">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="kpi-label">Shortlisted</span>
+          <div class="kpi-icon kpi-icon-emerald mb-0">
+            <i class="bi bi-check2-circle"></i>
+          </div>
+        </div>
+        <div class="d-flex align-items-baseline gap-2">
+          <div class="kpi-value text-success">{{ vm.stats.statusCounts.Shortlisted || 0 }}</div>
+          <span class="small text-muted fw-semibold d-none d-sm-inline" ng-if="vm.stats.totalApplicants > 0">
+            {{ ((vm.stats.statusCounts.Shortlisted / vm.stats.totalApplicants) * 100).toFixed(0) }}% conversion
+          </span>
+        </div>
+        <div class="small text-muted mt-2 pt-2 border-top border-light" style="font-size: 0.75rem;">
+          {{ vm.stats.highScoreCount || 0 }} scored &ge; 75% threshold
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Average Match Score -->
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card h-100">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="kpi-label">Avg Match Score</span>
+          <div class="kpi-icon kpi-icon-amber mb-0">
+            <i class="bi bi-graph-up"></i>
+          </div>
+        </div>
+        <div class="d-flex align-items-baseline gap-2">
+          <div class="kpi-value text-primary">{{ vm.stats.avgScore || 0 }}%</div>
+          <span class="small text-muted fw-semibold d-none d-sm-inline">
+            Baseline: 70%
+          </span>
+        </div>
+        <div class="small text-muted mt-2 pt-2 border-top border-light" style="font-size: 0.75rem;">
+          Multi-factor TF-IDF vector space model
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Candidate Pipeline Funnel & Match Score Distribution -->
+  <div class="surface-card p-4 mb-4">
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2">
+      <div>
+        <h2 class="h6 fw-bold text-dark text-uppercase mb-1" style="letter-spacing: 0.04em;">Candidate Screening Pipeline</h2>
+        <p class="small text-muted mb-0">Live conversion and stage distribution across the candidate pool</p>
+      </div>
+      <span class="badge bg-light border text-secondary small py-1.5 px-3">
+        Total Evaluated: <strong>{{ vm.stats.totalApplicants || 0 }}</strong>
+      </span>
+    </div>
+
+    <!-- Pipeline Stages Grid -->
+    <div class="pipeline-container mb-0">
+      <div class="pipeline-step">
+        <div class="pipeline-step-header">
+          <span>New Applicants</span>
+          <i class="bi bi-inbox text-primary"></i>
+        </div>
+        <div class="pipeline-step-count">{{ vm.stats.statusCounts.New || 0 }}</div>
+        <div class="small text-muted" style="font-size: 0.75rem;">Awaiting recruiter intake</div>
+        <div class="pipeline-bar-wrapper">
+          <div class="pipeline-bar-fill bg-primary" 
+               ng-style="{'width': (vm.stats.totalApplicants ? ((vm.stats.statusCounts.New / vm.stats.totalApplicants) * 100) : 0) + '%'}"></div>
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header">
+          <span>Reviewed</span>
+          <i class="bi bi-file-earmark-check text-info"></i>
+        </div>
+        <div class="pipeline-step-count">{{ vm.stats.statusCounts.Reviewed || 0 }}</div>
+        <div class="small text-muted" style="font-size: 0.75rem;">Profiles analyzed</div>
+        <div class="pipeline-bar-wrapper">
+          <div class="pipeline-bar-fill bg-info" 
+               ng-style="{'width': (vm.stats.totalApplicants ? ((vm.stats.statusCounts.Reviewed / vm.stats.totalApplicants) * 100) : 0) + '%'}"></div>
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header">
+          <span>Shortlisted</span>
+          <i class="bi bi-star-fill text-success"></i>
+        </div>
+        <div class="pipeline-step-count text-success">{{ vm.stats.statusCounts.Shortlisted || 0 }}</div>
+        <div class="small text-muted" style="font-size: 0.75rem;">Advancing to interview</div>
+        <div class="pipeline-bar-wrapper">
+          <div class="pipeline-bar-fill bg-success" 
+               ng-style="{'width': (vm.stats.totalApplicants ? ((vm.stats.statusCounts.Shortlisted / vm.stats.totalApplicants) * 100) : 0) + '%'}"></div>
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header">
+          <span>Archived / Rejected</span>
+          <i class="bi bi-x-circle text-muted"></i>
+        </div>
+        <div class="pipeline-step-count text-muted">{{ vm.stats.statusCounts.Rejected || 0 }}</div>
+        <div class="small text-muted" style="font-size: 0.75rem;">Not meeting criteria</div>
+        <div class="pipeline-bar-wrapper">
+          <div class="pipeline-bar-fill bg-secondary" 
+               ng-style="{'width': (vm.stats.totalApplicants ? ((vm.stats.statusCounts.Rejected / vm.stats.totalApplicants) * 100) : 0) + '%'}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Layout (70% Left: Ranked Applicants Table, 30% Right: Active Postings & Skills) -->
+  <div class="row g-4">
+    
+    <!-- Left Column: Top-Matching Candidates Table -->
+    <div class="col-12 col-lg-8">
+      <div class="surface-card p-4 h-100">
+        <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+          <div>
+            <h2 class="h5 fw-bold mb-1 text-dark">
+              <i class="bi bi-award-fill text-warning me-2"></i>Ranked Candidates
+            </h2>
+            <p class="text-muted small mb-0">Algorithmic prioritization based on configured job requirements</p>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <a href="#!/applicants" class="btn btn-outline-iq btn-sm">
+              View All ({{ vm.stats.totalApplicants || 0 }}) &rarr;
+            </a>
+          </div>
         </div>
 
         <div ng-if="vm.isLoading" class="text-center py-5">
@@ -115,46 +227,78 @@
           </a>
         </div>
 
-        <div ng-if="!vm.isLoading && vm.topApplicants.length > 0" class="table-responsive">
+        <div ng-if="!vm.isLoading && vm.topApplicants.length > 0" class="table-responsive mt-2">
           <table class="table-editorial">
             <thead>
               <tr>
-                <th>Applicant</th>
-                <th>Applied Position</th>
-                <th>Overall Match</th>
+                <th style="width: 50px;">#</th>
+                <th>Candidate</th>
+                <th>Applied Role</th>
+                <th>Extracted Skills</th>
                 <th>Status</th>
+                <th>Match Score</th>
                 <th class="text-end">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="app in vm.topApplicants track by app._id">
+                <td class="fw-bold text-primary font-monospace">
+                  {{ $index + 1 }}
+                </td>
                 <td>
-                  <div class="d-flex align-items-center gap-2">
+                  <div class="d-flex align-items-center gap-2.5">
                     <div class="profile-avatar">
                       {{ app.fullName.charAt(0) }}
                     </div>
                     <div>
-                      <div class="fw-semibold text-dark">{{ app.fullName }}</div>
-                      <div class="small text-muted" style="font-size: 0.75rem;">{{ app.email || app.resumeFile.originalName }}</div>
+                      <div class="fw-bold text-dark d-flex align-items-center gap-1">
+                        {{ app.fullName }}
+                        <span ng-if="app.benchmark && app.benchmark.isBenchmarkMatch" 
+                              class="badge bg-success-subtle text-success border border-success-subtle py-0 px-1" 
+                              style="font-size: 0.65rem;" 
+                              title="Ground-Truth Benchmark Match">
+                          Benchmark
+                        </span>
+                      </div>
+                      <div class="small text-muted" style="font-size: 0.75rem;">
+                        {{ app.email || app.resumeFile.originalName }}
+                      </div>
                     </div>
                   </div>
                 </td>
                 <td>
-                  <div class="small fw-semibold text-dark">{{ app.jobId.title || 'Position' }}</div>
-                  <div class="small text-muted" style="font-size: 0.75rem;">{{ app.jobId.department || 'General' }}</div>
+                  <div class="fw-semibold text-dark small">{{ app.jobId.title || 'General Position' }}</div>
+                  <div class="small text-muted" style="font-size: 0.72rem;">{{ app.jobId.department || 'Engineering' }}</div>
                 </td>
                 <td>
-                  <span class="score-pill" ng-class="vm.getScoreBadgeClass(app.matchAnalysis.overallScore)">
-                    <i class="bi bi-lightning-charge-fill me-1"></i> {{ app.matchAnalysis.overallScore }}%
-                  </span>
+                  <div class="d-flex flex-wrap gap-1" style="max-width: 200px;">
+                    <span ng-repeat="skill in (app.extractedData.skills || []).slice(0, 3)" class="skill-chip skill-chip-neutral">
+                      {{ skill }}
+                    </span>
+                    <span ng-if="app.extractedData.skills.length > 3" class="small text-muted" style="font-size: 0.7rem;">
+                      +{{ app.extractedData.skills.length - 3 }}
+                    </span>
+                  </div>
                 </td>
                 <td>
                   <span class="status-pill" ng-class="vm.getStatusClass(app.status)">
                     {{ app.status }}
                   </span>
                 </td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="score-pill" ng-class="vm.getScoreBadgeClass(app.matchAnalysis.overallScore)">
+                      {{ app.matchAnalysis.overallScore }}%
+                    </span>
+                    <div class="w-16 progress-iq d-none d-sm-block" style="width: 50px;">
+                      <div class="h-100" 
+                           ng-class="app.matchAnalysis.overallScore >= 75 ? 'progress-bar-emerald' : 'progress-bar-cyan'" 
+                           style="width: {{ app.matchAnalysis.overallScore }}%;"></div>
+                    </div>
+                  </div>
+                </td>
                 <td class="text-end">
-                  <button class="btn btn-sm btn-outline-iq" ng-click="vm.viewApplicant(app._id)">
+                  <button class="btn btn-sm btn-outline-iq py-1 px-2" ng-click="vm.viewApplicant(app._id)">
                     Breakdown <i class="bi bi-chevron-right ms-1"></i>
                   </button>
                 </td>
@@ -165,13 +309,14 @@
       </div>
     </div>
 
-    <!-- Right Column: Recent Jobs & Skills Demand -->
+    <!-- Right Column: Active Openings & Skills Cloud -->
     <div class="col-12 col-lg-4">
-      <!-- Active Job Postings -->
+      
+      <!-- Active Openings Section -->
       <div class="surface-card p-4 mb-4">
         <div class="d-flex align-items-center justify-content-between mb-3">
-          <h2 class="h5 fw-bold mb-0">Active Postings</h2>
-          <a href="#!/jobs" class="small fw-semibold text-primary">View All &rarr;</a>
+          <h2 class="h6 fw-bold mb-0 text-dark text-uppercase" style="letter-spacing: 0.04em;">Active Requisitions</h2>
+          <a href="#!/jobs" class="small fw-semibold text-primary">Manage All ({{ vm.stats.totalJobs || 0 }}) &rarr;</a>
         </div>
 
         <div ng-if="vm.recentJobs.length === 0" class="text-muted small py-3 text-center">
@@ -180,31 +325,36 @@
 
         <div class="d-flex flex-column gap-3">
           <div ng-repeat="job in vm.recentJobs track by job._id" 
-               class="surface-card surface-card-interactive p-3 rounded-3" 
-               style="cursor: pointer;"
+               class="p-3 rounded-3 border border-light surface-card-interactive" 
+               style="cursor: pointer; background: #ffffff;"
                ng-click="vm.viewJob(job._id)">
             <div class="d-flex align-items-start justify-content-between">
               <div>
-                <h6 class="fw-bold text-dark mb-1">{{ job.title }}</h6>
-                <div class="small text-muted">{{ job.department }} &bull; {{ job.location }}</div>
+                <h6 class="fw-bold text-dark mb-1" style="font-size: 0.9rem;">{{ job.title }}</h6>
+                <div class="small text-muted" style="font-size: 0.75rem;">
+                  {{ job.department }} &bull; {{ job.location }}
+                </div>
               </div>
-              <span class="badge bg-light border text-secondary small">
+              <span class="badge bg-light border text-primary small fw-semibold">
                 {{ job.applicantCount || 0 }} Resumes
               </span>
             </div>
+
             <div class="mt-2 pt-2 border-top border-light d-flex justify-content-between align-items-center">
-              <span class="small text-muted" style="font-size: 0.75rem;">
-                Min {{ job.minExperience }} yrs exp &bull; {{ job.education }}
+              <span class="small text-muted" style="font-size: 0.72rem;">
+                Min {{ job.minExperience }} yrs exp &bull; {{ job.employmentType }}
               </span>
-              <span class="text-primary small fw-semibold" style="font-size: 0.75rem;">Screen Resumes &rarr;</span>
+              <span class="text-primary small fw-semibold d-flex align-items-center gap-1" style="font-size: 0.75rem;">
+                <i class="bi bi-file-earmark-arrow-up"></i> Screen &rarr;
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- In-Demand Skills Cloud -->
+      <!-- In-Demand Competencies Card -->
       <div class="surface-card p-4">
-        <h2 class="h6 fw-bold mb-3 text-uppercase text-muted" style="letter-spacing: 0.05em; font-size: 0.8rem;">
+        <h2 class="h6 fw-bold mb-3 text-uppercase text-muted" style="letter-spacing: 0.05em; font-size: 0.78rem;">
           In-Demand Competencies Across Openings
         </h2>
         <div>
@@ -217,6 +367,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>

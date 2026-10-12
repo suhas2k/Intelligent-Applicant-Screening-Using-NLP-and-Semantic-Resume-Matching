@@ -1,46 +1,109 @@
-<div class="row justify-content-center py-2 py-sm-5">
-  <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-    <div class="surface-card p-3 p-sm-4 p-md-5">
-      <div class="text-center mb-4">
-        <div class="brand-icon mx-auto mb-3" style="width: 48px; height: 48px; font-size: 1.4rem;">
-          <i class="bi bi-person-plus-fill"></i>
+<div class="row justify-content-center py-3 py-lg-5">
+  <div class="col-12 col-xl-10">
+    <div class="surface-card overflow-hidden shadow-lg border-0" style="border-radius: var(--radius-xl);">
+      <div class="row g-0">
+        
+        <!-- Left Hero & Trust Panel (Deep Navy) -->
+        <div class="col-12 col-lg-5 p-4 p-sm-5 text-white d-flex flex-column justify-content-between" 
+             style="background: linear-gradient(145deg, #0c1527 0%, #111c35 50%, #090e1a 100%); position: relative; overflow: hidden;">
+          <div style="position: absolute; top: -60px; left: -60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(79, 70, 229, 0.25); filter: blur(50px); pointer-events: none;"></div>
+          
+          <div style="position: relative; z-index: 2;">
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="brand-icon shadow">
+                <i class="bi bi-stars"></i>
+              </div>
+              <div>
+                <div class="brand-title">ResumeIQ</div>
+                <div class="brand-tagline">Talent Intelligence</div>
+              </div>
+            </div>
+
+            <h2 class="h4 fw-bold text-white mb-3" style="letter-spacing: -0.025em; line-height: 1.3;">
+              Deploy Intelligent Candidate Screening
+            </h2>
+            <p class="small text-white-50 mb-4" style="line-height: 1.6;">
+              Equip your recruiting team with algorithmic resume parsing, TF-IDF semantic scoring, and unbiased applicant prioritization.
+            </p>
+
+            <div class="d-flex flex-column gap-3 mb-4">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-cpu-fill text-indigo-300 fs-6 mt-1" style="color: #818cf8;"></i>
+                <div class="small text-white-50">
+                  <strong class="text-white">Instant Text & Entity Extraction:</strong> Supports PDF, DOCX, and plain text resumes with zero data leakage.
+                </div>
+              </div>
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-sliders text-cyan fs-6 mt-1" style="color: #2dd4bf;"></i>
+                <div class="small text-white-50">
+                  <strong class="text-white">Configurable Job Scoring:</strong> Adjust weight allocations across skills, JD semantic match, experience, and education.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-top border-white border-opacity-10 d-flex justify-content-between align-items-center small text-white-50" style="position: relative; z-index: 2;">
+            <span>&copy; 2026 ResumeIQ</span>
+            <span class="badge bg-success bg-opacity-25 text-emerald border border-success border-opacity-25" style="color: #34d399;">
+              <span class="pulse-indicator pulse-emerald"></span> Enterprise Grade
+            </span>
+          </div>
         </div>
-        <h1 class="h4 fw-bold mb-1 text-dark">Create Recruiter Account</h1>
-        <p class="text-muted small">Deploy intelligent candidate screening for your organization</p>
+
+        <!-- Right Register Form -->
+        <div class="col-12 col-lg-7 p-4 p-sm-5 bg-white d-flex flex-column justify-content-center">
+          <div class="mx-auto w-100" style="max-width: 440px;">
+            <div class="mb-4">
+              <h1 class="h4 fw-bold mb-1 text-dark">Register Organization</h1>
+              <p class="text-muted small mb-0">Set up your recruiter workspace in seconds</p>
+            </div>
+
+            <form ng-submit="vm.register()" novalidate>
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-sm-6">
+                  <label class="form-label-iq">Recruiter Name *</label>
+                  <input type="text" class="form-control form-control-iq" ng-model="vm.registerData.name" placeholder="Sarah Lin" required>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label class="form-label-iq">Company / Org *</label>
+                  <input type="text" class="form-control form-control-iq" ng-model="vm.registerData.company" placeholder="Acme Technologies" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label-iq">Work Email *</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white border-end-0 text-muted">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  <input type="email" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.registerData.email" placeholder="sarah.lin@company.com" required>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label-iq">Password (min 6 characters) *</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white border-end-0 text-muted">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input type="password" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.registerData.password" placeholder="••••••••" minlength="6" required>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary-iq w-100 py-2 mb-3 shadow-sm" ng-disabled="vm.isLoading">
+                <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <span>{{ vm.isLoading ? 'Creating Account...' : 'Complete Organization Registration' }}</span>
+              </button>
+
+              <div class="text-center pt-3 border-top">
+                <span class="text-muted small">Already registered? </span>
+                <a href="#!/login" class="small fw-semibold text-primary">Sign In to Existing Account</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
       </div>
-
-      <form ng-submit="vm.register()" novalidate>
-        <div class="row g-3 mb-3">
-          <div class="col-12 col-sm-6">
-            <label class="form-label-iq">Full Name *</label>
-            <input type="text" class="form-control form-control-iq" ng-model="vm.registerData.name" placeholder="Sarah Lin" required>
-          </div>
-          <div class="col-12 col-sm-6">
-            <label class="form-label-iq">Company / Org *</label>
-            <input type="text" class="form-control form-control-iq" ng-model="vm.registerData.company" placeholder="Acme Technologies" required>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label-iq">Work Email *</label>
-          <input type="email" class="form-control form-control-iq" ng-model="vm.registerData.email" placeholder="sarah.lin@company.com" required>
-        </div>
-
-        <div class="mb-4">
-          <label class="form-label-iq">Password (min 6 characters) *</label>
-          <input type="password" class="form-control form-control-iq" ng-model="vm.registerData.password" placeholder="••••••••" minlength="6" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary-iq w-100 py-2 mb-3" ng-disabled="vm.isLoading">
-          <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-          <span>{{ vm.isLoading ? 'Creating Account...' : 'Complete Registration' }}</span>
-        </button>
-
-        <div class="text-center pt-2 border-top">
-          <span class="text-muted small">Already have an account? </span>
-          <a href="#!/login" class="small fw-semibold text-primary">Sign In</a>
-        </div>
-      </form>
     </div>
   </div>
 </div>

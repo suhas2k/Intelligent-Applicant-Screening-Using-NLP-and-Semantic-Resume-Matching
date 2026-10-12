@@ -1,61 +1,128 @@
-<div class="row justify-content-center py-2 py-sm-5">
-  <div class="col-12 col-md-8 col-lg-5 col-xl-4">
-    <div class="surface-card p-3 p-sm-4 p-md-5">
-      <div class="text-center mb-4">
-        <div class="brand-icon mx-auto mb-3" style="width: 48px; height: 48px; font-size: 1.4rem;">
-          <i class="bi bi-stars"></i>
+<div class="row justify-content-center py-3 py-lg-5">
+  <div class="col-12 col-xl-10">
+    <div class="surface-card overflow-hidden shadow-lg border-0" style="border-radius: var(--radius-xl);">
+      <div class="row g-0">
+        
+        <!-- Left Hero & Trust Panel (Deep Navy) -->
+        <div class="col-12 col-lg-5 p-4 p-sm-5 text-white d-flex flex-column justify-content-between" 
+             style="background: linear-gradient(145deg, #0c1527 0%, #111c35 50%, #090e1a 100%); position: relative; overflow: hidden;">
+          <div style="position: absolute; top: -60px; left: -60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(79, 70, 229, 0.25); filter: blur(50px); pointer-events: none;"></div>
+          <div style="position: absolute; bottom: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(16, 185, 129, 0.2); filter: blur(50px); pointer-events: none;"></div>
+
+          <div style="position: relative; z-index: 2;">
+            <!-- Brand Mark -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="brand-icon shadow">
+                <i class="bi bi-stars"></i>
+              </div>
+              <div>
+                <div class="brand-title">ResumeIQ</div>
+                <div class="brand-tagline">Talent Intelligence</div>
+              </div>
+            </div>
+
+            <h2 class="h4 fw-bold text-white mb-3" style="letter-spacing: -0.025em; line-height: 1.3;">
+              Intelligent Applicant Screening & Semantic Matching
+            </h2>
+            <p class="small text-white-50 mb-4" style="line-height: 1.6;">
+              Accelerate recruiter workflows with multi-factor TF-IDF vector space semantic scoring, NLP entity extraction, and transparent match criteria.
+            </p>
+
+            <!-- Highlights -->
+            <div class="d-flex flex-column gap-3 mb-4">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-check-circle-fill text-indigo-300 fs-6 mt-1" style="color: #818cf8;"></i>
+                <div class="small text-white-50">
+                  <strong class="text-white">Multi-Factor Semantic Engine:</strong> Evaluates skills overlap, job description alignment, experience, and education.
+                </div>
+              </div>
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-shield-check text-emerald fs-6 mt-1" style="color: #34d399;"></i>
+                <div class="small text-white-50">
+                  <strong class="text-white">Ethical Decision Support:</strong> Algorithmic heuristics prioritize applicants while final hiring decisions remain with recruiters.
+                </div>
+              </div>
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-database-check text-cyan fs-6 mt-1" style="color: #2dd4bf;"></i>
+                <div class="small text-white-50">
+                  <strong class="text-white">Hugging Face Synthetic Benchmarks:</strong> Evaluated against 50+ multi-domain synthetic candidate profiles and open requisitions.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-top border-white border-opacity-10 d-flex justify-content-between align-items-center small text-white-50" style="position: relative; z-index: 2;">
+            <span>&copy; 2026 ResumeIQ</span>
+            <span class="badge bg-success bg-opacity-25 text-emerald border border-success border-opacity-25" style="color: #34d399;">
+              <span class="pulse-indicator pulse-emerald"></span> Live Engine
+            </span>
+          </div>
         </div>
-        <h1 class="h4 fw-bold mb-1 text-dark">Recruiter Sign In</h1>
-        <p class="text-muted small">Access your ResumeIQ talent screening workspace</p>
+
+        <!-- Right Login Form Area -->
+        <div class="col-12 col-lg-7 p-4 p-sm-5 bg-white d-flex flex-column justify-content-center">
+          <div class="mx-auto w-100" style="max-width: 420px;">
+            <div class="mb-4">
+              <h1 class="h4 fw-bold mb-1 text-dark">Recruiter Sign In</h1>
+              <p class="text-muted small mb-0">Access your candidate screening pipeline and analytics</p>
+            </div>
+
+            <!-- Instant 1-Click Demo Login Box -->
+            <div class="p-3 rounded-3 mb-4" style="background-color: #f5f7ff; border: 1px dashed #c7d2fe;">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="small fw-bold" style="color: var(--primary);">
+                  <i class="bi bi-lightning-charge-fill me-1 text-warning"></i> Instant Demo Recruiter
+                </span>
+                <span class="badge bg-white text-primary border border-primary border-opacity-25 small" style="font-size: 0.68rem;">Ready</span>
+              </div>
+              <p class="small text-muted mb-2" style="font-size: 0.785rem; line-height: 1.4;">
+                Pre-configured recruiter account with 8 active openings and 53 evaluated applicants:
+              </p>
+              <button type="button" class="btn btn-sm w-100 py-2 border shadow-sm fw-semibold text-primary bg-white d-flex align-items-center justify-content-center gap-2" ng-click="vm.fillDemoCredentials()">
+                <i class="bi bi-box-arrow-in-right"></i> Sign In as Demo Recruiter (recruiter@demo.com)
+              </button>
+            </div>
+
+            <div class="position-relative text-center my-4">
+              <hr class="text-muted opacity-25">
+              <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted">or continue with work email</span>
+            </div>
+
+            <form ng-submit="vm.login()" novalidate>
+              <div class="mb-3">
+                <label class="form-label-iq">Work Email</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white border-end-0 text-muted">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  <input type="email" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.loginData.email" placeholder="name@company.com" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label-iq">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white border-end-0 text-muted">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input type="password" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.loginData.password" placeholder="••••••••" required>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary-iq w-100 py-2 mb-3 shadow-sm" ng-disabled="vm.isLoading">
+                <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <span>{{ vm.isLoading ? 'Authenticating...' : 'Sign In to Screening Workspace' }}</span>
+              </button>
+
+              <div class="text-center pt-3 border-top">
+                <span class="text-muted small">New to ResumeIQ? </span>
+                <a href="#!/register" class="small fw-semibold text-primary">Register Company Account</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
       </div>
-
-      <form ng-submit="vm.login()" novalidate>
-        <div class="mb-3">
-          <label class="form-label-iq">Work Email</label>
-          <div class="input-group">
-            <span class="input-group-text bg-white border-end-0 text-muted">
-              <i class="bi bi-envelope"></i>
-            </span>
-            <input type="email" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.loginData.email" placeholder="name@company.com" required>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label-iq">Password</label>
-          <div class="input-group">
-            <span class="input-group-text bg-white border-end-0 text-muted">
-              <i class="bi bi-lock"></i>
-            </span>
-            <input type="password" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.loginData.password" placeholder="••••••••" required>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary-iq w-100 py-2 mb-3" ng-disabled="vm.isLoading">
-          <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-          <span>{{ vm.isLoading ? 'Authenticating...' : 'Sign In to Portal' }}</span>
-        </button>
-
-        <!-- Instant 1-Click Demo Login Box -->
-        <div class="p-3 rounded-2 mb-3" style="background-color: var(--primary-subtle); border: 1px dashed var(--primary-border);">
-          <div class="d-flex align-items-center justify-content-between mb-2">
-            <span class="small fw-bold" style="color: var(--primary);">
-              <i class="bi bi-lightning-charge-fill me-1"></i> Instant Demo Access
-            </span>
-            <span class="badge bg-white text-primary border border-primary border-opacity-25 small" style="font-size: 0.7rem;">Ready</span>
-          </div>
-          <p class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.4;">
-            Evaluate candidate ranking and semantic resume scoring with pre-seeded data:
-          </p>
-          <button type="button" class="btn btn-sm btn-white w-100 py-2 border shadow-sm fw-semibold text-primary" ng-click="vm.fillDemoCredentials()">
-            <i class="bi bi-person-check-fill me-1"></i> Sign In as Demo Recruiter (recruiter@demo.com)
-          </button>
-        </div>
-
-        <div class="text-center pt-2 border-top">
-          <span class="text-muted small">New to ResumeIQ? </span>
-          <a href="#!/register" class="small fw-semibold text-primary">Register Company Account</a>
-        </div>
-      </form>
     </div>
   </div>
 </div>

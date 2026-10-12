@@ -1,9 +1,13 @@
 <div class="container-fluid px-0">
+  
   <!-- Back Link & Header -->
-  <div class="mb-3">
+  <div class="mb-3 d-flex justify-content-between align-items-center">
     <a href="#!/jobs" class="btn btn-outline-iq btn-sm">
-      <i class="bi bi-arrow-left me-1"></i> Back to All Jobs
+      <i class="bi bi-arrow-left me-1"></i> Back to All Requisitions
     </a>
+    <span class="badge bg-white border border-secondary border-opacity-25 text-secondary px-3 py-1.5 small fw-semibold">
+      Requisition Details & Candidate Ranking
+    </span>
   </div>
 
   <div ng-if="vm.isLoading" class="text-center py-5">
@@ -12,26 +16,27 @@
   </div>
 
   <div ng-if="!vm.isLoading && vm.job">
+    
     <!-- Job Position Overview Card -->
     <div class="surface-card p-4 mb-4">
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
-        <div>
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-4">
+        <div class="flex-grow-1">
           <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
             <span class="badge bg-light border text-primary small fw-semibold">
               {{ vm.job.department }}
             </span>
-            <span class="badge bg-white border text-secondary small">
+            <span class="badge bg-white border text-success small fw-semibold">
               {{ vm.job.status }}
             </span>
             <span class="text-muted small">&bull; {{ vm.job.employmentType }} &bull; {{ vm.job.location }}</span>
           </div>
-          <h1 class="h3 fw-bold text-dark mb-2">{{ vm.job.title }}</h1>
-          <p class="text-muted small mb-3" style="max-width: 900px; line-height: 1.6;">
+          <h1 class="h3 fw-bold text-dark mb-2" style="letter-spacing: -0.03em;">{{ vm.job.title }}</h1>
+          <p class="text-muted small mb-3" style="max-width: 880px; line-height: 1.6;">
             {{ vm.job.description }}
           </p>
 
           <!-- Requirements Badges -->
-          <div class="d-flex flex-wrap gap-3 small">
+          <div class="d-flex flex-wrap gap-3 small pt-2 border-top border-light">
             <div>
               <span class="text-muted">Required Experience:</span>
               <strong class="text-dark ms-1">{{ vm.job.minExperience }}+ Years</strong>
@@ -49,17 +54,17 @@
           </div>
         </div>
 
-        <div class="text-md-end p-3 rounded-3 bg-light border border-subtle">
-          <div class="small text-muted mb-1 font-monospace text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Screened Pool</div>
+        <div class="p-3 rounded-3 bg-light border border-subtle text-center shrink-0 min-w-[180px]">
+          <div class="small text-muted mb-1 text-uppercase fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.05em;">Screened Pool</div>
           <div class="h2 fw-bold text-primary mb-0 font-monospace">{{ vm.applicants.length }}</div>
-          <div class="small text-muted" style="font-size: 0.75rem;">candidate resumes</div>
+          <div class="small text-muted" style="font-size: 0.75rem;">candidates evaluated</div>
         </div>
       </div>
 
       <!-- Skills Requirements -->
       <div class="row g-3 mt-2 pt-3 border-top border-light">
         <div class="col-12 col-md-6">
-          <span class="small fw-semibold text-secondary d-block mb-1">Required Competencies:</span>
+          <span class="small fw-semibold text-secondary d-block mb-1" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em;">Required Competencies:</span>
           <div>
             <span ng-repeat="skill in vm.job.requiredSkills" class="skill-chip skill-chip-matched">
               <i class="bi bi-check-circle-fill me-1" style="font-size: 0.65rem;"></i>{{ skill }}
@@ -67,7 +72,7 @@
           </div>
         </div>
         <div class="col-12 col-md-6" ng-if="vm.job.preferredSkills && vm.job.preferredSkills.length > 0">
-          <span class="small fw-semibold text-secondary d-block mb-1">Preferred Bonus Competencies:</span>
+          <span class="small fw-semibold text-secondary d-block mb-1" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em;">Preferred Bonus Competencies:</span>
           <div>
             <span ng-repeat="skill in vm.job.preferredSkills" class="skill-chip skill-chip-preferred">
               <i class="bi bi-plus-circle me-1" style="font-size: 0.65rem;"></i>{{ skill }}
@@ -82,9 +87,9 @@
       <div class="d-flex align-items-center justify-content-between mb-3">
         <div>
           <h2 class="h5 fw-bold text-dark mb-0">
-            <i class="bi bi-cloud-arrow-up text-primary me-2"></i>Screen Candidate Resumes
+            <i class="bi bi-cloud-arrow-up-fill text-primary me-2"></i>Screen Candidate Resumes
           </h2>
-          <span class="small text-muted">Upload candidate CVs for automatic NLP entity extraction and TF-IDF semantic scoring</span>
+          <span class="small text-muted">Upload candidate CVs for instant NLP entity extraction and TF-IDF semantic scoring against this opening</span>
         </div>
       </div>
 
@@ -102,7 +107,7 @@
             <div class="upload-icon-circle-clean">
               <i class="bi bi-file-earmark-arrow-up"></i>
             </div>
-            <h5 class="fw-bold text-dark mb-1">Drop Candidate Resume Here</h5>
+            <h5 class="fw-bold text-dark mb-1" style="font-size: 1.05rem;">Drop Candidate Resume Here</h5>
             <p class="text-muted small mb-3">Supported formats: PDF (.pdf), Word (.docx, .doc), Plain Text (.txt) up to 10MB</p>
 
             <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
@@ -114,7 +119,7 @@
               <!-- Bulk Upload Trigger -->
               <input type="file" id="bulkResumeInput" class="d-none" multiple file-model="vm.bulkFiles" accept=".pdf,.docx,.doc,.txt" onchange="angular.element(this).scope().vm.handleBulkUpload(this.files)">
               <label for="bulkResumeInput" class="btn btn-secondary-iq btn-sm">
-                <i class="bi bi-files me-1"></i> Bulk Upload (Multiple Resumes)
+                <i class="bi bi-files me-1"></i> Bulk Upload (Multiple Files)
               </label>
             </div>
           </div>
@@ -125,12 +130,12 @@
           <div class="p-3 rounded-3 bg-light border border-subtle">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <span class="small fw-bold text-dark">
-                <i class="bi bi-lightning-charge text-amber me-1"></i> 1-Click Realistic Candidate Resumes
+                <i class="bi bi-lightning-charge-fill text-warning me-1"></i> 1-Click Realistic Candidate Resumes
               </span>
               <span class="badge bg-white border text-secondary" style="font-size: 0.65rem;">Instant Test</span>
             </div>
-            <p class="small text-muted mb-3" style="font-size: 0.8rem;">
-              Click any realistic sample applicant resume to test live extraction and instant semantic scoring:
+            <p class="small text-muted mb-3" style="font-size: 0.785rem;">
+              Click any pre-configured candidate profile to test live NLP extraction and instant semantic scoring:
             </p>
 
             <div class="d-flex flex-column gap-2">
@@ -139,7 +144,7 @@
                       class="btn btn-sm btn-secondary-iq text-start d-flex justify-content-between align-items-center py-2 bg-white"
                       ng-click="vm.uploadSampleResume(sample)"
                       ng-disabled="vm.isUploading">
-                <span><i class="bi bi-file-earmark-person text-primary me-2"></i>{{ sample.name }}</span>
+                <span class="text-truncate"><i class="bi bi-file-earmark-person text-primary me-2"></i>{{ sample.name }}</span>
                 <i class="bi bi-arrow-right-short text-muted"></i>
               </button>
             </div>
@@ -150,10 +155,10 @@
 
     <!-- Ranked Candidates Table -->
     <div class="surface-card p-4">
-      <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
         <div>
           <h2 class="h5 fw-bold text-dark mb-0">
-            <i class="bi bi-sort-numeric-down text-primary me-2"></i>Ranked Applicants ({{ vm.applicants.length }})
+            <i class="bi bi-sort-numeric-down text-primary me-2"></i>Ranked Candidates ({{ vm.applicants.length }})
           </h2>
           <span class="small text-muted">Sorted automatically by semantic match composite index</span>
         </div>
@@ -171,7 +176,7 @@
         <table class="table-editorial">
           <thead>
             <tr>
-              <th style="width: 60px;">Rank</th>
+              <th style="width: 50px;">Rank</th>
               <th>Applicant</th>
               <th>Overall Score</th>
               <th>Score Breakdown</th>
@@ -182,19 +187,24 @@
           </thead>
           <tbody>
             <tr ng-repeat="app in vm.applicants track by app._id">
-              <td>
-                <span class="badge rounded-circle p-2 d-inline-flex align-items-center justify-content-center bg-light border text-dark"
-                      style="width: 32px; height: 32px; font-weight: 700;">
-                  #{{ $index + 1 }}
-                </span>
+              <td class="fw-bold text-primary font-monospace">
+                #{{ $index + 1 }}
               </td>
               <td>
-                <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2.5">
                   <div class="profile-avatar">
                     {{ app.fullName.charAt(0) }}
                   </div>
                   <div>
-                    <div class="fw-bold text-dark">{{ app.fullName }}</div>
+                    <div class="fw-bold text-dark d-flex align-items-center gap-1">
+                      {{ app.fullName }}
+                      <span ng-if="app.benchmark && app.benchmark.isBenchmarkMatch" 
+                            class="badge bg-success-subtle text-success border border-success-subtle py-0 px-1" 
+                            style="font-size: 0.65rem;" 
+                            title="Ground-Truth Benchmark Match">
+                        Benchmark
+                      </span>
+                    </div>
                     <div class="small text-muted" style="font-size: 0.75rem;">
                       {{ app.email }} &bull; {{ app.phone || app.resumeFile.originalName }}
                     </div>
@@ -202,9 +212,16 @@
                 </div>
               </td>
               <td>
-                <span class="score-pill" ng-class="vm.getScoreBadgeClass(app.matchAnalysis.overallScore)">
-                  <i class="bi bi-lightning-charge-fill me-1"></i> {{ app.matchAnalysis.overallScore }}%
-                </span>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="score-pill" ng-class="vm.getScoreBadgeClass(app.matchAnalysis.overallScore)">
+                    {{ app.matchAnalysis.overallScore }}%
+                  </span>
+                  <div class="w-16 progress-iq d-none d-sm-block" style="width: 50px;">
+                    <div class="h-100" 
+                         ng-class="app.matchAnalysis.overallScore >= 75 ? 'progress-bar-emerald' : 'progress-bar-cyan'" 
+                         style="width: {{ app.matchAnalysis.overallScore }}%;"></div>
+                  </div>
+                </div>
               </td>
               <td>
                 <div class="small" style="font-size: 0.75rem;">
@@ -215,11 +232,11 @@
               </td>
               <td>
                 <div class="small fw-semibold text-dark">{{ app.extractedData.experienceYears || 0 }} Yrs</div>
-                <div class="small text-muted" style="font-size: 0.75rem;">{{ app.extractedData.educationLevel || 'Degree' }}</div>
+                <div class="small text-muted" style="font-size: 0.72rem;">{{ app.extractedData.educationLevel || 'Degree' }}</div>
               </td>
               <td>
                 <select class="form-select form-select-sm form-select-iq" 
-                        style="width: 130px; font-size: 0.8rem; padding: 0.3rem 0.6rem !important;"
+                        style="width: 130px; font-size: 0.785rem; padding: 0.3rem 0.6rem !important;"
                         ng-model="app.status" 
                         ng-change="vm.updateApplicantStatus(app, app.status)">
                   <option value="New">New</option>

@@ -23,11 +23,13 @@
       sortOrder: 'desc'
     };
 
-    vm.loadData = loadData;
+    vm.loadData = loadApplicants;
     vm.applyFilters = applyFilters;
     vm.resetFilters = resetFilters;
     vm.updateStatus = updateStatus;
+    vm.updateApplicantStatus = updateStatus;
     vm.viewDetail = viewDetail;
+    vm.viewApplicantDetail = viewDetail;
     vm.deleteApplicant = deleteApplicant;
     vm.getScoreBadgeClass = getScoreBadgeClass;
     vm.getStatusClass = getStatusClass;

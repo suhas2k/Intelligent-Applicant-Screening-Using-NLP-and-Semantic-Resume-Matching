@@ -26,7 +26,7 @@
 
   <div class="app-shell" ng-controller="NavController as nav">
     
-    <!-- Left Navigation Sidebar / Mobile Offcanvas Drawer (Only when Authenticated) -->
+    <!-- Left Navigation Sidebar / Mobile Offcanvas Drawer (Deep Navy) -->
     <aside class="app-sidebar" ng-class="{'mobile-open': nav.isMobileMenuOpen}" ng-if="nav.isAuthenticated()">
       <div>
         <!-- Brand Header & Mobile Close Button -->
@@ -40,7 +40,7 @@
               <div class="brand-tagline">Talent Intelligence</div>
             </div>
           </a>
-          <button class="btn btn-sm btn-icon text-muted d-lg-none" ng-click="nav.closeMobileMenu()" aria-label="Close Navigation" style="font-size: 1.2rem; padding: 0.25rem 0.5rem;">
+          <button class="btn btn-sm btn-icon text-white-50 d-lg-none" ng-click="nav.closeMobileMenu()" aria-label="Close Navigation" style="font-size: 1.2rem; padding: 0.25rem 0.5rem;">
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
@@ -84,16 +84,16 @@
               {{ (nav.getUser().name || 'R').charAt(0) }}
             </div>
             <div style="line-height: 1.2;">
-              <div class="fw-semibold text-truncate" style="max-width: 130px; font-size: 0.85rem;">
+              <div class="fw-bold text-white text-truncate" style="max-width: 130px; font-size: 0.85rem;">
                 {{ nav.getUser().name || 'Recruiter' }}
               </div>
-              <div class="text-muted text-truncate" style="max-width: 130px; font-size: 0.72rem;">
+              <div class="text-truncate" style="max-width: 130px; font-size: 0.72rem; color: #94a3b8;">
                 {{ nav.getUser().company || 'Talent Lead' }}
               </div>
             </div>
           </div>
-          <button class="btn btn-sm btn-outline-iq py-1 px-2 text-danger" title="Sign Out" ng-click="nav.logout()">
-            <i class="bi bi-box-arrow-right"></i>
+          <button class="btn btn-sm p-1 text-danger border-0 bg-transparent" title="Sign Out" ng-click="nav.logout()">
+            <i class="bi bi-box-arrow-right fs-6"></i>
           </button>
         </div>
       </div>
@@ -118,13 +118,13 @@
             <div class="brand-icon" style="width: 32px; height: 32px; font-size: 0.95rem;">
               <i class="bi bi-stars"></i>
             </div>
-            <span class="brand-title" style="font-size: 1.05rem;">ResumeIQ</span>
+            <span class="fw-bold text-dark" style="font-size: 1.05rem;">ResumeIQ</span>
           </a>
 
           <div class="topbar-search d-none d-md-block">
             <div class="search-input-wrapper">
               <i class="bi bi-search"></i>
-              <input type="text" class="search-input-clean" placeholder="Search candidates, skills, jobs..." onclick="window.location.hash='#!/applicants'">
+              <input type="text" class="search-input-clean" placeholder="Search candidates, skills, jobs... ⌘K" onclick="window.location.hash='#!/applicants'">
               <span class="search-shortcut">⌘K</span>
             </div>
           </div>
@@ -132,7 +132,7 @@
 
         <div class="d-flex align-items-center gap-2 gap-sm-3">
           <!-- Database Mode Pill -->
-          <span class="badge bg-white border border-secondary border-opacity-25 text-secondary px-2 px-sm-3 py-1 py-sm-2 small fw-normal d-none d-sm-inline-flex align-items-center">
+          <span class="badge bg-white border border-success border-opacity-25 text-success px-3 py-2 small fw-semibold d-none d-sm-inline-flex align-items-center shadow-sm">
             <span class="pulse-indicator pulse-emerald"></span> Live Engine
           </span>
 
@@ -144,13 +144,13 @@
       </header>
 
       <!-- Minimal Header for Unauthenticated Views -->
-      <header class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center" ng-if="!nav.isAuthenticated()">
+      <header class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center shadow-sm" ng-if="!nav.isAuthenticated()">
         <a class="brand-box mb-0 py-0" href="#!/login">
-          <div class="brand-icon" style="width: 32px; height: 32px; font-size: 1rem;">
+          <div class="brand-icon" style="width: 34px; height: 34px; font-size: 1.1rem;">
             <i class="bi bi-stars"></i>
           </div>
           <div>
-            <div class="brand-title" style="font-size: 1.05rem;">ResumeIQ</div>
+            <div class="brand-title text-dark" style="font-size: 1.15rem;">ResumeIQ</div>
           </div>
         </a>
         <div class="d-flex gap-2">
