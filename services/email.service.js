@@ -16,7 +16,8 @@ let etherealAccountPromise = null;
 function getSmtpConfig() {
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.EMAIL_USER;
-  const pass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD || process.env.EMAIL_PASS;
+  const rawPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD || process.env.EMAIL_PASS || '';
+  const pass = rawPass.replace(/\s+/g, '');
   const port = parseInt(process.env.SMTP_PORT || '587', 10);
   const secure = process.env.SMTP_SECURE === 'true' || port === 465;
 
