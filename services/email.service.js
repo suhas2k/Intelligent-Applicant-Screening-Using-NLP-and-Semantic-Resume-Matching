@@ -21,7 +21,7 @@ function getSmtpConfig() {
   const secure = process.env.SMTP_SECURE === 'true' || port === 465;
 
   if (user && pass) {
-    if (host) {
+    if (host && host !== 'smtp.gmail.com') {
       return {
         host,
         port,
@@ -30,7 +30,7 @@ function getSmtpConfig() {
         from: process.env.EMAIL_FROM || process.env.SMTP_FROM || `"ResumeIQ Security" <${user}>`
       };
     }
-    // Default to Gmail if user/pass provided without explicit host
+    // Default to Gmail native configuration
     return {
       service: 'gmail',
       auth: { user, pass },
