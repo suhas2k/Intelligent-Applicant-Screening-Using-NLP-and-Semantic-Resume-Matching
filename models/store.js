@@ -22,15 +22,43 @@ const isMongoActive = () => {
 // ---------------- USER OPERATIONS ----------------
 const userRepo = {
   async findByEmail(email) {
-    if (isMongoActive()) {
-      return await User.findOne({ email: email.toLowerCase() });
-    }
+    if (!email) return null;
     const normalized = email.toLowerCase().trim();
+    if (isMongoActive()) {
+      return await User.findOne({ email: normalized });
+    }
     const found = memoryStore.users.find(u => u.email.toLowerCase() === normalized);
     if (!found) return null;
     return {
       ...found,
-      comparePassword: async (pwd) => await bcrypt.compare(pwd, found.password)
+      comparePassword: async (pwd) => found.password ? await bcrypt.compare(pwd, found.password) : false
+    };
+  },
+
+  async findByGoogleId(googleId) {
+    if (!googleId) return null;
+    if (isMongoActive()) {
+      return await User.findOne({ googleId });
+    }
+    const found = memoryStore.users.find(u => u.googleId === googleId);
+    if (!found) return null;
+    return {
+      ...found,
+      comparePassword: async (pwd) => found.password ? await bcrypt.compare(pwd, found.password) : false
+    };
+  },
+
+  async findByPhone(phone) {
+    if (!phone) return null;
+    const cleanPhone = phone.trim();
+    if (isMongoActive()) {
+      return await User.findOne({ phone: cleanPhone });
+    }
+    const found = memoryStore.users.find(u => u.phone && u.phone.trim() === cleanPhone);
+    if (!found) return null;
+    return {
+      ...found,
+      comparePassword: async (pwd) => found.password ? await bcrypt.compare(pwd, found.password) : false
     };
   },
 
@@ -48,15 +76,22 @@ const userRepo = {
     if (isMongoActive()) {
       return await User.create(userData);
     }
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(userData.password, salt);
+    let hashedPassword = null;
+    if (userData.password) {
+      const salt = await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(userData.password, salt);
+    }
     const user = {
       _id: generateId(),
       name: userData.name,
       email: userData.email.toLowerCase().trim(),
       password: hashedPassword,
-      company: userData.company || 'Acme Talent Corp',
+      phone: userData.phone || '',
+      company: userData.company || 'Talent Acquisition Team',
       role: userData.role || 'recruiter',
+      authProvider: userData.authProvider || 'local',
+      googleId: userData.googleId || null,
+      avatar: userData.avatar || null,
       createdAt: new Date()
     };
     memoryStore.users.push(user);
@@ -64,10 +99,35 @@ const userRepo = {
       _id: user._id,
       name: user.name,
       email: user.email,
+      phone: user.phone,
       company: user.company,
       role: user.role,
+      authProvider: user.authProvider,
+      googleId: user.googleId,
+      avatar: user.avatar,
       createdAt: user.createdAt
     };
+  },
+
+  async findByIdAndUpdate(id, updateData) {
+    if (isMongoActive()) {
+      return await User.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    }
+    const index = memoryStore.users.findIndex(u => u._id.toString() === id.toString());
+    if (index === -1) return null;
+    let finalUpdate = { ...updateData };
+    if (updateData.password) {
+      const salt = await bcrypt.genSalt(10);
+      finalUpdate.password = await bcrypt.hash(updateData.password, salt);
+    }
+    const updated = {
+      ...memoryStore.users[index],
+      ...finalUpdate,
+      updatedAt: new Date()
+    };
+    memoryStore.users[index] = updated;
+    const { password, ...rest } = updated;
+    return rest;
   }
 };
 

@@ -163,17 +163,37 @@ ${eduStr} | Accredited University Degree
 async function seedData() {
   console.log('[Seed] Checking and seeding starter demo data...');
 
-  // 1. Ensure Recruiter Account exists
-  let recruiter = await userRepo.findByEmail('recruiter@demo.com');
+  // 1. Ensure Recruiter Accounts exist
+  let recruiter = await userRepo.findByEmail('manisuhas23@gmail.com');
   if (!recruiter) {
     recruiter = await userRepo.create({
+      name: 'Manikanta Suhas',
+      email: 'manisuhas23@gmail.com',
+      password: 'password123',
+      company: 'TalentForge Technologies',
+      role: 'recruiter'
+    });
+    console.log('[Seed] Created recruiter: manisuhas23@gmail.com / password123');
+  } else if (!recruiter.password) {
+    await userRepo.findByIdAndUpdate(recruiter._id, {
+      password: 'password123',
+      name: 'Manikanta Suhas',
+      company: 'TalentForge Technologies',
+      role: 'recruiter'
+    });
+    console.log('[Seed] Updated recruiter password: manisuhas23@gmail.com / password123');
+  }
+
+  let demoRecruiter = await userRepo.findByEmail('recruiter@demo.com');
+  if (!demoRecruiter) {
+    await userRepo.create({
       name: 'Manikanta',
       email: 'recruiter@demo.com',
       password: 'password123',
       company: 'TalentForge Technologies',
       role: 'recruiter'
     });
-    console.log('[Seed] Created default demo recruiter: recruiter@demo.com / password123');
+    console.log('[Seed] Created legacy recruiter: recruiter@demo.com / password123');
   }
 
   // 2. Ensure Original Core Sample Jobs exist

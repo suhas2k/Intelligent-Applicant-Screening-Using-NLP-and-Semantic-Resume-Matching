@@ -13,6 +13,12 @@
     const service = {
       register: register,
       login: login,
+      sendOtp: sendOtp,
+      verifyOtp: verifyOtp,
+      googleAuth: googleAuth,
+      getGoogleConfig: getGoogleConfig,
+      setGoogleConfig: setGoogleConfig,
+      setMailConfig: setMailConfig,
       logout: logout,
       getToken: getToken,
       getUser: getUser,
@@ -41,6 +47,72 @@
         })
         .catch(function (error) {
           return $q.reject(error.data || { message: 'Login failed.' });
+        });
+    }
+
+    function sendOtp(identifier) {
+      const payload = identifier && identifier.includes('@')
+        ? { email: identifier }
+        : { phone: identifier, email: identifier };
+
+      return $http.post('/api/auth/otp/send', payload)
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (error) {
+          return $q.reject(error.data || { message: 'Failed to send OTP code.' });
+        });
+    }
+
+    function verifyOtp(otpData) {
+      return $http.post('/api/auth/otp/verify', otpData)
+        .then(function (response) {
+          saveSession(response.data.token, response.data.user);
+          return response.data;
+        })
+        .catch(function (error) {
+          return $q.reject(error.data || { message: 'OTP verification failed.' });
+        });
+    }
+
+    function googleAuth(payload) {
+      return $http.post('/api/auth/google', payload)
+        .then(function (response) {
+          saveSession(response.data.token, response.data.user);
+          return response.data;
+        })
+        .catch(function (error) {
+          return $q.reject(error.data || { message: 'Google authentication failed.' });
+        });
+    }
+
+    function getGoogleConfig() {
+      return $http.get('/api/auth/google/config')
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function () {
+          return { clientId: null };
+        });
+    }
+
+    function setGoogleConfig(clientId) {
+      return $http.post('/api/auth/google/config', { clientId: clientId })
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (error) {
+          return $q.reject(error.data || { message: 'Failed to update Google configuration.' });
+        });
+    }
+
+    function setMailConfig(smtpData) {
+      return $http.post('/api/auth/mail/config', smtpData)
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (error) {
+          return $q.reject(error.data || { message: 'Failed to update SMTP configuration.' });
         });
     }
 

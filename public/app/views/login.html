@@ -1,128 +1,492 @@
-<div class="row justify-content-center py-3 py-lg-5">
-  <div class="col-12 col-xl-10">
+<div class="row justify-content-center py-3 py-lg-4">
+  <div class="col-12 col-xl-11 col-xxl-10">
     <div class="surface-card overflow-hidden shadow-lg border-0" style="border-radius: var(--radius-xl);">
       <div class="row g-0">
         
-        <!-- Left Hero & Trust Panel (Deep Navy) -->
-        <div class="col-12 col-lg-5 p-4 p-sm-5 text-white d-flex flex-column justify-content-between" 
-             style="background: linear-gradient(145deg, #0c1527 0%, #111c35 50%, #090e1a 100%); position: relative; overflow: hidden;">
-          <div style="position: absolute; top: -60px; left: -60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(79, 70, 229, 0.25); filter: blur(50px); pointer-events: none;"></div>
-          <div style="position: absolute; bottom: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(16, 185, 129, 0.2); filter: blur(50px); pointer-events: none;"></div>
+        <!-- Left Hero & Trust Panel (Stitch Deep Navy Canvas) -->
+        <div class="col-12 col-lg-5 p-4 p-sm-5 text-white d-flex flex-column justify-content-between position-relative overflow-hidden" 
+             style="background: linear-gradient(135deg, #0c1527 0%, #111c35 50%, #090e1a 100%); min-height: 580px;">
+          
+          <!-- Ambient Glow Circles -->
+          <div style="position: absolute; top: -70px; left: -70px; width: 260px; height: 260px; border-radius: 50%; background: rgba(79, 70, 229, 0.22); filter: blur(55px); pointer-events: none;"></div>
+          <div style="position: absolute; bottom: -70px; right: -70px; width: 260px; height: 260px; border-radius: 50%; background: rgba(16, 185, 129, 0.16); filter: blur(55px); pointer-events: none;"></div>
 
           <div style="position: relative; z-index: 2;">
-            <!-- Brand Mark -->
+            <!-- Brand Mark (Stitch Precision) -->
             <div class="d-flex align-items-center gap-3 mb-4">
-              <div class="brand-icon shadow">
-                <i class="bi bi-stars"></i>
+              <div class="d-flex align-items-center justify-content-center rounded-3 shadow-lg" 
+                   style="width: 44px; height: 44px; background: #4f46e5; color: #ffffff; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);">
+                <span class="material-symbols-outlined fs-4" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
               </div>
               <div>
-                <div class="brand-title">ResumeIQ</div>
-                <div class="brand-tagline">Talent Intelligence</div>
+                <div class="h5 fw-bold mb-0 text-white" style="letter-spacing: -0.02em;">ResumeIQ</div>
+                <div class="small text-white-50" style="font-size: 0.76rem;">Intelligent Applicant Screening</div>
               </div>
             </div>
 
-            <h2 class="h4 fw-bold text-white mb-3" style="letter-spacing: -0.025em; line-height: 1.3;">
-              Intelligent Applicant Screening & Semantic Matching
+            <h2 class="h4 fw-bold text-white mb-3" style="letter-spacing: -0.025em; line-height: 1.35;">
+              Precision Recruiting Intelligence with Real-Time NLP
             </h2>
-            <p class="small text-white-50 mb-4" style="line-height: 1.6;">
-              Accelerate recruiter workflows with multi-factor TF-IDF vector space semantic scoring, NLP entity extraction, and transparent match criteria.
+            <p class="small text-white-50 mb-4" style="line-height: 1.65; font-size: 0.85rem;">
+              Algorithmic candidate scoring, TF-IDF semantic resume matching, and multi-factor ranking designed for modern talent leaders.
             </p>
 
-            <!-- Highlights -->
+            <!-- Feature Badges -->
             <div class="d-flex flex-column gap-3 mb-4">
-              <div class="d-flex align-items-start gap-2">
-                <i class="bi bi-check-circle-fill text-indigo-300 fs-6 mt-1" style="color: #818cf8;"></i>
-                <div class="small text-white-50">
-                  <strong class="text-white">Multi-Factor Semantic Engine:</strong> Evaluates skills overlap, job description alignment, experience, and education.
+              <div class="d-flex align-items-start gap-3">
+                <div class="d-flex align-items-center justify-content-center rounded-2 shrink-0 mt-1" 
+                     style="width: 26px; height: 26px; background: rgba(79, 70, 229, 0.25); color: #a5b4fc;">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">check_circle</span>
+                </div>
+                <div class="small text-white-50" style="font-size: 0.82rem; line-height: 1.45;">
+                  <strong class="text-white">Multi-Factor Semantic Engine:</strong> Evaluates extracted skills, semantic relevance, experience, and education.
                 </div>
               </div>
-              <div class="d-flex align-items-start gap-2">
-                <i class="bi bi-shield-check text-emerald fs-6 mt-1" style="color: #34d399;"></i>
-                <div class="small text-white-50">
-                  <strong class="text-white">Ethical Decision Support:</strong> Algorithmic heuristics prioritize applicants while final hiring decisions remain with recruiters.
+
+              <div class="d-flex align-items-start gap-3">
+                <div class="d-flex align-items-center justify-content-center rounded-2 shrink-0 mt-1" 
+                     style="width: 26px; height: 26px; background: rgba(16, 185, 129, 0.22); color: #6ee7b7;">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">verified_user</span>
+                </div>
+                <div class="small text-white-50" style="font-size: 0.82rem; line-height: 1.45;">
+                  <strong class="text-white">Bias-Conscious Heuristics:</strong> Protected demographic attributes are excluded from algorithmic models.
                 </div>
               </div>
-              <div class="d-flex align-items-start gap-2">
-                <i class="bi bi-database-check text-cyan fs-6 mt-1" style="color: #2dd4bf;"></i>
-                <div class="small text-white-50">
-                  <strong class="text-white">Hugging Face Synthetic Benchmarks:</strong> Evaluated against 50+ multi-domain synthetic candidate profiles and open requisitions.
+
+              <div class="d-flex align-items-start gap-3">
+                <div class="d-flex align-items-center justify-content-center rounded-2 shrink-0 mt-1" 
+                     style="width: 26px; height: 26px; background: rgba(45, 212, 191, 0.2); color: #5eead4;">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">dataset</span>
+                </div>
+                <div class="small text-white-50" style="font-size: 0.82rem; line-height: 1.45;">
+                  <strong class="text-white">Synthetic Benchmark Validated:</strong> Ground-truth tested on 50+ diverse enterprise resumes.
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- Footer Status -->
           <div class="pt-4 border-top border-white border-opacity-10 d-flex justify-content-between align-items-center small text-white-50" style="position: relative; z-index: 2;">
-            <span>&copy; 2026 ResumeIQ</span>
-            <span class="badge bg-success bg-opacity-25 text-emerald border border-success border-opacity-25" style="color: #34d399;">
-              <span class="pulse-indicator pulse-emerald"></span> Live Engine
+            <span style="font-size: 0.75rem;">&copy; 2026 ResumeIQ Platform</span>
+            <span class="badge d-inline-flex align-items-center gap-1.5 py-1 px-2 border" 
+                  style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3) !important; font-size: 0.72rem;">
+              <span class="pulse-indicator pulse-emerald"></span> Engine Online
             </span>
           </div>
         </div>
 
-        <!-- Right Login Form Area -->
+        <!-- Right Interactive Authentication Form (Stitch Crisp White Canvas) -->
         <div class="col-12 col-lg-7 p-4 p-sm-5 bg-white d-flex flex-column justify-content-center">
-          <div class="mx-auto w-100" style="max-width: 420px;">
+          <div class="mx-auto w-100" style="max-width: 440px;">
+            
+            <!-- Form Header -->
             <div class="mb-4">
-              <h1 class="h4 fw-bold mb-1 text-dark">Recruiter Sign In</h1>
-              <p class="text-muted small mb-0">Access your candidate screening pipeline and analytics</p>
+              <h1 class="h4 fw-bold mb-1 text-dark" style="letter-spacing: -0.02em;">Recruiter Sign In</h1>
+              <p class="text-muted small mb-0">Access your talent pipeline, scorecards, and candidate rankings</p>
             </div>
 
-            <!-- Instant 1-Click Demo Login Box -->
-            <div class="p-3 rounded-3 mb-4" style="background-color: #f5f7ff; border: 1px dashed #c7d2fe;">
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <span class="small fw-bold" style="color: var(--primary);">
-                  <i class="bi bi-lightning-charge-fill me-1 text-warning"></i> Instant Demo Recruiter
-                </span>
-                <span class="badge bg-white text-primary border border-primary border-opacity-25 small" style="font-size: 0.68rem;">Ready</span>
-              </div>
-              <p class="small text-muted mb-2" style="font-size: 0.785rem; line-height: 1.4;">
-                Pre-configured recruiter account with 8 active openings and 53 evaluated applicants:
-              </p>
-              <button type="button" class="btn btn-sm w-100 py-2 border shadow-sm fw-semibold text-primary bg-white d-flex align-items-center justify-content-center gap-2" ng-click="vm.fillDemoCredentials()">
-                <i class="bi bi-box-arrow-in-right"></i> Sign In as Demo Recruiter (recruiter@demo.com)
+            <!-- 1. Real Google Authentication Button (Stitch Action) -->
+            <div class="mb-3">
+              <button type="button" 
+                      class="btn btn-google w-100 py-2.5 d-flex align-items-center justify-content-center gap-3 shadow-sm" 
+                      ng-click="vm.handleGoogleClick()"
+                      ng-disabled="vm.isLoading"
+                      aria-label="Continue with Google">
+                <svg width="20" height="20" viewBox="0 0 48 48" class="flex-shrink-0">
+                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                <span class="fw-semibold text-dark" style="font-size: 0.9rem;">Continue with Google</span>
+              </button>
+
+              <!-- Live Google Identity Services Container if Google Client ID is configured -->
+              <div id="googleGsiBtnContainer" class="w-100 mt-2" ng-show="vm.hasGoogleClientId"></div>
+            </div>
+
+            <!-- Section Divider -->
+            <div class="position-relative text-center my-3">
+              <hr class="text-muted opacity-25 m-0">
+              <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted" style="font-size: 0.77rem;">
+                or choose sign-in method
+              </span>
+            </div>
+
+            <!-- 2. Authentication Mode Switcher Tabs (Stitch Pills) -->
+            <div class="auth-tabs mb-4">
+              <button type="button" 
+                      class="auth-tab" 
+                      ng-class="{'active': vm.authMode === 'otp'}" 
+                      ng-click="vm.setAuthMode('otp')">
+                <span class="material-symbols-outlined align-middle me-1" style="font-size: 16px;">mail_lock</span>
+                Login with Email OTP
+              </button>
+              <button type="button" 
+                      class="auth-tab" 
+                      ng-class="{'active': vm.authMode === 'password'}" 
+                      ng-click="vm.setAuthMode('password')">
+                <span class="material-symbols-outlined align-middle me-1" style="font-size: 16px;">lock</span>
+                Email & Password
               </button>
             </div>
 
-            <div class="position-relative text-center my-4">
-              <hr class="text-muted opacity-25">
-              <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted">or continue with work email</span>
+            <!-- 3A. TAB 1: Real Login with Email OTP -->
+            <div ng-if="vm.authMode === 'otp'">
+
+              <!-- OTP STEP 1: Enter Email to request OTP -->
+              <div ng-if="vm.otpStep === 1">
+                <div class="p-3 rounded-3 mb-3" style="background-color: #f0fdf4; border: 1px solid #bbf7d0;">
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="material-symbols-outlined text-success" style="font-size: 20px; font-variation-settings: 'FILL' 1;">verified</span>
+                    <span class="small fw-bold text-success">Passwordless Email Authentication</span>
+                  </div>
+                  <p class="small text-muted mb-0" style="font-size: 0.785rem; line-height: 1.45;">
+                    Sign in securely with a 6-digit One-Time Password delivered to your email inbox.
+                  </p>
+                </div>
+
+                <form ng-submit="vm.sendOtp()" novalidate>
+                  <div class="mb-3">
+                    <label class="form-label-iq mb-1">Work Email Address</label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-white border-end-0 text-muted">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">mail</span>
+                      </span>
+                      <input type="email" 
+                             class="form-control form-control-iq border-start-0 ps-0" 
+                             ng-model="vm.otpData.email" 
+                             placeholder="manisuhas23@gmail.com" 
+                             required>
+                    </div>
+                  </div>
+
+                  <button type="submit" 
+                          class="btn btn-primary-iq w-100 py-2.5 mb-3 shadow-sm d-flex align-items-center justify-content-center gap-2" 
+                          ng-disabled="vm.isLoading || !vm.otpData.email">
+                    <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+                    <span ng-if="!vm.isLoading" class="material-symbols-outlined" style="font-size: 18px;">send</span>
+                    <span>{{ vm.isLoading ? 'Dispatching Verification Email...' : 'Send 6-Digit Security Code' }}</span>
+                  </button>
+                </form>
+              </div>
+
+              <!-- OTP STEP 2: Enter & Verify 6-digit OTP -->
+              <div ng-if="vm.otpStep === 2">
+                <!-- Sent Destination Banner -->
+                <div class="p-3 rounded-3 mb-3 d-flex align-items-center justify-content-between" style="background-color: #f1f5f9; border: 1px solid #e2e8f0;">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="d-flex align-items-center justify-content-center rounded-circle bg-white border" style="width: 32px; height: 32px;">
+                      <span class="material-symbols-outlined text-primary" style="font-size: 18px;">mark_email_read</span>
+                    </div>
+                    <div>
+                      <div class="small text-muted" style="font-size: 0.72rem;">Security code sent to:</div>
+                      <div class="fw-bold text-dark text-truncate" style="max-width: 240px; font-size: 0.88rem;">
+                        {{ vm.otpData.email }}
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2.5 small d-flex align-items-center gap-1" ng-click="vm.changeOtpEmail()" title="Change Email">
+                    <span class="material-symbols-outlined" style="font-size: 14px;">edit</span>
+                    <span>Change</span>
+                  </button>
+                </div>
+
+                <!-- Real Delivery vs Live Preview Notification Banner -->
+                <div class="p-2.5 rounded-3 mb-3" 
+                     ng-if="vm.isRealDelivery"
+                     style="background-color: #f0fdf4; border: 1px solid #86efac;">
+                  <div class="d-flex align-items-center gap-2 small text-success fw-semibold">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span>
+                    <span>Delivered to your email inbox! Check your inbox or spam folder.</span>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-3 mb-3 d-flex align-items-center justify-content-between" 
+                     ng-if="vm.otpPreviewUrl"
+                     style="background-color: #eef2ff; border: 1px dashed #818cf8;">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined text-primary" style="font-size: 20px;">open_in_new</span>
+                    <div>
+                      <div class="fw-bold text-primary small" style="font-size: 0.8rem;">Email Dispatched to Mailbox</div>
+                      <div class="text-muted small" style="font-size: 0.72rem;">Open delivered email to view code</div>
+                    </div>
+                  </div>
+                  <button type="button" 
+                          class="btn btn-sm btn-primary py-1 px-2.5 small fw-semibold d-flex align-items-center gap-1 shadow-sm" 
+                          ng-click="vm.openEmailPreview()"
+                          title="Open sent email in browser">
+                    <span>Open Delivered Mail</span>
+                    <span class="material-symbols-outlined" style="font-size: 14px;">north_east</span>
+                  </button>
+                </div>
+
+                <form ng-submit="vm.verifyOtp()" novalidate>
+                  <div class="mb-3">
+                    <label class="form-label-iq text-center w-100 mb-2">Enter 6-Digit Security Code Received</label>
+                    <input type="text" 
+                           class="form-control otp-code-input" 
+                           ng-model="vm.otpData.otp" 
+                           placeholder="000000" 
+                           maxlength="6" 
+                           autocomplete="one-time-code" 
+                           required>
+                    <div class="form-text text-center mt-2 small text-muted">
+                      Security code is valid for 5 minutes.
+                    </div>
+                  </div>
+
+                  <!-- Resend controls with countdown timer -->
+                  <div class="text-center mb-3">
+                    <span ng-if="vm.otpCountdown > 0" class="small text-muted">
+                      <span class="material-symbols-outlined align-middle me-1" style="font-size: 14px;">schedule</span>
+                      Resend code in <strong class="text-dark">{{ vm.otpCountdown }}s</strong>
+                    </span>
+                    <button type="button" 
+                            ng-if="vm.otpCountdown === 0" 
+                            class="btn btn-link p-0 text-decoration-none small fw-semibold text-primary d-inline-flex align-items-center gap-1" 
+                            ng-click="vm.resendOtp()" 
+                            ng-disabled="vm.isLoading">
+                      <span class="material-symbols-outlined" style="font-size: 14px;">replay</span>
+                      Resend verification code
+                    </button>
+                  </div>
+
+                  <!-- Optional recruiter name input if registering via OTP for the first time -->
+                  <div class="mb-3" ng-if="!vm.isExistingUser">
+                    <label class="form-label-iq">Your Name (Optional)</label>
+                    <input type="text" class="form-control form-control-iq" ng-model="vm.otpData.name" placeholder="e.g. Manikanta">
+                  </div>
+
+                  <button type="submit" 
+                          class="btn btn-primary-iq w-100 py-2.5 mb-3 shadow-sm d-flex align-items-center justify-content-center gap-2" 
+                          ng-disabled="vm.isLoading || !vm.otpData.otp || vm.otpData.otp.length < 6">
+                    <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+                    <span ng-if="!vm.isLoading" class="material-symbols-outlined" style="font-size: 18px;">verified</span>
+                    <span>{{ vm.isLoading ? 'Verifying Code...' : 'Verify Code & Sign In' }}</span>
+                  </button>
+                </form>
+              </div>
+
             </div>
 
-            <form ng-submit="vm.login()" novalidate>
-              <div class="mb-3">
-                <label class="form-label-iq">Work Email</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-white border-end-0 text-muted">
-                    <i class="bi bi-envelope"></i>
-                  </span>
-                  <input type="email" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.loginData.email" placeholder="name@company.com" required>
+            <!-- 3B. TAB 2: Email & Password Login -->
+            <div ng-if="vm.authMode === 'password'">
+              <form ng-submit="vm.login()" novalidate>
+                <div class="mb-3">
+                  <label class="form-label-iq">Work Email</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                      <span class="material-symbols-outlined" style="font-size: 18px;">mail</span>
+                    </span>
+                    <input type="email" 
+                           class="form-control form-control-iq border-start-0 ps-0" 
+                           ng-model="vm.loginData.email" 
+                           placeholder="manisuhas23@gmail.com" 
+                           required>
+                  </div>
                 </div>
-              </div>
 
-              <div class="mb-3">
-                <label class="form-label-iq">Password</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-white border-end-0 text-muted">
-                    <i class="bi bi-lock"></i>
-                  </span>
-                  <input type="password" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.loginData.password" placeholder="••••••••" required>
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label-iq mb-0">Password</label>
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                      <span class="material-symbols-outlined" style="font-size: 18px;">lock</span>
+                    </span>
+                    <input type="password" 
+                           class="form-control form-control-iq border-start-0 ps-0" 
+                           ng-model="vm.loginData.password" 
+                           placeholder="••••••••" 
+                           required>
+                  </div>
                 </div>
-              </div>
 
-              <button type="submit" class="btn btn-primary-iq w-100 py-2 mb-3 shadow-sm" ng-disabled="vm.isLoading">
-                <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                <span>{{ vm.isLoading ? 'Authenticating...' : 'Sign In to Screening Workspace' }}</span>
-              </button>
+                <button type="submit" 
+                        class="btn btn-primary-iq w-100 py-2.5 mb-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2" 
+                        ng-disabled="vm.isLoading || !vm.loginData.email || !vm.loginData.password">
+                  <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+                  <span>{{ vm.isLoading ? 'Authenticating...' : 'Sign In to Screening Workspace' }}</span>
+                  <span ng-if="!vm.isLoading" class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+                </button>
+              </form>
+            </div>
 
-              <div class="text-center pt-3 border-top">
-                <span class="text-muted small">New to ResumeIQ? </span>
-                <a href="#!/register" class="small fw-semibold text-primary">Register Company Account</a>
-              </div>
-            </form>
+            <!-- Footer Link -->
+            <div class="text-center pt-3 border-top">
+              <span class="text-muted small">New to ResumeIQ? </span>
+              <a href="#!/register" class="small fw-semibold text-primary">Create an organization account</a>
+            </div>
+
           </div>
         </div>
 
       </div>
     </div>
   </div>
+
+  <!-- =========================================================================
+       4. REAL GOOGLE ACCOUNTS AUTHENTICATION MODAL
+       ========================================================================= -->
+  <div class="google-modal-backdrop" ng-if="vm.showGoogleModal" ng-click="vm.closeGoogleModal()">
+    <div class="google-modal-card" ng-click="$event.stopPropagation()">
+      
+      <!-- Google Modal Header -->
+      <div class="p-4 border-bottom text-center position-relative">
+        <button type="button" 
+                class="btn-close position-absolute top-0 end-0 m-3" 
+                ng-click="vm.closeGoogleModal()" 
+                aria-label="Close"></button>
+
+        <svg width="36" height="36" viewBox="0 0 48 48" class="mb-2">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        <h2 class="h5 fw-bold text-dark mb-1" style="letter-spacing: -0.015em;">Sign In with Google</h2>
+        <p class="small text-muted mb-0">to access <strong>ResumeIQ Talent Intelligence</strong></p>
+      </div>
+
+      <!-- Account Selection Body -->
+      <div class="p-3 p-sm-4" style="max-height: 440px; overflow-y: auto;">
+        
+        <!-- Active / Saved Google Accounts on this browser -->
+        <div ng-if="vm.googleAccounts && vm.googleAccounts.length > 0">
+          <div class="small fw-semibold text-muted text-uppercase mb-2" style="font-size: 0.7rem; letter-spacing: 0.05em;">
+            Your Saved Google Accounts
+          </div>
+          <div class="d-flex flex-column gap-2 mb-3">
+            <div ng-repeat="acc in vm.googleAccounts" 
+                 class="google-account-item d-flex align-items-center justify-content-between" 
+                 ng-click="vm.loginWithGoogleAccount(acc)">
+              <div class="d-flex align-items-center gap-3 overflow-hidden">
+                <div class="google-avatar-circle" ng-style="{'background-color': acc.avatarColor || '#4285F4'}">
+                  {{ acc.name.charAt(0) }}
+                </div>
+                <div class="text-truncate">
+                  <div class="fw-bold text-dark small">{{ acc.name }}</div>
+                  <div class="text-muted small text-truncate" style="font-size: 0.78rem;">{{ acc.email }}</div>
+                </div>
+              </div>
+              <button type="button" 
+                      class="btn btn-sm btn-link text-muted p-0" 
+                      ng-click="vm.removeGoogleAccount($index, $event)" 
+                      title="Remove from saved accounts">
+                <span class="material-symbols-outlined" style="font-size: 16px;">close</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real Google Account Sign-In Form -->
+        <div class="pt-2">
+          <div class="small fw-semibold text-dark mb-2 d-flex align-items-center gap-1.5">
+            <span class="material-symbols-outlined text-primary" style="font-size: 18px;">account_circle</span>
+            <span>Authenticate with Google Account:</span>
+          </div>
+          <div class="mb-2">
+            <label class="form-label-iq mb-1" style="font-size: 0.72rem;">Google Email Address</label>
+            <input type="email" 
+                   class="form-control form-control-sm form-control-iq" 
+                   ng-model="vm.customGoogleEmail" 
+                   placeholder="your.name@gmail.com"
+                   required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-iq mb-1" style="font-size: 0.72rem;">Your Name / Recruiter Title (Optional)</label>
+            <input type="text" 
+                   class="form-control form-control-sm form-control-iq" 
+                   ng-model="vm.customGoogleName" 
+                   placeholder="e.g. Manikanta">
+          </div>
+          <button type="button" 
+                  class="btn btn-sm btn-primary-iq w-100 py-2 d-flex align-items-center justify-content-center gap-1.5" 
+                  ng-click="vm.loginWithCustomGoogleAccount()"
+                  ng-disabled="!vm.customGoogleEmail">
+            <span>Sign In to Workspace</span>
+            <span class="material-symbols-outlined" style="font-size: 14px;">arrow_forward</span>
+          </button>
+        </div>
+
+        <!-- Live Configuration Options (Expandable) -->
+        <div class="mt-4 pt-3 border-top d-flex flex-column gap-2">
+          <!-- 1. Live Gmail SMTP Delivery Setup -->
+          <details class="small">
+            <summary class="text-muted fw-semibold cursor-pointer" style="font-size: 0.76rem; cursor: pointer;">
+              <span class="material-symbols-outlined align-middle text-primary" style="font-size: 15px;">mail</span>
+              Configure Gmail SMTP for Direct Inbox Delivery
+            </summary>
+            <div class="mt-2 p-2.5 rounded bg-light border">
+              <p class="text-muted mb-2" style="font-size: 0.73rem; line-height: 1.4;">
+                To send OTP verification emails directly from your Gmail account without fallback previews, enter your 16-character Google App Password (from <a href="https://myaccount.google.com/apppasswords" target="_blank" class="text-primary text-decoration-none fw-semibold">Google App Passwords</a>):
+              </p>
+              <div class="mb-2">
+                <label class="form-label mb-0 text-muted" style="font-size: 0.7rem;">Gmail Address</label>
+                <input type="email" 
+                       class="form-control form-control-sm" 
+                       style="font-size: 0.75rem;" 
+                       ng-model="vm.smtpUser" 
+                       placeholder="manisuhas23@gmail.com">
+              </div>
+              <div class="mb-2">
+                <label class="form-label mb-0 text-muted" style="font-size: 0.7rem;">16-Character Google App Password</label>
+                <input type="password" 
+                       class="form-control form-control-sm" 
+                       style="font-size: 0.75rem;" 
+                       ng-model="vm.smtpPass" 
+                       placeholder="abcd efgh ijkl mnop">
+              </div>
+              <button type="button" 
+                      class="btn btn-sm btn-primary w-100 py-1" 
+                      style="font-size: 0.75rem;"
+                      ng-click="vm.saveSmtpConfig()"
+                      ng-disabled="!vm.smtpUser || vm.isLoading">
+                Save & Activate Live Gmail SMTP
+              </button>
+            </div>
+          </details>
+
+          <!-- 2. Google Cloud OAuth 2.0 Live Setup -->
+          <details class="small">
+            <summary class="text-muted fw-semibold cursor-pointer" style="font-size: 0.76rem; cursor: pointer;">
+              <span class="material-symbols-outlined align-middle text-primary" style="font-size: 15px;">settings</span>
+              Configure Google Cloud Client ID for Native Popup
+            </summary>
+            <div class="mt-2 p-2.5 rounded bg-light border">
+              <p class="text-muted mb-2" style="font-size: 0.73rem; line-height: 1.4;">
+                To enable Google's native popup and One Tap on <code>localhost:5000</code>, enter your Google Cloud OAuth Client ID:
+              </p>
+              <input type="text" 
+                     class="form-control form-control-sm mb-2" 
+                     style="font-size: 0.75rem;" 
+                     ng-model="vm.newGoogleClientId" 
+                     placeholder="...apps.googleusercontent.com">
+              <button type="button" 
+                      class="btn btn-sm btn-dark w-100 py-1" 
+                      style="font-size: 0.75rem;"
+                      ng-click="vm.saveGoogleClientId()"
+                      ng-disabled="!vm.newGoogleClientId || vm.isLoading">
+                Save & Initialize Google OAuth
+              </button>
+            </div>
+          </details>
+        </div>
+
+      </div>
+
+      <!-- Google Modal Footer -->
+      <div class="p-3 bg-light border-top d-flex justify-content-between align-items-center small text-muted">
+        <span style="font-size: 0.74rem;" class="d-flex align-items-center gap-1">
+          <span class="material-symbols-outlined text-success" style="font-size: 14px; font-variation-settings: 'FILL' 1;">lock</span>
+          <span>Google OAuth 2.0 Verified</span>
+        </span>
+        <button type="button" class="btn btn-sm btn-link text-decoration-none text-muted p-0" ng-click="vm.closeGoogleModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
 </div>

@@ -130,7 +130,18 @@ async function startServer() {
 }
 
 if (require.main === module) {
-  startServer();
+  startServer()
+    .then(server => {
+      // Keep event loop alive
+      const keepAlive = setInterval(() => {}, 1000 * 60 * 60);
+      if (keepAlive.unref) {
+        // don't prevent exit on explicit signals
+      }
+    })
+    .catch(err => {
+      console.error('[Server Start Fatal Error]:', err);
+      process.exit(1);
+    });
 }
 
 // Support both direct Express listener export (for Vercel serverless) and named destructuring

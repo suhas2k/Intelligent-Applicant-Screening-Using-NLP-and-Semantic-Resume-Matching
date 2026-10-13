@@ -20,7 +20,7 @@
           return config;
         },
         responseError: function (rejection) {
-          if (rejection.status === 401 && !rejection.config.url.includes('/api/auth/login')) {
+          if (rejection.status === 401 && !rejection.config.url.includes('/api/auth')) {
             localStorage.removeItem('screening_token');
             localStorage.removeItem('screening_user');
             $location.path('/login');

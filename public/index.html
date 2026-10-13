@@ -19,6 +19,12 @@
   <link rel="stylesheet" href="vendor/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+  <!-- Material Symbols Outlined (Stitch UI Design System) -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <!-- Google Identity Services (GIS) for Google Sign-In -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <!-- ResumeIQ Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -80,15 +86,20 @@
       <div>
         <div class="sidebar-profile">
           <div class="d-flex align-items-center gap-2">
-            <div class="profile-avatar">
+            <div class="profile-avatar overflow-hidden p-0" ng-if="nav.getUser().avatar">
+              <img ng-src="{{ nav.getUser().avatar }}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="profile-avatar" ng-if="!nav.getUser().avatar">
               {{ (nav.getUser().name || 'R').charAt(0) }}
             </div>
             <div style="line-height: 1.2;">
               <div class="fw-bold text-white text-truncate" style="max-width: 130px; font-size: 0.85rem;">
                 {{ nav.getUser().name || 'Recruiter' }}
               </div>
-              <div class="text-truncate" style="max-width: 130px; font-size: 0.72rem; color: #94a3b8;">
-                {{ nav.getUser().company || 'Talent Lead' }}
+              <div class="text-truncate d-flex align-items-center gap-1" style="max-width: 130px; font-size: 0.72rem; color: #94a3b8;">
+                <span ng-if="nav.getUser().authProvider === 'google'" class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-25 py-0 px-1" style="font-size: 0.6rem;">Google</span>
+                <span ng-if="nav.getUser().authProvider === 'otp'" class="badge bg-success bg-opacity-25 text-emerald border border-success border-opacity-25 py-0 px-1" style="font-size: 0.6rem;">OTP</span>
+                <span>{{ nav.getUser().company || 'Talent Lead' }}</span>
               </div>
             </div>
           </div>
