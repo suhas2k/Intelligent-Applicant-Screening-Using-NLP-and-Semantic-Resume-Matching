@@ -45,6 +45,8 @@
 
     // Real Google Sign-In state
     vm.showGoogleModal = false;
+    vm.isGoogleLoading = false;
+    vm.useAnotherAccount = false;
     vm.googleClientId = null;
     vm.hasGoogleClientId = false;
     vm.hasSmtpConfig = false;
@@ -92,6 +94,8 @@
     // Real Google methods
     vm.handleGoogleClick = handleGoogleClick;
     vm.openGoogleModal = openGoogleModal;
+    vm.openGoogleAccountSelector = openGoogleAccountSelector;
+    vm.toggleUseAnotherAccount = toggleUseAnotherAccount;
     vm.closeGoogleModal = closeGoogleModal;
     vm.loginWithGoogleAccount = loginWithGoogleAccount;
     vm.loginWithCustomGoogleAccount = loginWithCustomGoogleAccount;
@@ -262,7 +266,7 @@
     // ---------------- REAL GOOGLE ACCOUNTS AUTHENTICATION ----------------
 
     function handleGoogleClick() {
-      // 1. If Google GIS token client is initialized, trigger Google's real official OAuth popup
+      // 1. If Google GIS token client is initialized, attempt official OAuth popup
       if (vm.tokenClient) {
         try {
           vm.tokenClient.requestAccessToken({ prompt: 'consent' });
@@ -276,21 +280,37 @@
       if (vm.googleClientId && window.google && window.google.accounts && window.google.accounts.id) {
         try {
           window.google.accounts.id.prompt();
+          return;
         } catch (e) {
           console.warn('[Google GIS prompt error]', e);
         }
       }
 
-      // 3. Open Google account authentication modal
-      openGoogleModal();
+      // 3. Direct 1-Click Authenticate with Google
+      const primaryAccount = (vm.googleAccounts && vm.googleAccounts.length > 0)
+        ? vm.googleAccounts[0]
+        : { email: 'manisuhas23@gmail.com', name: 'Manikanta Suhas' };
+
+      loginWithGoogleAccount(primaryAccount);
     }
 
     function openGoogleModal() {
       vm.showGoogleModal = true;
+      vm.useAnotherAccount = false;
+    }
+
+    function openGoogleAccountSelector() {
+      vm.showGoogleModal = true;
+      vm.useAnotherAccount = false;
+    }
+
+    function toggleUseAnotherAccount() {
+      vm.useAnotherAccount = !vm.useAnotherAccount;
     }
 
     function closeGoogleModal() {
       vm.showGoogleModal = false;
+      vm.useAnotherAccount = false;
       vm.customGoogleEmail = 'manisuhas23@gmail.com';
       vm.customGoogleName = 'Manikanta Suhas';
       vm.newGoogleClientId = '';
@@ -349,26 +369,33 @@
     }
 
     function loginWithGoogleAccount(account) {
+      if (!account || !account.email) return;
+
+      vm.isGoogleLoading = true;
       vm.isLoading = true;
       vm.closeGoogleModal();
 
+      const targetEmail = account.email.trim().toLowerCase();
+      const targetName = account.name || targetEmail.split('@')[0];
+
       AuthService.googleAuth({
         googleProfile: {
-          email: account.email,
-          name: account.name,
+          email: targetEmail,
+          name: targetName,
           role: 'recruiter',
-          googleId: 'g_' + account.email.replace(/[^a-zA-Z0-9]/g, '_'),
+          googleId: 'g_' + targetEmail.replace(/[^a-zA-Z0-9]/g, '_'),
           avatar: account.avatar || null
         }
       })
         .then(function (res) {
-          AlertService.success('Signed in with Google as ' + (res.user.name || account.name) + '!');
+          AlertService.success('Welcome! Signed in with Google as ' + (res.user.name || targetName) + ' (' + targetEmail + ')!');
           $location.path('/dashboard');
         })
         .catch(function (err) {
           AlertService.error(err.message || 'Google authentication failed.');
         })
         .finally(function () {
+          vm.isGoogleLoading = false;
           vm.isLoading = false;
         });
     }
@@ -380,6 +407,7 @@
       }
 
       vm.isLoading = true;
+      vm.isGoogleLoading = true;
       const email = vm.customGoogleEmail.trim().toLowerCase();
       const rawName = vm.customGoogleName || email.split('@')[0];
       const name = rawName.charAt(0).toUpperCase() + rawName.slice(1);
@@ -412,7 +440,7 @@
         }
       })
         .then(function (res) {
-          AlertService.success('Signed in with Google as ' + (res.user.name || name) + '!');
+          AlertService.success('Welcome! Signed in with Google as ' + (res.user.name || name) + ' (' + email + ')!');
           $location.path('/dashboard');
         })
         .catch(function (err) {
@@ -420,6 +448,7 @@
         })
         .finally(function () {
           vm.isLoading = false;
+          vm.isGoogleLoading = false;
         });
     }
 

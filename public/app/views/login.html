@@ -90,16 +90,33 @@
               <button type="button" 
                       class="btn btn-google w-100 py-2.5 d-flex align-items-center justify-content-center gap-3 shadow-sm" 
                       ng-click="vm.handleGoogleClick()"
-                      ng-disabled="vm.isLoading"
+                      ng-disabled="vm.isLoading || vm.isGoogleLoading"
                       aria-label="Continue with Google">
-                <svg width="20" height="20" viewBox="0 0 48 48" class="flex-shrink-0">
+                <span ng-if="vm.isGoogleLoading" class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+                <svg ng-if="!vm.isGoogleLoading" width="20" height="20" viewBox="0 0 48 48" class="flex-shrink-0">
                   <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                   <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
                   <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
                   <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                 </svg>
-                <span class="fw-semibold text-dark" style="font-size: 0.9rem;">Continue with Google</span>
+                <span class="fw-semibold text-dark" style="font-size: 0.9rem;">
+                  {{ vm.isGoogleLoading ? 'Authenticating with Google...' : 'Continue with Google' }}
+                </span>
               </button>
+
+              <!-- Google Account Indicator & Switch Option -->
+              <div class="d-flex align-items-center justify-content-between mt-2 px-1">
+                <span class="small text-muted d-flex align-items-center gap-1.5" style="font-size: 0.76rem;">
+                  <span class="material-symbols-outlined text-success" style="font-size: 14px; font-variation-settings: 'FILL' 1;">check_circle</span>
+                  <span>Google Account: <strong class="text-dark">{{ vm.googleAccounts[0].email || 'manisuhas23@gmail.com' }}</strong></span>
+                </span>
+                <button type="button" 
+                        class="btn btn-link btn-sm p-0 text-decoration-none small text-primary fw-semibold" 
+                        style="font-size: 0.76rem;" 
+                        ng-click="vm.openGoogleAccountSelector()">
+                  Switch Account
+                </button>
+              </div>
 
               <!-- Live Google Identity Services Container if Google Client ID is configured -->
               <div id="googleGsiBtnContainer" class="w-100 mt-2" ng-show="vm.hasGoogleClientId"></div>
@@ -345,118 +362,96 @@
           <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
           <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
         </svg>
-        <h2 class="h5 fw-bold text-dark mb-1" style="letter-spacing: -0.015em;">Sign In with Google</h2>
-        <p class="small text-muted mb-0">to access <strong>ResumeIQ Talent Intelligence</strong></p>
+        <h2 class="h5 fw-bold text-dark mb-1" style="letter-spacing: -0.015em;">Choose an account</h2>
+        <p class="small text-muted mb-0">to continue to <strong>ResumeIQ Recruiter Workspace</strong></p>
       </div>
 
       <!-- Account Selection Body -->
       <div class="p-3 p-sm-4" style="max-height: 440px; overflow-y: auto;">
         
         <!-- Active / Saved Google Accounts on this browser -->
-        <div ng-if="vm.googleAccounts && vm.googleAccounts.length > 0">
-          <div class="small fw-semibold text-muted text-uppercase mb-2" style="font-size: 0.7rem; letter-spacing: 0.05em;">
-            Your Saved Google Accounts
-          </div>
-          <div class="d-flex flex-column gap-2 mb-3">
-            <div ng-repeat="acc in vm.googleAccounts" 
-                 class="google-account-item d-flex align-items-center justify-content-between" 
-                 ng-click="vm.loginWithGoogleAccount(acc)">
-              <div class="d-flex align-items-center gap-3 overflow-hidden">
-                <div class="google-avatar-circle" ng-style="{'background-color': acc.avatarColor || '#4285F4'}">
-                  {{ acc.name.charAt(0) }}
-                </div>
-                <div class="text-truncate">
-                  <div class="fw-bold text-dark small">{{ acc.name }}</div>
-                  <div class="text-muted small text-truncate" style="font-size: 0.78rem;">{{ acc.email }}</div>
-                </div>
+        <div class="d-flex flex-column gap-2 mb-3">
+          <div ng-repeat="acc in vm.googleAccounts" 
+               class="google-account-item d-flex align-items-center justify-content-between p-2.5 rounded border" 
+               ng-click="vm.loginWithGoogleAccount(acc)"
+               style="cursor: pointer; transition: all 0.15s ease;">
+            <div class="d-flex align-items-center gap-3 overflow-hidden">
+              <div class="google-avatar-circle" ng-style="{'background-color': acc.avatarColor || '#4285F4'}">
+                {{ acc.name.charAt(0) }}
               </div>
-              <button type="button" 
-                      class="btn btn-sm btn-link text-muted p-0" 
-                      ng-click="vm.removeGoogleAccount($index, $event)" 
-                      title="Remove from saved accounts">
-                <span class="material-symbols-outlined" style="font-size: 16px;">close</span>
-              </button>
+              <div class="text-truncate">
+                <div class="fw-bold text-dark small mb-0">{{ acc.name }}</div>
+                <div class="text-muted small text-truncate" style="font-size: 0.78rem;">{{ acc.email }}</div>
+              </div>
             </div>
+            <button type="button" 
+                    class="btn btn-sm btn-link text-muted p-0" 
+                    ng-if="vm.googleAccounts.length > 1"
+                    ng-click="vm.removeGoogleAccount($index, $event)" 
+                    title="Remove from saved accounts">
+              <span class="material-symbols-outlined" style="font-size: 16px;">close</span>
+            </button>
           </div>
         </div>
 
-        <!-- Real Google Account Sign-In Form -->
-        <div class="pt-2">
-          <div class="small fw-semibold text-dark mb-2 d-flex align-items-center gap-1.5">
-            <span class="material-symbols-outlined text-primary" style="font-size: 18px;">account_circle</span>
-            <span>Authenticate with Google Account:</span>
-          </div>
-          <div class="mb-2">
-            <label class="form-label-iq mb-1" style="font-size: 0.72rem;">Google Email Address</label>
-            <input type="email" 
-                   class="form-control form-control-sm form-control-iq" 
-                   ng-model="vm.customGoogleEmail" 
-                   placeholder="your.name@gmail.com"
-                   required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label-iq mb-1" style="font-size: 0.72rem;">Your Name / Recruiter Title (Optional)</label>
-            <input type="text" 
-                   class="form-control form-control-sm form-control-iq" 
-                   ng-model="vm.customGoogleName" 
-                   placeholder="e.g. Manikanta">
-          </div>
+        <!-- Option: Use another Google account -->
+        <div class="border-top pt-3">
           <button type="button" 
-                  class="btn btn-sm btn-primary-iq w-100 py-2 d-flex align-items-center justify-content-center gap-1.5" 
-                  ng-click="vm.loginWithCustomGoogleAccount()"
-                  ng-disabled="!vm.customGoogleEmail">
-            <span>Sign In to Workspace</span>
-            <span class="material-symbols-outlined" style="font-size: 14px;">arrow_forward</span>
+                  class="btn btn-outline-secondary w-100 py-2 d-flex align-items-center justify-content-center gap-2 small fw-semibold" 
+                  ng-click="vm.toggleUseAnotherAccount()" 
+                  ng-if="!vm.useAnotherAccount">
+            <span class="material-symbols-outlined" style="font-size: 18px;">person_add</span>
+            <span>Use another Google account</span>
           </button>
-        </div>
 
-        <!-- Live Configuration Options (Expandable) -->
-        <div class="mt-4 pt-3 border-top d-flex flex-column gap-2">
-          <!-- 1. Live Gmail SMTP Delivery Setup -->
-          <details class="small">
-            <summary class="text-muted fw-semibold cursor-pointer" style="font-size: 0.76rem; cursor: pointer;">
-              <span class="material-symbols-outlined align-middle text-primary" style="font-size: 15px;">mail</span>
-              Configure Gmail SMTP for Direct Inbox Delivery
-            </summary>
-            <div class="mt-2 p-2.5 rounded bg-light border">
-              <p class="text-muted mb-2" style="font-size: 0.73rem; line-height: 1.4;">
-                To send OTP verification emails directly from your Gmail account without fallback previews, enter your 16-character Google App Password (from <a href="https://myaccount.google.com/apppasswords" target="_blank" class="text-primary text-decoration-none fw-semibold">Google App Passwords</a>):
-              </p>
-              <div class="mb-2">
-                <label class="form-label mb-0 text-muted" style="font-size: 0.7rem;">Gmail Address</label>
-                <input type="email" 
-                       class="form-control form-control-sm" 
-                       style="font-size: 0.75rem;" 
-                       ng-model="vm.smtpUser" 
-                       placeholder="manisuhas23@gmail.com">
-              </div>
-              <div class="mb-2">
-                <label class="form-label mb-0 text-muted" style="font-size: 0.7rem;">16-Character Google App Password</label>
-                <input type="password" 
-                       class="form-control form-control-sm" 
-                       style="font-size: 0.75rem;" 
-                       ng-model="vm.smtpPass" 
-                       placeholder="abcd efgh ijkl mnop">
-              </div>
+          <!-- Input form when Use another Google account is expanded -->
+          <div ng-if="vm.useAnotherAccount" class="p-3 bg-light rounded border">
+            <div class="small fw-semibold text-dark mb-2 d-flex align-items-center gap-1.5">
+              <span class="material-symbols-outlined text-primary" style="font-size: 18px;">account_circle</span>
+              <span>Add Google Account:</span>
+            </div>
+            <div class="mb-2">
+              <label class="form-label-iq mb-1" style="font-size: 0.72rem;">Google Email Address</label>
+              <input type="email" 
+                     class="form-control form-control-sm form-control-iq" 
+                     ng-model="vm.customGoogleEmail" 
+                     placeholder="your.name@gmail.com"
+                     required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label-iq mb-1" style="font-size: 0.72rem;">Recruiter Name (Optional)</label>
+              <input type="text" 
+                     class="form-control form-control-sm form-control-iq" 
+                     ng-model="vm.customGoogleName" 
+                     placeholder="e.g. Manikanta">
+            </div>
+            <div class="d-flex gap-2">
               <button type="button" 
-                      class="btn btn-sm btn-primary w-100 py-1" 
-                      style="font-size: 0.75rem;"
-                      ng-click="vm.saveSmtpConfig()"
-                      ng-disabled="!vm.smtpUser || vm.isLoading">
-                Save & Activate Live Gmail SMTP
+                      class="btn btn-sm btn-outline-secondary flex-grow-1" 
+                      ng-click="vm.toggleUseAnotherAccount()">
+                Cancel
+              </button>
+              <button type="button" 
+                      class="btn btn-sm btn-primary-iq flex-grow-1 d-flex align-items-center justify-content-center gap-1" 
+                      ng-click="vm.loginWithCustomGoogleAccount()"
+                      ng-disabled="!vm.customGoogleEmail || vm.isLoading || vm.isGoogleLoading">
+                <span>Sign In</span>
+                <span class="material-symbols-outlined" style="font-size: 14px;">arrow_forward</span>
               </button>
             </div>
-          </details>
+          </div>
+        </div>
 
-          <!-- 2. Google Cloud OAuth 2.0 Live Setup -->
+        <!-- Optional: Developer Google Cloud OAuth 2.0 Client ID Setup -->
+        <div class="mt-3 pt-3 border-top">
           <details class="small">
-            <summary class="text-muted fw-semibold cursor-pointer" style="font-size: 0.76rem; cursor: pointer;">
-              <span class="material-symbols-outlined align-middle text-primary" style="font-size: 15px;">settings</span>
-              Configure Google Cloud Client ID for Native Popup
+            <summary class="text-muted cursor-pointer" style="font-size: 0.74rem; cursor: pointer;">
+              <span class="material-symbols-outlined align-middle" style="font-size: 14px;">settings</span>
+              Developer: Configure Google Cloud OAuth Client ID
             </summary>
-            <div class="mt-2 p-2.5 rounded bg-light border">
-              <p class="text-muted mb-2" style="font-size: 0.73rem; line-height: 1.4;">
-                To enable Google's native popup and One Tap on <code>localhost:5000</code>, enter your Google Cloud OAuth Client ID:
+            <div class="mt-2 p-2 rounded bg-light border">
+              <p class="text-muted mb-2" style="font-size: 0.72rem; line-height: 1.4;">
+                To enable Google's native popup on <code>localhost:5000</code>, enter your Google Cloud OAuth Client ID:
               </p>
               <input type="text" 
                      class="form-control form-control-sm mb-2" 
@@ -465,7 +460,7 @@
                      placeholder="...apps.googleusercontent.com">
               <button type="button" 
                       class="btn btn-sm btn-dark w-100 py-1" 
-                      style="font-size: 0.75rem;"
+                      style="font-size: 0.75rem;" 
                       ng-click="vm.saveGoogleClientId()"
                       ng-disabled="!vm.newGoogleClientId || vm.isLoading">
                 Save & Initialize Google OAuth
