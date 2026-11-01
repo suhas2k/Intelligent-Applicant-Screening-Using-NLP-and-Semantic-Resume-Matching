@@ -9,9 +9,18 @@
   function AuthController($location, $interval, $scope, $timeout, $window, AuthService, AlertService) {
     const vm = this;
 
-    // View state
-    vm.authMode = 'otp'; // Default to modern passwordless OTP or 'password'
+    // View mode: 'password' (default as in reference) or 'otp'
+    vm.authMode = 'password';
     vm.isLoading = false;
+    vm.showPassword = false;
+    vm.showRegisterPassword = false;
+    vm.keepMeLoggedIn = true;
+
+    // Forgot password state
+    vm.showForgotPasswordModal = false;
+    vm.forgotEmail = 'manisuhas23@gmail.com';
+    vm.isForgotLoading = false;
+    vm.forgotSubmitted = false;
 
     // Password Login state
     vm.loginData = {
@@ -22,26 +31,27 @@
     // Registration state
     vm.registerData = {
       name: 'Manikanta Suhas',
+      company: 'Talent Acquisition Team',
       email: 'manisuhas23@gmail.com',
+      phone: '',
       password: '',
-      company: 'TalentForge Technologies',
+      confirmPassword: '',
       role: 'recruiter'
     };
 
-    // Real OTP Login state
-    vm.otpStep = 1; // 1: Enter email, 2: Enter & verify 6-digit OTP
+    // Real Email OTP state
+    vm.otpStep = 1; // 1: Enter email, 2: 6-digit OTP entry & verification
     vm.otpData = {
       email: 'manisuhas23@gmail.com',
       otp: '',
       name: 'Manikanta Suhas',
-      company: 'TalentForge Technologies'
+      company: 'Talent Acquisition Team'
     };
+    vm.otpDigits = ['', '', '', '', '', ''];
+    vm.maskedEmail = '';
     vm.otpCountdown = 0;
     vm.otpTimer = null;
     vm.isExistingUser = true;
-    vm.otpPreviewUrl = null;
-    vm.isRealDelivery = false;
-    vm.otpDeliveryMessage = '';
 
     // Real Google Sign-In state
     vm.showGoogleModal = false;
@@ -49,15 +59,11 @@
     vm.useAnotherAccount = false;
     vm.googleClientId = null;
     vm.hasGoogleClientId = false;
-    vm.hasSmtpConfig = false;
+    vm.hasSmtpConfig = true;
     vm.customGoogleEmail = 'manisuhas23@gmail.com';
     vm.customGoogleName = 'Manikanta Suhas';
     vm.newGoogleClientId = '';
     vm.tokenClient = null;
-
-    // SMTP Mail Configuration state
-    vm.smtpUser = 'manisuhas23@gmail.com';
-    vm.smtpPass = '';
 
     // Persistent personal Google accounts from localStorage
     const STORAGE_GOOGLE_ACCOUNTS = 'resumeiq_saved_google_accounts';
@@ -81,18 +87,22 @@
 
     // Bound methods
     vm.setAuthMode = setAuthMode;
+    vm.toggleShowPassword = toggleShowPassword;
+    vm.toggleShowRegisterPassword = toggleShowRegisterPassword;
     vm.login = login;
     vm.register = register;
 
     // Real OTP methods
     vm.sendOtp = sendOtp;
-    vm.verifyOtp = verifyOtp;
     vm.resendOtp = resendOtp;
+    vm.verifyOtp = verifyOtp;
     vm.changeOtpEmail = changeOtpEmail;
-    vm.openEmailPreview = openEmailPreview;
+    vm.onOtpKeyUp = onOtpKeyUp;
+    vm.onOtpPaste = onOtpPaste;
 
     // Real Google methods
     vm.handleGoogleClick = handleGoogleClick;
+    vm.openGooglePopup = openGooglePopup;
     vm.openGoogleModal = openGoogleModal;
     vm.openGoogleAccountSelector = openGoogleAccountSelector;
     vm.toggleUseAnotherAccount = toggleUseAnotherAccount;
@@ -101,13 +111,60 @@
     vm.loginWithCustomGoogleAccount = loginWithCustomGoogleAccount;
     vm.removeGoogleAccount = removeGoogleAccount;
     vm.saveGoogleClientId = saveGoogleClientId;
-    vm.saveSmtpConfig = saveSmtpConfig;
+
+    // Forgot Password
+    vm.openForgotPassword = openForgotPassword;
+    vm.closeForgotPassword = closeForgotPassword;
+    vm.submitForgotPassword = submitForgotPassword;
+
+    function openForgotPassword() {
+      vm.showForgotPasswordModal = true;
+      vm.forgotSubmitted = false;
+      if (vm.loginData.email) {
+        vm.forgotEmail = vm.loginData.email;
+      }
+    }
+
+    function closeForgotPassword() {
+      vm.showForgotPasswordModal = false;
+    }
+
+    function submitForgotPassword() {
+      if (!vm.forgotEmail || !vm.forgotEmail.includes('@')) {
+        AlertService.error('Please enter a valid work email address.');
+        return;
+      }
+      vm.isForgotLoading = true;
+      AuthService.sendOtp(vm.forgotEmail)
+        .then(function () {
+          vm.forgotSubmitted = true;
+          AlertService.success('Security verification code sent to ' + vm.forgotEmail);
+        })
+        .catch(function (err) {
+          AlertService.error(err.message || 'Unable to dispatch password reset code.');
+        })
+        .finally(function () {
+          vm.isForgotLoading = false;
+        });
+    }
+
+    // Helper: Mask email address for security display
+    function maskEmail(email) {
+      if (!email || !email.includes('@')) return email || '';
+      const parts = email.split('@');
+      const user = parts[0];
+      const domain = parts[1];
+      if (user.length <= 2) {
+        return user[0] + '***@' + domain;
+      }
+      return user.slice(0, 2) + '***' + user.slice(-2) + '@' + domain;
+    }
 
     // Initialization
     init();
 
     function init() {
-      // Fetch Google OAuth Client ID and SMTP configuration
+      // Query Google Identity Services config
       AuthService.getGoogleConfig()
         .then(function (config) {
           if (config) {
@@ -123,7 +180,7 @@
           vm.googleClientId = null;
         });
 
-      // Cleanup timers when leaving page
+      // Cleanup timers when leaving view
       $scope.$on('$destroy', function () {
         if (vm.otpTimer) {
           $interval.cancel(vm.otpTimer);
@@ -136,6 +193,14 @@
       if (mode === 'otp' && !vm.otpData.email && vm.loginData.email) {
         vm.otpData.email = vm.loginData.email;
       }
+    }
+
+    function toggleShowPassword() {
+      vm.showPassword = !vm.showPassword;
+    }
+
+    function toggleShowRegisterPassword() {
+      vm.showRegisterPassword = !vm.showRegisterPassword;
     }
 
     // ---------------- TRADITIONAL EMAIL & PASSWORD LOGIN ----------------
@@ -170,27 +235,24 @@
       }
 
       vm.isLoading = true;
-      vm.otpPreviewUrl = null;
-      vm.isRealDelivery = false;
-      vm.otpDeliveryMessage = '';
 
       AuthService.sendOtp(target)
         .then(function (res) {
           vm.otpStep = 2;
           vm.isExistingUser = res.isExistingUser;
-          vm.otpPreviewUrl = res.previewUrl || null;
-          vm.isRealDelivery = Boolean(res.isRealDelivery);
-          vm.otpDeliveryMessage = res.message || '';
+          vm.maskedEmail = maskEmail(target);
+          vm.otpDigits = ['', '', '', '', '', ''];
+          vm.otpData.otp = '';
 
-          startOtpCountdown(60);
+          startOtpCountdown(res.cooldownSeconds || 60);
 
-          if (vm.isRealDelivery) {
-            AlertService.success('Security code dispatched directly to your email inbox (' + target + ')!');
-          } else if (vm.otpPreviewUrl) {
-            AlertService.success('Email dispatched! Check your mail inbox (or open preview link below).');
-          } else {
-            AlertService.success('Security code dispatched to ' + target + '. Please check your inbox.');
-          }
+          AlertService.success('Security verification code dispatched to your inbox (' + target + ')!');
+
+          // Auto-focus first digit box
+          $timeout(function () {
+            const firstBox = document.getElementById('otp-digit-0');
+            if (firstBox) firstBox.focus();
+          }, 200);
         })
         .catch(function (err) {
           AlertService.error(err.message || 'Failed to dispatch security code. Please verify email and try again.');
@@ -201,26 +263,44 @@
     }
 
     function resendOtp() {
-      if (vm.otpCountdown > 0) return;
-      vm.sendOtp();
-    }
+      if (vm.otpCountdown > 0 || vm.isLoading) return;
 
-    function openEmailPreview() {
-      if (vm.otpPreviewUrl) {
-        $window.open(vm.otpPreviewUrl, '_blank');
-      }
+      const target = (vm.otpData.email || '').trim();
+      if (!target) return;
+
+      vm.isLoading = true;
+      AuthService.resendOtp(target)
+        .then(function (res) {
+          vm.otpDigits = ['', '', '', '', '', ''];
+          vm.otpData.otp = '';
+          startOtpCountdown(res.cooldownSeconds || 60);
+          AlertService.success('Fresh 6-digit security code dispatched to ' + target + '!');
+          $timeout(function () {
+            const firstBox = document.getElementById('otp-digit-0');
+            if (firstBox) firstBox.focus();
+          }, 100);
+        })
+        .catch(function (err) {
+          AlertService.error(err.message || 'Failed to resend verification code.');
+        })
+        .finally(function () {
+          vm.isLoading = false;
+        });
     }
 
     function verifyOtp() {
-      if (!vm.otpData.otp || vm.otpData.otp.toString().trim().length < 6) {
-        AlertService.error('Please enter the 6-digit verification code received in your email.');
+      // Re-sync OTP from digits
+      vm.otpData.otp = vm.otpDigits.join('').trim();
+
+      if (!vm.otpData.otp || vm.otpData.otp.length < 6) {
+        AlertService.error('Please enter all 6 digits of the verification code received in your email.');
         return;
       }
 
       vm.isLoading = true;
       AuthService.verifyOtp({
-        email: vm.otpData.email,
-        otp: vm.otpData.otp.toString().trim(),
+        email: vm.otpData.email.trim(),
+        otp: vm.otpData.otp,
         name: vm.otpData.name,
         company: vm.otpData.company
       })
@@ -233,6 +313,11 @@
         })
         .catch(function (err) {
           AlertService.error(err.message || 'Invalid or expired security code.');
+          // Select and clear boxes on error
+          $timeout(function () {
+            const firstBox = document.getElementById('otp-digit-0');
+            if (firstBox) firstBox.focus();
+          });
         })
         .finally(function () {
           vm.isLoading = false;
@@ -242,7 +327,7 @@
     function changeOtpEmail() {
       vm.otpStep = 1;
       vm.otpData.otp = '';
-      vm.otpPreviewUrl = null;
+      vm.otpDigits = ['', '', '', '', '', ''];
       if (vm.otpTimer) {
         $interval.cancel(vm.otpTimer);
         vm.otpCountdown = 0;
@@ -263,10 +348,89 @@
       }, 1000);
     }
 
+    // 6-Digit Auto Focus & Keyboard Management
+    function onOtpKeyUp(event, index) {
+      const key = event.key;
+
+      // Handle Backspace
+      if (key === 'Backspace') {
+        if (!vm.otpDigits[index] && index > 0) {
+          const prevBox = document.getElementById('otp-digit-' + (index - 1));
+          if (prevBox) prevBox.focus();
+        }
+        vm.otpData.otp = vm.otpDigits.join('');
+        return;
+      }
+
+      // Handle Left Arrow
+      if (key === 'ArrowLeft' && index > 0) {
+        const prevBox = document.getElementById('otp-digit-' + (index - 1));
+        if (prevBox) prevBox.focus();
+        return;
+      }
+
+      // Handle Right Arrow
+      if (key === 'ArrowRight' && index < 5) {
+        const nextBox = document.getElementById('otp-digit-' + (index + 1));
+        if (nextBox) nextBox.focus();
+        return;
+      }
+
+      // If numeric digit entered, advance to next box
+      if (/^\d$/.test(key) || /^\d$/.test(vm.otpDigits[index])) {
+        // Ensure only single digit stored in cell
+        if (vm.otpDigits[index].length > 1) {
+          vm.otpDigits[index] = vm.otpDigits[index].slice(-1);
+        }
+        if (index < 5) {
+          const nextBox = document.getElementById('otp-digit-' + (index + 1));
+          if (nextBox) nextBox.focus();
+        }
+      }
+
+      vm.otpData.otp = vm.otpDigits.join('');
+
+      // Auto-submit if all 6 digits completed and Enter pressed
+      if (key === 'Enter' && vm.otpData.otp.length === 6) {
+        verifyOtp();
+      }
+    }
+
+    // 6-Digit Full Paste Support
+    function onOtpPaste(event) {
+      const clipboard = (event.clipboardData || window.clipboardData);
+      if (!clipboard) return;
+
+      const pastedText = clipboard.getData('text') || '';
+      const cleanDigits = pastedText.replace(/\D/g, '').slice(0, 6);
+
+      if (cleanDigits.length > 0) {
+        event.preventDefault();
+        const chars = cleanDigits.split('');
+        for (let i = 0; i < 6; i++) {
+          vm.otpDigits[i] = chars[i] || '';
+        }
+        vm.otpData.otp = cleanDigits;
+
+        // Focus the appropriate box
+        const targetIndex = Math.min(chars.length, 5);
+        $timeout(function () {
+          const targetBox = document.getElementById('otp-digit-' + targetIndex);
+          if (targetBox) targetBox.focus();
+        });
+
+        // If full 6 digits pasted, trigger verification automatically
+        if (cleanDigits.length === 6) {
+          $timeout(function () {
+            verifyOtp();
+          }, 300);
+        }
+      }
+    }
+
     // ---------------- REAL GOOGLE ACCOUNTS AUTHENTICATION ----------------
 
     function handleGoogleClick() {
-      // 1. If Google GIS token client is initialized, attempt official OAuth popup
       if (vm.tokenClient) {
         try {
           vm.tokenClient.requestAccessToken({ prompt: 'consent' });
@@ -276,22 +440,52 @@
         }
       }
 
-      // 2. If GIS One Tap is ready, attempt prompt
-      if (vm.googleClientId && window.google && window.google.accounts && window.google.accounts.id) {
-        try {
-          window.google.accounts.id.prompt();
-          return;
-        } catch (e) {
-          console.warn('[Google GIS prompt error]', e);
-        }
+      openGooglePopup();
+    }
+
+    function openGooglePopup() {
+      const width = 500;
+      const height = 620;
+      const left = Math.max(0, Math.floor(window.screenLeft + (window.outerWidth - width) / 2));
+      const top = Math.max(0, Math.floor(window.screenTop + (window.outerHeight - height) / 2));
+
+      vm.isGoogleLoading = true;
+
+      const popup = window.open(
+        '/google-auth-popup.html',
+        'GoogleSignIn',
+        'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left + ',status=no,menubar=no,toolbar=no,location=yes,resizable=yes'
+      );
+
+      if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+        vm.isGoogleLoading = false;
+        openGoogleAccountSelector();
+        return;
       }
 
-      // 3. Direct 1-Click Authenticate with Google
-      const primaryAccount = (vm.googleAccounts && vm.googleAccounts.length > 0)
-        ? vm.googleAccounts[0]
-        : { email: 'manisuhas23@gmail.com', name: 'Manikanta Suhas' };
+      const onGoogleMessage = function (event) {
+        if (event.origin !== window.location.origin && !event.origin.includes('localhost')) {
+          return;
+        }
+        if (event.data && event.data.type === 'GOOGLE_AUTH_SUCCESS') {
+          window.removeEventListener('message', onGoogleMessage);
+          $timeout(function () {
+            loginWithGoogleAccount(event.data.account);
+          });
+        }
+      };
 
-      loginWithGoogleAccount(primaryAccount);
+      window.addEventListener('message', onGoogleMessage);
+
+      const popupCheckTimer = $interval(function () {
+        if (popup.closed) {
+          $interval.cancel(popupCheckTimer);
+          window.removeEventListener('message', onGoogleMessage);
+          $timeout(function () {
+            vm.isGoogleLoading = false;
+          }, 300);
+        }
+      }, 500);
     }
 
     function openGoogleModal() {
@@ -330,38 +524,12 @@
           initGoogleIdentityServices();
           AlertService.success('Google Client ID configured! You can now use official Google Sign-In.');
           vm.closeGoogleModal();
-          // Trigger Google sign-in immediately
           $timeout(function () {
             handleGoogleClick();
           }, 300);
         })
         .catch(function (err) {
           AlertService.error(err.message || 'Failed to save Google Client ID.');
-        })
-        .finally(function () {
-          vm.isLoading = false;
-        });
-    }
-
-    function saveSmtpConfig() {
-      if (!vm.smtpUser || !vm.smtpUser.includes('@')) {
-        AlertService.error('Please enter a valid Gmail address (e.g. manisuhas23@gmail.com).');
-        return;
-      }
-
-      vm.isLoading = true;
-      AuthService.setMailConfig({
-        smtpUser: vm.smtpUser.trim(),
-        smtpPass: vm.smtpPass ? vm.smtpPass.trim() : '',
-        smtpHost: 'smtp.gmail.com',
-        smtpPort: 587
-      })
-        .then(function (res) {
-          vm.hasSmtpConfig = res.hasSmtpConfig;
-          AlertService.success(res.message);
-        })
-        .catch(function (err) {
-          AlertService.error(err.message || 'Failed to update SMTP settings.');
         })
         .finally(function () {
           vm.isLoading = false;
@@ -412,7 +580,6 @@
       const rawName = vm.customGoogleName || email.split('@')[0];
       const name = rawName.charAt(0).toUpperCase() + rawName.slice(1);
 
-      // Save into personal Google accounts list
       const existingIdx = vm.googleAccounts.findIndex(function (a) { return a.email.toLowerCase() === email; });
       if (existingIdx === -1) {
         const colors = ['#4285F4', '#34A853', '#FBBC05', '#EA4335', '#6366F1'];
@@ -465,7 +632,6 @@
     function initGoogleIdentityServices() {
       if (typeof window.google !== 'undefined' && window.google.accounts) {
         try {
-          // 1. Initialize Google ID (One Tap & ID token)
           if (window.google.accounts.id) {
             window.google.accounts.id.initialize({
               client_id: vm.googleClientId,
@@ -490,7 +656,6 @@
               }
             });
 
-            // Render live official Google button if container exists
             const gsiContainer = document.getElementById('googleGsiBtnContainer');
             if (gsiContainer) {
               window.google.accounts.id.renderButton(gsiContainer, {
@@ -503,7 +668,6 @@
             }
           }
 
-          // 2. Initialize Google OAuth2 Token Client (for live official popup)
           if (window.google.accounts.oauth2) {
             vm.tokenClient = window.google.accounts.oauth2.initTokenClient({
               client_id: vm.googleClientId,
@@ -538,12 +702,17 @@
 
     function register() {
       if (!vm.registerData.name || !vm.registerData.email || !vm.registerData.password) {
-        AlertService.error('Name, email, and password are required fields.');
+        AlertService.error('Recruiter name, work email, and password are required.');
         return;
       }
 
       if (vm.registerData.password.length < 6) {
-        AlertService.error('Password must be at least 6 characters.');
+        AlertService.error('Password must be at least 6 characters long.');
+        return;
+      }
+
+      if (vm.registerData.confirmPassword && vm.registerData.password !== vm.registerData.confirmPassword) {
+        AlertService.error('Passwords do not match. Please ensure both passwords match.');
         return;
       }
 

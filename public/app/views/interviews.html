@@ -1,0 +1,328 @@
+<div class="iq-page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <div>
+      <h1 class="iq-page-title mb-1">Interviews</h1>
+      <p class="iq-page-subtitle mb-0">Schedule and manage candidate interviews.</p>
+    </div>
+    <div>
+      <button class="btn btn-primary-iq d-flex align-items-center gap-2" ng-click="vm.openScheduleModal()">
+        <i class="bi bi-plus-lg"></i>
+        <span>Schedule Interview</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= SEARCH & FILTER BAR ================= -->
+  <div class="surface-card p-3 mb-4 rounded-3 border">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="search-input-wrapper">
+          <i class="bi bi-search"></i>
+          <input type="text" class="search-input-clean" placeholder="Search candidate, role or interviewer..." ng-model="vm.searchQuery" ng-change="vm.applyFilters()">
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3">
+        <select class="form-select form-select-sm" ng-model="vm.filterType" ng-change="vm.applyFilters()">
+          <option value="All">All Round Types</option>
+          <option value="Technical Round">Technical Round</option>
+          <option value="HR Round">HR Round</option>
+          <option value="Behavioral">Behavioral</option>
+          <option value="Management">Management</option>
+        </select>
+      </div>
+      <div class="col-md-2 col-lg-4 text-md-end text-muted small">
+        Showing {{ vm.interviews.length }} scheduled interview<span ng-if="vm.interviews.length !== 1">s</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TWO COLUMN INTERVIEWS WORKSPACE ================= -->
+  <div class="row g-4">
+    
+    <!-- LEFT COLUMN: Interactive Month Calendar (Matching IMAGE 2 Screen 7) -->
+    <div class="col-lg-5">
+      <div class="iq-analytics-card p-4">
+        
+        <!-- Calendar Header -->
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h2 class="h6 fw-bold text-dark mb-0">
+            {{ vm.monthNames[vm.currentMonth] }} {{ vm.currentYear }}
+          </h2>
+          <div class="d-flex align-items-center gap-1">
+            <button class="btn btn-sm btn-icon-round" ng-click="vm.prevMonth()" title="Previous Month">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="btn btn-sm btn-icon-round" ng-click="vm.nextMonth()" title="Next Month">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Weekday Headers -->
+        <div class="iq-calendar-weekdays mb-2">
+          <span>S</span>
+          <span>M</span>
+          <span>T</span>
+          <span>W</span>
+          <span>T</span>
+          <span>F</span>
+          <span>S</span>
+        </div>
+
+        <!-- Calendar Days Grid -->
+        <div class="iq-calendar-grid">
+          <div ng-repeat="d in vm.calendarDays" 
+               class="iq-calendar-cell"
+               ng-class="{
+                 'out-of-month': !d.isCurrentMonth,
+                 'is-selected': d.dateStr === vm.selectedDateStr,
+                 'is-today': d.isToday,
+                 'has-event': vm.hasInterviewOnDate(d.dateStr)
+               }"
+               ng-click="vm.selectDate(d)">
+            <span class="cell-day-number">{{ d.day }}</span>
+            <span class="calendar-event-dot" ng-if="vm.hasInterviewOnDate(d.dateStr)"></span>
+          </div>
+        </div>
+
+        <div class="border-top mt-4 pt-3 d-flex align-items-center justify-content-between text-muted small">
+          <div class="d-flex align-items-center gap-2">
+            <span class="calendar-event-dot position-static" style="display: inline-block;"></span>
+            <span>Interview Scheduled</span>
+          </div>
+          <span class="fw-medium text-dark">{{ vm.selectedDateStr }}</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Upcoming Interviews List -->
+    <div class="col-lg-7">
+      <div class="iq-analytics-card p-4">
+        
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h2 class="h6 fw-bold text-dark mb-0">
+            Upcoming Interviews ({{ vm.interviews.length }})
+          </h2>
+          <button class="btn btn-sm btn-outline-iq" ng-click="vm.loadInterviews()">
+            <i class="bi bi-arrow-clockwise"></i> Refresh
+          </button>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="text-center py-5" ng-if="vm.isLoading">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="text-muted small mt-2">Loading interviews...</p>
+        </div>
+
+        <!-- Error State with Retry -->
+        <div class="text-center py-5" ng-if="!vm.isLoading && vm.errorMessage">
+          <div class="rounded-circle bg-danger-subtle text-danger d-inline-flex p-3 mb-3">
+            <i class="bi bi-exclamation-triangle-fill fs-2"></i>
+          </div>
+          <div class="fw-bold text-dark mb-1">{{ vm.errorMessage }}</div>
+          <p class="text-muted small mb-3">Could not load interview sessions. Please check server connection or retry.</p>
+          <button class="btn btn-sm btn-outline-iq" ng-click="vm.loadInterviews()">
+            <i class="bi bi-arrow-clockwise"></i> Retry Loading
+          </button>
+        </div>
+
+        <!-- Empty State -->
+        <div class="text-center py-5" ng-if="!vm.isLoading && !vm.errorMessage && vm.interviews.length === 0">
+          <div class="rounded-circle bg-light d-inline-flex p-3 text-muted mb-3">
+            <i class="bi bi-calendar-x fs-2"></i>
+          </div>
+          <div class="fw-bold text-dark mb-1">No interviews scheduled</div>
+          <p class="text-muted small mb-3">There are no upcoming interview rounds scheduled for this filter.</p>
+          <button class="btn btn-sm btn-primary-iq" ng-click="vm.openScheduleModal()">
+            <i class="bi bi-plus-lg"></i> Schedule an Interview
+          </button>
+        </div>
+
+        <!-- Interview Cards List -->
+        <div class="d-flex flex-column gap-3" ng-if="!vm.isLoading && vm.interviews.length > 0">
+          <div class="interview-card p-3 rounded-3 border" ng-repeat="item in vm.interviews track by item._id">
+            
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-2 mb-2">
+              <div class="d-flex align-items-center gap-3">
+                <div class="profile-avatar" style="width: 42px; height: 42px; font-size: 0.95rem; background: #e0e7ff; color: #4338ca;">
+                  {{ item.candidateName.charAt(0) }}
+                </div>
+                <div>
+                  <div class="fw-bold text-dark" style="font-size: 0.95rem;">
+                    {{ item.candidateName }}
+                  </div>
+                  <div class="text-muted small">
+                    {{ item.role }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Round Type Pill (Technical Round / HR / Management) -->
+              <span class="round-badge" ng-class="vm.getRoundBadgeClass(item.type)">
+                {{ item.type }}
+              </span>
+            </div>
+
+            <!-- Details Row -->
+            <div class="d-flex flex-wrap align-items-center gap-3 py-2 text-muted small border-top border-bottom my-2">
+              <div class="d-flex align-items-center gap-1">
+                <i class="bi bi-calendar2 text-primary"></i>
+                <span class="text-dark fw-medium">{{ item.date }}</span>
+              </div>
+              <div class="d-flex align-items-center gap-1">
+                <i class="bi bi-clock text-primary"></i>
+                <span>{{ item.time }}</span>
+              </div>
+              <div class="d-flex align-items-center gap-1 ms-sm-auto">
+                <i class="bi bi-person-check text-success"></i>
+                <span>Interviewer: <strong>{{ item.interviewer }}</strong></span>
+              </div>
+            </div>
+
+            <!-- Card Actions -->
+            <div class="d-flex align-items-center justify-content-between mt-2 pt-1">
+              <div>
+                <a ng-href="{{ item.meetingLink }}" target="_blank" class="btn btn-sm btn-outline-iq py-1 px-2.5 d-inline-flex align-items-center gap-1">
+                  <i class="bi bi-camera-video-fill text-primary"></i>
+                  <span>Join Meeting</span>
+                </a>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-link text-muted p-0 text-decoration-none" ng-click="vm.openRescheduleModal(item)">
+                  Reschedule
+                </button>
+                <span class="text-muted">&bull;</span>
+                <button class="btn btn-sm btn-link text-danger p-0 text-decoration-none" ng-click="vm.cancelInterview(item)">
+                  Cancel
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= SCHEDULE INTERVIEW MODAL ================= -->
+  <div class="modal-backdrop fade show" ng-if="vm.showScheduleModal" style="z-index: 1050;"></div>
+  <div class="modal fade show d-block" ng-if="vm.showScheduleModal" tabindex="-1" style="z-index: 1055;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+        <div class="modal-header border-bottom px-4 py-3">
+          <h2 class="modal-title h5 fw-bold text-dark mb-0">Schedule Candidate Interview</h2>
+          <button type="button" class="btn-close" ng-click="vm.closeScheduleModal()"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form name="scheduleForm" novalidate>
+            
+            <!-- Quick Select from Candidate Pool -->
+            <div class="mb-3" ng-if="vm.applicants.length > 0">
+              <label class="form-label small fw-semibold text-dark">Quick Select from Candidate Pool (Optional)</label>
+              <select class="form-select" ng-model="vm.selectedApplicant" ng-change="vm.onCandidateSelect(vm.selectedApplicant)" ng-options="a as (a.fullName + ' — ' + (a.jobId.title || 'Candidate') + ' (' + (a.matchAnalysis.overallScore || 0) + '% Match)') for a in vm.applicants">
+                <option value="">-- Choose Candidate to Auto-fill --</option>
+              </select>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Candidate Full Name *</label>
+                <input type="text" class="form-control" ng-model="vm.scheduleForm.candidateName" placeholder="e.g. Priya Sharma" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Candidate Email</label>
+                <input type="email" class="form-control" ng-model="vm.scheduleForm.candidateEmail" placeholder="candidate@example.com">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Applied Position / Role *</label>
+                <input type="text" class="form-control" ng-model="vm.scheduleForm.role" placeholder="e.g. Backend Developer" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Interview Round *</label>
+                <select class="form-select" ng-model="vm.scheduleForm.type">
+                  <option value="Technical Round">Technical Round</option>
+                  <option value="HR Round">HR Round</option>
+                  <option value="Behavioral">Behavioral</option>
+                  <option value="Management">Management</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Interview Date *</label>
+                <input type="date" class="form-control" ng-model="vm.scheduleForm.date" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Time Slot *</label>
+                <input type="text" class="form-control" ng-model="vm.scheduleForm.time" placeholder="e.g. 11:00 AM - 12:00 PM" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Primary Interviewer</label>
+                <input type="text" class="form-control" ng-model="vm.scheduleForm.interviewer" placeholder="e.g. Suhas">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Meeting Mode</label>
+                <input type="text" class="form-control" value="Google Meet (Auto-generated link)" disabled>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label small fw-semibold text-dark">Notes / Focus Competencies</label>
+                <textarea class="form-control" rows="2" ng-model="vm.scheduleForm.notes" placeholder="Focus on NLP architectures, semantic embedding models, Python scalability..."></textarea>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer border-top px-4 py-3 bg-light">
+          <button type="button" class="btn btn-outline-secondary" ng-click="vm.closeScheduleModal()">Cancel</button>
+          <button type="button" class="btn btn-primary-iq" ng-click="vm.submitSchedule()">
+            Confirm & Schedule
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= RESCHEDULE MODAL ================= -->
+  <div class="modal-backdrop fade show" ng-if="vm.showRescheduleModal" style="z-index: 1050;"></div>
+  <div class="modal fade show d-block" ng-if="vm.showRescheduleModal" tabindex="-1" style="z-index: 1055;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+        <div class="modal-header border-bottom px-4 py-3">
+          <h2 class="modal-title h5 fw-bold text-dark mb-0">Reschedule Interview</h2>
+          <button type="button" class="btn-close" ng-click="vm.closeRescheduleModal()"></button>
+        </div>
+        <div class="modal-body p-4">
+          <p class="text-muted small mb-3">
+            Rescheduling session for <strong>{{ vm.selectedInterview.candidateName }}</strong> ({{ vm.selectedInterview.role }}).
+          </p>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold text-dark">New Date</label>
+            <input type="date" class="form-control" ng-model="vm.rescheduleForm.date" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold text-dark">New Time Slot</label>
+            <input type="text" class="form-control" ng-model="vm.rescheduleForm.time" placeholder="e.g. 2:00 PM - 3:00 PM" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold text-dark">Reason</label>
+            <input type="text" class="form-control" ng-model="vm.rescheduleForm.reason" placeholder="e.g. Candidate conflict">
+          </div>
+        </div>
+        <div class="modal-footer border-top px-4 py-3 bg-light">
+          <button type="button" class="btn btn-outline-secondary" ng-click="vm.closeRescheduleModal()">Cancel</button>
+          <button type="button" class="btn btn-primary-iq" ng-click="vm.submitReschedule()">
+            Update Schedule
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

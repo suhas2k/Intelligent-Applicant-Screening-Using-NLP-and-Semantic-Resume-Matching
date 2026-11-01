@@ -1,0 +1,259 @@
+<div class="iq-page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <div>
+      <h1 class="iq-page-title mb-1">Analytics</h1>
+      <p class="iq-page-subtitle mb-0">Recruitment performance and hiring insights.</p>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <div class="btn-group btn-group-sm bg-white rounded-pill p-1 shadow-sm border">
+        <button type="button" class="btn btn-sm rounded-pill px-3" 
+                ng-class="vm.timeRange === '6months' ? 'btn-primary-iq' : 'btn-light border-0 text-muted'"
+                ng-click="vm.setTimeRange('6months')">
+          Last 6 Months
+        </button>
+        <button type="button" class="btn btn-sm rounded-pill px-3" 
+                ng-class="vm.timeRange === '30days' ? 'btn-primary-iq' : 'btn-light border-0 text-muted'"
+                ng-click="vm.setTimeRange('30days')">
+          Last 30 Days
+        </button>
+      </div>
+      <button class="btn btn-sm btn-outline-iq" ng-click="vm.loadAnalytics()" title="Refresh metrics">
+        <i class="bi bi-arrow-clockwise"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= 4 KPI METRIC CARDS (Matching IMAGE 2 Screen 8) ================= -->
+  <div class="row g-3 mb-4">
+    
+    <!-- Total Applications -->
+    <div class="col-6 col-lg-3">
+      <div class="iq-analytics-card p-3.5 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <span class="text-muted small fw-medium">Total Applications</span>
+          <span class="badge bg-success-subtle text-success small fw-semibold">{{ vm.kpi.applicationsGrowth }}</span>
+        </div>
+        <div class="d-flex align-items-baseline gap-2">
+          <span class="display-6 fw-bold text-dark" style="font-size: 1.85rem;">{{ vm.kpi.totalApplications | number }}</span>
+        </div>
+        <div class="text-muted mt-1" style="font-size: 0.72rem;">vs. previous period</div>
+      </div>
+    </div>
+
+    <!-- Shortlisted -->
+    <div class="col-6 col-lg-3">
+      <div class="iq-analytics-card p-3.5 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <span class="text-muted small fw-medium">Shortlisted</span>
+          <span class="badge bg-success-subtle text-success small fw-semibold">{{ vm.kpi.shortlistedGrowth }}</span>
+        </div>
+        <div class="d-flex align-items-baseline gap-2">
+          <span class="display-6 fw-bold text-dark" style="font-size: 1.85rem;">{{ vm.kpi.shortlisted | number }}</span>
+        </div>
+        <div class="text-muted mt-1" style="font-size: 0.72rem;">Passed AI threshold</div>
+      </div>
+    </div>
+
+    <!-- Interviews -->
+    <div class="col-6 col-lg-3">
+      <div class="iq-analytics-card p-3.5 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <span class="text-muted small fw-medium">Interviews</span>
+          <span class="badge bg-success-subtle text-success small fw-semibold">{{ vm.kpi.interviewsGrowth }}</span>
+        </div>
+        <div class="d-flex align-items-baseline gap-2">
+          <span class="display-6 fw-bold text-dark" style="font-size: 1.85rem;">{{ vm.kpi.interviews | number }}</span>
+        </div>
+        <div class="text-muted mt-1" style="font-size: 0.72rem;">Technical & behavioral rounds</div>
+      </div>
+    </div>
+
+    <!-- Hired -->
+    <div class="col-6 col-lg-3">
+      <div class="iq-analytics-card p-3.5 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <span class="text-muted small fw-medium">Hired</span>
+          <span class="badge bg-success-subtle text-success small fw-semibold">{{ vm.kpi.hiredGrowth }}</span>
+        </div>
+        <div class="d-flex align-items-baseline gap-2">
+          <span class="display-6 fw-bold text-dark" style="font-size: 1.85rem;">{{ vm.kpi.hired | number }}</span>
+        </div>
+        <div class="text-muted mt-1" style="font-size: 0.72rem;">Offers accepted</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= MIDDLE ROW: APPLICATIONS TREND & MATCH SCORE DISTRIBUTION ================= -->
+  <div class="row g-4 mb-4">
+    
+    <!-- Left Card: Applications Trend (Clean Bar Chart matching IMAGE 2 Screen 8) -->
+    <div class="col-lg-7">
+      <div class="iq-analytics-card p-4 h-100">
+        
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <div>
+            <h2 class="h6 fw-bold text-dark mb-0">Applications Trend</h2>
+            <p class="text-muted small mb-0">Monthly applicant intake volume over time</p>
+          </div>
+          <span class="badge bg-light text-dark border px-2.5 py-1 small">
+            Volume Growth +38%
+          </span>
+        </div>
+
+        <!-- Custom Pure CSS/HTML Responsive Bar Chart -->
+        <div class="bar-chart-container pt-3">
+          <div class="bar-chart-grid">
+            <div class="chart-y-axis">
+              <span>300</span>
+              <span>200</span>
+              <span>100</span>
+              <span>0</span>
+            </div>
+
+            <div class="chart-bars-wrap">
+              <div class="chart-bar-col" ng-repeat="item in vm.monthlyTrend">
+                <div class="chart-bar-tooltip">{{ item.count }} applicants</div>
+                <div class="chart-bar-pillar" ng-style="{'height': item.heightPct + '%'}">
+                  <span class="chart-bar-value">{{ item.count }}</span>
+                </div>
+                <div class="chart-x-label">{{ item.month }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3 text-muted small">
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge-dot" style="background: #8b5cf6;"></span>
+            <span>Monthly Applicant Volume</span>
+          </div>
+          <span>Peak intake: <strong>279 in June</strong></span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right Card: Match Score Distribution (Donut Graphic matching IMAGE 2 Screen 8) -->
+    <div class="col-lg-5">
+      <div class="iq-analytics-card p-4 h-100 d-flex flex-column justify-content-between">
+        
+        <div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+              <h2 class="h6 fw-bold text-dark mb-0">Match Score Distribution</h2>
+              <p class="text-muted small mb-0">NLP semantic scoring breakdown</p>
+            </div>
+            <span class="badge bg-light text-dark border px-2 py-1 small">
+              {{ vm.totalEvaluated }} Evaluated
+            </span>
+          </div>
+
+          <!-- Donut Graphic & Center Metric -->
+          <div class="donut-chart-wrapper my-3 text-center position-relative">
+            <svg viewBox="0 0 100 100" class="donut-svg" style="width: 140px; height: 140px; transform: rotate(-90deg);">
+              <!-- Donut segments -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#f1f5f9" stroke-width="14"></circle>
+              <!-- Segment 1: >85% (28%) -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#6366f1" stroke-width="14"
+                      stroke-dasharray="66.8 172" stroke-dashoffset="0"></circle>
+              <!-- Segment 2: 70-84% (45%) -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#8b5cf6" stroke-width="14"
+                      stroke-dasharray="107.4 131" stroke-dashoffset="-66.8"></circle>
+              <!-- Segment 3: 50-69% (18%) -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#c084fc" stroke-width="14"
+                      stroke-dasharray="42.9 196" stroke-dashoffset="-174.2"></circle>
+              <!-- Segment 4: <50% (9%) -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#cbd5e1" stroke-width="14"
+                      stroke-dasharray="21.5 217" stroke-dashoffset="-217.1"></circle>
+            </svg>
+            <div class="donut-center-metric">
+              <div class="donut-center-val">{{ vm.totalEvaluated }}</div>
+              <div class="donut-center-sub">Candidates</div>
+            </div>
+          </div>
+
+          <!-- Breakdown Legend -->
+          <div class="d-flex flex-column gap-2 mt-3">
+            <div class="d-flex align-items-center justify-content-between p-2 rounded-2" 
+                 style="background: #f8fafc;"
+                 ng-repeat="item in vm.scoreDistribution">
+              <div class="d-flex align-items-center gap-2">
+                <span style="width: 10px; height: 10px; border-radius: 50%; background-color: {{ item.color }}; display: inline-block;"></span>
+                <span class="small fw-semibold text-dark">{{ item.label }}</span>
+                <span class="text-muted small" style="font-size: 0.72rem;">({{ item.description }})</span>
+              </div>
+              <span class="small fw-bold text-dark">{{ item.pct }}%</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="border-top pt-3 text-muted small mt-3">
+          <strong>73%</strong> of total applicants exceed the 70% threshold.
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= BOTTOM ROW: HIRING FUNNEL & TOP SKILLS ================= -->
+  <div class="row g-4">
+    
+    <!-- Hiring Conversion Funnel -->
+    <div class="col-lg-6">
+      <div class="iq-analytics-card p-4 h-100">
+        
+        <h2 class="h6 fw-bold text-dark mb-1">Recruitment Funnel & Conversion</h2>
+        <p class="text-muted small mb-3">Drop-off and conversion rates across hiring lifecycle</p>
+
+        <div class="d-flex flex-column gap-2.5">
+          <div ng-repeat="stage in vm.funnelStages" class="p-2.5 rounded-3 border bg-light-subtle">
+            <div class="d-flex align-items-center justify-content-between mb-1.5">
+              <div class="d-flex align-items-center gap-2">
+                <span class="fw-semibold text-dark small">{{ stage.stage }}</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span class="fw-bold text-dark small">{{ stage.count | number }}</span>
+                <span class="text-muted small" style="font-size: 0.75rem;">({{ stage.pct }}%)</span>
+              </div>
+            </div>
+            <div class="progress" style="height: 6px; background-color: #e2e8f0;">
+              <div class="progress-bar rounded-pill" role="progressbar" 
+                   ng-style="{'width': stage.pct + '%', 'background-color': stage.color}"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Top In-Demand Skills Frequency -->
+    <div class="col-lg-6">
+      <div class="iq-analytics-card p-4 h-100">
+        
+        <h2 class="h6 fw-bold text-dark mb-1">Top Requested Skills & Frequency</h2>
+        <p class="text-muted small mb-3">Key competencies parsed across active job descriptions</p>
+
+        <div class="d-flex flex-column gap-2.5">
+          <div ng-repeat="skill in vm.topSkills" class="p-2.5 rounded-3 border bg-white">
+            <div class="d-flex align-items-center justify-content-between mb-1.5">
+              <span class="fw-semibold text-dark small">{{ skill.name }}</span>
+              <span class="badge bg-light text-dark border small">{{ skill.count }} jobs</span>
+            </div>
+            <div class="progress" style="height: 6px; background-color: #f1f5f9;">
+              <div class="progress-bar rounded-pill" role="progressbar" 
+                   ng-style="{'width': skill.pct + '%', 'background-color': '#7c3aed'}"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

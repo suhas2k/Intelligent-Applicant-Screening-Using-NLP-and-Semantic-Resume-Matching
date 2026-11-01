@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { userRepo, jobRepo, applicantRepo, memoryStore } = require('../models/store');
+const { userRepo, jobRepo, applicantRepo, interviewRepo, teamRepo, settingsRepo, memoryStore } = require('../models/store');
 const { analyzeMatch } = require('../services/matchingEngine.service');
 const { parseResume } = require('../services/nlpParser.service');
 
@@ -549,6 +549,128 @@ async function seedData() {
 
       console.log(`[Seed] Successfully seeded ${createdCount} synthetic applicants with existing matching engine.`);
     }
+  }
+
+  // Seed starter interviews if none exist
+  const existingInterviews = await interviewRepo.find({});
+  if (existingInterviews.length === 0) {
+    const starterInterviews = [
+      {
+        candidateName: 'Priya Sharma',
+        candidateEmail: 'priya.sharma.ai@outlook.com',
+        role: 'Lead NLP & Machine Learning Engineer',
+        department: 'AI & Data Science',
+        date: '2026-11-05',
+        time: '10:00 AM - 11:00 AM',
+        type: 'Technical Round',
+        interviewer: 'Suhas',
+        status: 'Scheduled',
+        score: 83.3,
+        meetingLink: 'https://meet.google.com/iq-nlp-round1',
+        notes: 'Focus on NLP embeddings and transformer fine-tuning depth.',
+        organization: 'TechCorp Technologies'
+      },
+      {
+        candidateName: 'David Kim',
+        candidateEmail: 'david.kim.frontend@yahoo.com',
+        role: 'Junior Frontend Developer (AngularJS & Web UI)',
+        department: 'Design & UX',
+        date: '2026-11-06',
+        time: '2:30 PM - 3:30 PM',
+        type: 'Behavioral',
+        interviewer: 'Neha Reddy',
+        status: 'Scheduled',
+        score: 79.8,
+        meetingLink: 'https://meet.google.com/iq-culture-fit',
+        notes: 'Culture fit and UI/UX design system comprehension.',
+        organization: 'TechCorp Technologies'
+      },
+      {
+        candidateName: 'Casey Kim',
+        candidateEmail: 'casey.kim.r_001348@synthetic-talent.io',
+        role: 'Software Engineer (Travel)',
+        department: 'Engineering',
+        date: '2026-11-08',
+        time: '11:00 AM - 12:00 PM',
+        type: 'Technical Round',
+        interviewer: 'Suhas',
+        status: 'Scheduled',
+        score: 79.5,
+        meetingLink: 'https://meet.google.com/iq-eng-round2',
+        notes: 'Distributed systems and API latency evaluation.',
+        organization: 'TechCorp Technologies'
+      },
+      {
+        candidateName: 'Alex Morgan',
+        candidateEmail: 'alex.morgan.dev@gmail.com',
+        role: 'Senior Full Stack Engineer (MERN)',
+        department: 'Platform Engineering',
+        date: '2026-11-10',
+        time: '3:30 PM - 4:30 PM',
+        type: 'Management',
+        interviewer: 'Ravin Kumar',
+        status: 'Scheduled',
+        score: 78.9,
+        meetingLink: 'https://meet.google.com/iq-mgmt-round',
+        notes: 'Architectural leadership and full-stack system scalability.',
+        organization: 'TechCorp Technologies'
+      }
+    ];
+    for (const item of starterInterviews) {
+      await interviewRepo.create(item);
+    }
+    console.log('[Seed] Seeded starter interview sessions.');
+  }
+
+  // Seed starter team members if none exist
+  const existingTeam = await teamRepo.find({});
+  if (existingTeam.length === 0) {
+    const starterTeam = [
+      {
+        name: 'Suhas (You)',
+        email: 'suhas@techcorp.com',
+        role: 'Super Admin',
+        accessScope: 'Full Access (All Modules)',
+        status: 'Active',
+        lastActive: 'Just now',
+        avatarBg: '#6366f1',
+        organization: 'TechCorp Technologies'
+      },
+      {
+        name: 'Neha Reddy',
+        email: 'neha.reddy@techcorp.com',
+        role: 'Hiring Manager',
+        accessScope: 'Manage Jobs, Candidates',
+        status: 'Active',
+        lastActive: '2 hours ago',
+        avatarBg: '#06b6d4',
+        organization: 'TechCorp Technologies'
+      },
+      {
+        name: 'Ravin Kumar',
+        email: 'ravin.kumar@techcorp.com',
+        role: 'Interviewer',
+        accessScope: 'View Candidates, Interviews',
+        status: 'Active',
+        lastActive: 'Yesterday',
+        avatarBg: '#ec4899',
+        organization: 'TechCorp Technologies'
+      },
+      {
+        name: 'Ananya Iyer',
+        email: 'ananya.iyer@techcorp.com',
+        role: 'Technical Lead',
+        accessScope: 'Candidate Evaluation & Scoring',
+        status: 'Active',
+        lastActive: '3 days ago',
+        avatarBg: '#8b5cf6',
+        organization: 'TechCorp Technologies'
+      }
+    ];
+    for (const m of starterTeam) {
+      await teamRepo.create(m);
+    }
+    console.log('[Seed] Seeded starter organization team members.');
   }
 
   console.log('[Seed] Seeding completed.');

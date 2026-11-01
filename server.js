@@ -14,6 +14,9 @@ const authRoutes = require('./routes/auth.routes');
 const jobRoutes = require('./routes/job.routes');
 const applicantRoutes = require('./routes/applicant.routes');
 const analyticsRoutes = require('./routes/analytics.routes');
+const interviewRoutes = require('./routes/interview.routes');
+const teamRoutes = require('./routes/team.routes');
+const settingsRoutes = require('./routes/settings.routes');
 
 const app = express();
 
@@ -23,7 +26,7 @@ app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
 // Health check endpoint - immediate 200 OK without blocking on DB initialization
-app.get(['/api/health', '/health', '/api', '/api/'], (req, res) => {
+app.get(['/api/health', '/health', '/api', '/api/', '/api/index.js', '/api/index'], (req, res) => {
   res.json({
     status: 'ok',
     name: 'Intelligent Applicant Screening API',
@@ -87,6 +90,15 @@ app.use('/applicants', applicantRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/analytics', analyticsRoutes);
 
+app.use('/api/interviews', interviewRoutes);
+app.use('/interviews', interviewRoutes);
+
+app.use('/api/team', teamRoutes);
+app.use('/team', teamRoutes);
+
+app.use('/api/settings', settingsRoutes);
+app.use('/settings', settingsRoutes);
+
 // SPA fallback: send index.html for non-API client routes
 app.use((req, res, next) => {
   if (req.method === 'GET' && !req.path.startsWith('/api')) {
@@ -118,7 +130,7 @@ async function startServer() {
 
   await ensureInitialized();
 
-  const server = app.listen(PORT, () => {
+  const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`\n============================================================`);
     console.log(`🚀 Server listening on http://localhost:${PORT}`);
     console.log(`📄 Recruiter Portal: http://localhost:${PORT}/#!/dashboard`);

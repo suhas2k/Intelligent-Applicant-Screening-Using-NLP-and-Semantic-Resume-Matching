@@ -1,9 +1,20 @@
+/**
+ * ResumeIQ - Intelligent Applicant Screening
+ * Authentication Controller
+ * 
+ * Handles:
+ * - Email OTP Request, Resend, and Verification
+ * - Traditional Email & Password Login and Organization Registration
+ * - Google Sign-In (Tokeninfo validation & OAuth profile handling)
+ * - Recruiter Session & Profile (/api/auth/me)
+ */
+
 const { userRepo } = require('../models/store');
 const { generateToken } = require('../middleware/auth.middleware');
 const otpService = require('../services/otp.service');
-const { getSmtpConfig } = require('../services/email.service');
+const { getSmtpConfig, verifySmtp } = require('../services/email.service');
 
-// Helper to decode Google ID Token JWT payload safely
+// Helper to decode Google ID Token JWT payload safely if offline
 function parseGoogleIdToken(token) {
   try {
     if (!token || typeof token !== 'string') return null;
@@ -20,12 +31,25 @@ function parseGoogleIdToken(token) {
   }
 }
 
-// Live Google token validation against Google OAuth2 tokeninfo endpoint
+// Live Google token validation against Google's official OAuth2 tokeninfo endpoint
 async function verifyGoogleTokenWithGoogle(idToken) {
   try {
     const response = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
     if (response.ok) {
       const data = await response.json();
+      // Verify issuer
+      if (data.iss !== 'accounts.google.com' && data.iss !== 'https://accounts.google.com') {
+        return null;
+      }
+      // Check expiry
+      const now = Math.floor(Date.now() / 1000);
+      if (data.exp && parseInt(data.exp, 10) < now) {
+        return null;
+      }
+      // Check audience if client ID is configured
+      if (process.env.GOOGLE_CLIENT_ID && data.aud && data.aud !== process.env.GOOGLE_CLIENT_ID) {
+        console.warn('[Google Auth] Token aud mismatch with GOOGLE_CLIENT_ID');
+      }
       return data;
     }
     return null;
@@ -54,26 +78,42 @@ async function verifyGoogleAccessToken(accessToken) {
 
 // ---------------- 1. EMAIL & PASSWORD AUTHENTICATION ----------------
 
-// Register a new recruiter
+// Register a new organization / recruiter
 exports.register = async (req, res, next) => {
   try {
-    const { name, email, password, company, role } = req.body;
+    const { name, email, password, confirmPassword, company, phone, role } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Name, email, and password are required fields.'
+        message: 'Recruiter name, work email, and password are required fields.'
+      });
+    }
+
+    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide a valid corporate email format.'
       });
     }
 
     if (password.length < 6) {
       return res.status(400).json({
         success: false,
-        message: 'Password must be at least 6 characters long.'
+        message: 'Password must be at least 6 characters in length.'
       });
     }
 
-    const existingUser = await userRepo.findByEmail(email);
+    if (confirmPassword && password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Passwords do not match. Please ensure both passwords match.'
+      });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const existingUser = await userRepo.findByEmail(normalizedEmail);
     if (existingUser) {
       return res.status(400).json({
         success: false,
@@ -82,10 +122,11 @@ exports.register = async (req, res, next) => {
     }
 
     const newUser = await userRepo.create({
-      name,
-      email,
+      name: name.trim(),
+      email: normalizedEmail,
       password,
-      company: company || 'Acme Talent Corp',
+      phone: phone ? phone.trim() : '',
+      company: company ? company.trim() : 'Talent Acquisition Team',
       role: role || 'recruiter',
       authProvider: 'local'
     });
@@ -118,11 +159,12 @@ exports.login = async (req, res, next) => {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide both email and password.'
+        message: 'Please provide both work email and password.'
       });
     }
 
-    const user = await userRepo.findByEmail(email);
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await userRepo.findByEmail(normalizedEmail);
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -134,7 +176,7 @@ exports.login = async (req, res, next) => {
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials. Password does not match.'
+        message: 'Invalid credentials. The password you entered is incorrect.'
       });
     }
 
@@ -159,73 +201,88 @@ exports.login = async (req, res, next) => {
   }
 };
 
-// ---------------- 2. OTP AUTHENTICATION ----------------
+// ---------------- 2. REAL EMAIL OTP AUTHENTICATION ----------------
 
-// Send OTP to email or phone
+// Send 6-Digit OTP to email address
 exports.sendOTP = async (req, res, next) => {
   try {
     const { email, phone } = req.body;
-    const identifier = email || phone;
+    const targetEmail = (email || phone || '').toLowerCase().trim();
 
-    if (!identifier) {
+    if (!targetEmail) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide a valid work email or phone number to receive an OTP.'
+        message: 'Please enter a valid work email address to receive a verification code.'
       });
     }
 
-    if (email) {
-      const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
-      if (!emailRegex.test(email)) {
-        return res.status(400).json({
-          success: false,
-          message: 'Please provide a valid email format.'
-        });
-      }
+    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
+    if (!emailRegex.test(targetEmail)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email address format. Please enter a valid email.'
+      });
     }
 
-    const otpResult = await otpService.requestOTP(identifier);
-    const existingUser = await userRepo.findByEmail(identifier) || (phone ? await userRepo.findByPhone(identifier) : null);
-
-    const isRealDelivery = Boolean(otpResult.emailResult && otpResult.emailResult.isRealDelivery);
-    const previewUrl = otpResult.emailResult?.previewUrl || null;
+    // Call secure OTP generator and genuine email delivery
+    const otpResult = await otpService.requestOTP(targetEmail);
+    const existingUser = await userRepo.findByEmail(targetEmail);
 
     res.json({
       success: true,
-      message: isRealDelivery
-        ? `Security verification code dispatched to your email inbox (${identifier}).`
-        : `Verification code sent to ${identifier}.`,
-      identifier: otpResult.identifier,
+      message: `Security verification code dispatched to your email inbox (${targetEmail}).`,
+      identifier: targetEmail,
       expiresInSeconds: otpResult.expiresInSeconds,
+      cooldownSeconds: otpResult.cooldownSeconds,
       isExistingUser: Boolean(existingUser),
-      previewUrl,
-      isRealDelivery
+      isRealDelivery: true
     });
   } catch (error) {
     if (error.status === 429) {
       return res.status(429).json({
         success: false,
-        message: error.message
+        message: error.message,
+        remainingSeconds: error.remainingSeconds || 60
+      });
+    }
+    if (error.status === 503) {
+      return res.status(503).json({
+        success: false,
+        message: 'Email service is not configured. Please set SMTP_USER and SMTP_PASS in the backend environment.'
+      });
+    }
+    if (error.status === 502) {
+      return res.status(502).json({
+        success: false,
+        message: error.message || 'Unable to deliver verification code. Please check your SMTP configuration.'
       });
     }
     next(error);
   }
 };
 
-// Verify OTP and issue JWT session
+// Resend OTP (with 60-second cooldown check)
+exports.resendOTP = async (req, res, next) => {
+  // Delegates to sendOTP to guarantee cooldown enforcement and fresh secure generation
+  return exports.sendOTP(req, res, next);
+};
+
+// Verify 6-digit OTP and issue recruiter JWT session
 exports.verifyOTP = async (req, res, next) => {
   try {
     const { email, phone, otp, name, company } = req.body;
-    const identifier = email || phone;
+    const targetEmail = (email || phone || '').toLowerCase().trim();
+    const enteredOtp = (otp || '').toString().trim();
 
-    if (!identifier || !otp) {
+    if (!targetEmail || !enteredOtp) {
       return res.status(400).json({
         success: false,
-        message: 'Both email/phone and 6-digit OTP code are required.'
+        message: 'Both work email and 6-digit verification code are required.'
       });
     }
 
-    const verification = otpService.verifyOTP(identifier, otp);
+    // Validate code cryptographically
+    const verification = otpService.verifyOTP(targetEmail, enteredOtp);
     if (!verification.valid) {
       return res.status(400).json({
         success: false,
@@ -233,22 +290,17 @@ exports.verifyOTP = async (req, res, next) => {
       });
     }
 
-    // Locate or auto-create recruiter profile
-    let user = await userRepo.findByEmail(identifier);
-    if (!user && phone) {
-      user = await userRepo.findByPhone(identifier);
-    }
+    // Locate or auto-provision recruiter account
+    let user = await userRepo.findByEmail(targetEmail);
 
     if (!user) {
-      // Create new recruiter account automatically via OTP
-      const fallbackName = (name || (identifier.includes('@') ? identifier.split('@')[0] : 'Recruiter')).trim();
+      const fallbackName = (name || targetEmail.split('@')[0]).trim();
       const formattedName = fallbackName.charAt(0).toUpperCase() + fallbackName.slice(1);
 
       user = await userRepo.create({
         name: formattedName,
-        email: identifier.includes('@') ? identifier : `${identifier.replace(/\D/g, '')}@recruiter.local`,
-        phone: phone || (identifier.includes('@') ? '' : identifier),
-        company: company || 'Talent Acquisition Team',
+        email: targetEmail,
+        company: company ? company.trim() : 'Talent Acquisition Team',
         role: 'recruiter',
         authProvider: 'otp'
       });
@@ -258,7 +310,7 @@ exports.verifyOTP = async (req, res, next) => {
 
     res.json({
       success: true,
-      message: 'Signed in successfully via OTP.',
+      message: 'Signed in successfully via email verification code.',
       token,
       user: {
         id: user._id,
@@ -284,7 +336,7 @@ exports.googleAuth = async (req, res, next) => {
     let email, name, googleId, avatar;
 
     if (credential) {
-      // 1. First attempt genuine Google token verification with Google's tokeninfo API
+      // 1. Verify with Google's official tokeninfo endpoint
       const liveGoogleToken = await verifyGoogleTokenWithGoogle(credential);
       if (liveGoogleToken && liveGoogleToken.email) {
         email = liveGoogleToken.email.toLowerCase().trim();
@@ -292,7 +344,7 @@ exports.googleAuth = async (req, res, next) => {
         googleId = liveGoogleToken.sub;
         avatar = liveGoogleToken.picture || null;
       } else {
-        // Fallback: safely parse JWT payload
+        // Fallback: parse ID token payload if tokeninfo unreachable
         const payload = parseGoogleIdToken(credential);
         if (!payload || !payload.email) {
           return res.status(400).json({
@@ -319,7 +371,7 @@ exports.googleAuth = async (req, res, next) => {
       googleId = userinfo.sub || userinfo.id;
       avatar = userinfo.picture || null;
     } else if (googleProfile && googleProfile.email) {
-      // 3. Direct Google Profile from account chooser
+      // 3. User account profile from Google chooser
       email = googleProfile.email.toLowerCase().trim();
       name = googleProfile.name || email.split('@')[0];
       googleId = googleProfile.googleId || googleProfile.id || googleProfile.sub || ('google_' + Date.now());
@@ -338,7 +390,6 @@ exports.googleAuth = async (req, res, next) => {
     }
 
     if (user) {
-      // Update Google metadata if needed
       if (!user.googleId || (avatar && !user.avatar)) {
         await userRepo.findByIdAndUpdate(user._id, {
           googleId: user.googleId || googleId,
@@ -346,7 +397,6 @@ exports.googleAuth = async (req, res, next) => {
         });
       }
     } else {
-      // Create new recruiter account for this Google user
       user = await userRepo.create({
         name,
         email,
@@ -406,35 +456,7 @@ exports.setGoogleClientId = async (req, res) => {
   });
 };
 
-// Update SMTP Mail Configuration dynamically
-exports.setMailConfig = async (req, res) => {
-  const { smtpUser, smtpPass, smtpHost, smtpPort } = req.body;
-  if (smtpUser && typeof smtpUser === 'string') {
-    process.env.SMTP_USER = smtpUser.trim();
-    process.env.EMAIL_FROM = `"ResumeIQ Security" <${smtpUser.trim()}>`;
-  }
-  if (smtpPass && typeof smtpPass === 'string') {
-    process.env.SMTP_PASS = smtpPass.trim();
-  }
-  if (smtpHost && typeof smtpHost === 'string') {
-    process.env.SMTP_HOST = smtpHost.trim();
-  }
-  if (smtpPort) {
-    process.env.SMTP_PORT = String(smtpPort).trim();
-  }
-
-  const smtpConfig = getSmtpConfig();
-  res.json({
-    success: true,
-    message: smtpConfig
-      ? 'Live SMTP credentials configured successfully! Emails will be sent directly via your SMTP account.'
-      : 'SMTP user configured. Provide a 16-character App Password to activate direct delivery.',
-    hasSmtpConfig: Boolean(smtpConfig),
-    smtpUser: process.env.SMTP_USER || null
-  });
-};
-
-// ---------------- 4. CURRENT PROFILE ----------------
+// ---------------- 4. CURRENT AUTHENTICATED PROFILE ----------------
 
 // Get current logged-in recruiter profile
 exports.getMe = async (req, res) => {

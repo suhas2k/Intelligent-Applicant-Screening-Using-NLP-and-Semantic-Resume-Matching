@@ -72,7 +72,7 @@ const applicantSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['New', 'Reviewed', 'Shortlisted', 'Rejected'],
+    enum: ['New', 'Reviewed', 'Shortlisted', 'Interview', 'Hired', 'Rejected'],
     default: 'New',
     index: true
   },

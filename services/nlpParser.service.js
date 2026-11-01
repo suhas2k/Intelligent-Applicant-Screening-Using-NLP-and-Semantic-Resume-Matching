@@ -137,14 +137,20 @@ function extractCandidateName(text, filename) {
   ];
 
   for (let i = 0; i < Math.min(lines.length, 6); i++) {
-    const line = lines[i];
-    const words = line.split(/\s+/);
+    const rawLine = lines[i];
+    // Check if line contains a title separator like "Aarav Mehta - Senior Full Stack Engineer" or "Aarav Mehta | Tech Lead"
+    const parts = rawLine.split(/\s*[-|–•]\s*/);
+    const candidateNamePart = parts[0].trim();
     
-    // Check if line looks like a valid person name (2 to 4 words, reasonable length, alphabetic)
-    const isIgnore = ignorePatterns.some(p => p.test(line));
-    if (!isIgnore && words.length >= 2 && words.length <= 4 && line.length < 40) {
-      if (/^[a-zA-Z\s.'-]+$/.test(line)) {
-        return line;
+    const targetCandidate = (parts.length > 1 && candidateNamePart.length >= 3 && candidateNamePart.length <= 35)
+      ? candidateNamePart 
+      : rawLine;
+
+    const words = targetCandidate.split(/\s+/);
+    const isIgnore = ignorePatterns.some(p => p.test(targetCandidate));
+    if (!isIgnore && words.length >= 2 && words.length <= 4 && targetCandidate.length < 40) {
+      if (/^[a-zA-Z\s.'-]+$/.test(targetCandidate)) {
+        return targetCandidate;
       }
     }
   }
@@ -155,8 +161,9 @@ function extractCandidateName(text, filename) {
     let base = path.basename(filename, ext);
     // Remove timestamps or random hashes (e.g., "-1729000-12345")
     base = base.replace(/-\d+-\d+$/g, '');
+    base = base.replace(/\b\d+\s*(?:kb|mb|bytes?)\b/gi, '').trim();
     base = base.replace(/[_-]+/g, ' ').trim();
-    base = base.replace(/\b(resume|cv|profile)\b/gi, '').trim();
+    base = base.replace(/\b(resume|cv|profile|sample|test)\b/gi, '').trim();
     if (base.length > 2) {
       return base.replace(/\b\w/g, c => c.toUpperCase());
     }

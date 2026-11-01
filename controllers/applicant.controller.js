@@ -18,69 +18,166 @@ exports.uploadResume = async (req, res, next) => {
     const { jobId, fullName: providedName, email: providedEmail, phone: providedPhone } = req.body;
 
     if (!jobId) {
-      // Remove uploaded file if jobId is missing
       if (req.file.path && fs.existsSync(req.file.path)) {
-        fs.unlinkSync(req.file.path);
+        try { fs.unlinkSync(req.file.path); } catch (e) {}
       }
       return res.status(400).json({
         success: false,
-        message: 'Job ID is required to associate the applicant with a position.'
+        message: 'Please select a target job position to match the resume against.'
       });
     }
 
     const job = await jobRepo.findById(jobId);
     if (!job) {
       if (req.file.path && fs.existsSync(req.file.path)) {
-        fs.unlinkSync(req.file.path);
+        try { fs.unlinkSync(req.file.path); } catch (e) {}
       }
       return res.status(404).json({
         success: false,
-        message: 'Associated job not found.'
+        message: 'The selected target job position was not found.'
       });
     }
 
-    // 1. Extract text from uploaded document (PDF/DOCX)
-    const rawText = await extractResumeText(req.file.path, req.file.originalname);
+    // 1. Validate file extension
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    const allowedExts = ['.pdf', '.docx', '.doc', '.txt'];
+    if (!allowedExts.includes(ext)) {
+      if (req.file.path && fs.existsSync(req.file.path)) {
+        try { fs.unlinkSync(req.file.path); } catch (e) {}
+      }
+      return res.status(400).json({
+        success: false,
+        message: `Unsupported file extension "${ext}". Only PDF (.pdf) and Word documents (.docx, .doc) are permitted.`
+      });
+    }
 
-    // 2. Parse candidate contact, skills, education, and experience
+    // 2. Extract text from uploaded document (PDF/DOCX)
+    let rawText;
+    try {
+      rawText = await extractResumeText(req.file.path, req.file.originalname);
+    } catch (parseError) {
+      if (req.file.path && fs.existsSync(req.file.path)) {
+        try { fs.unlinkSync(req.file.path); } catch (e) {}
+      }
+      return res.status(422).json({
+        success: false,
+        message: parseError.message || 'Failed to extract text from the uploaded resume.'
+      });
+    }
+
+    if (!rawText || rawText.trim().length === 0) {
+      if (req.file.path && fs.existsSync(req.file.path)) {
+        try { fs.unlinkSync(req.file.path); } catch (e) {}
+      }
+      return res.status(422).json({
+        success: false,
+        message: 'No readable text could be extracted from this document. If this is an image-only scan, please upload a text-based PDF or DOCX file.'
+      });
+    }
+
+    // 3. Parse candidate contact, skills, education, and experience via NLP engine
     const extraJobSkills = [...(job.requiredSkills || []), ...(job.preferredSkills || [])];
     const parsed = parseResume(rawText, req.file.originalname, extraJobSkills);
 
-    // 3. Compute semantic NLP match against Job
+    // 4. Candidate Name & Contact Resolution (prefer genuine parsed info over placeholders)
+    let candidateName = parsed.fullName;
+    if (providedName && providedName.trim() && !providedName.includes('.pdf') && !providedName.includes('.docx')) {
+      candidateName = providedName.trim();
+    }
+    if (!candidateName || candidateName.toLowerCase() === 'candidate') {
+      const base = path.basename(req.file.originalname, ext).replace(/[_.-]/g, ' ').trim();
+      candidateName = base ? base.replace(/\b\w/g, c => c.toUpperCase()) : 'Candidate';
+    }
+
+    let candidateEmail = parsed.email || '';
+    if (providedEmail && providedEmail.trim() && !providedEmail.includes('screened.iq') && !providedEmail.includes('talent.iq')) {
+      candidateEmail = providedEmail.trim();
+    }
+
+    let candidatePhone = providedPhone?.trim() || parsed.phone || '';
+
+    // 5. Compute semantic NLP match against Target Job
     const matchAnalysis = analyzeMatch(job, parsed, rawText);
 
-    // 4. Save applicant
-    const applicant = await applicantRepo.create({
-      jobId: job._id,
-      fullName: providedName?.trim() || parsed.fullName || 'Candidate',
-      email: providedEmail?.trim() || parsed.email || '',
-      phone: providedPhone?.trim() || parsed.phone || '',
-      location: '',
-      resumeFile: {
-        originalName: req.file.originalname,
-        filename: req.file.filename,
-        mimeType: req.file.mimetype,
-        size: req.file.size,
-        path: req.file.path
-      },
-      extractedText: rawText,
-      extractedData: {
-        skills: parsed.skills,
-        experienceYears: parsed.experienceYears,
-        educationLevel: parsed.educationLevel,
-        degreeName: parsed.degreeName,
-        contact: parsed.contact
-      },
-      matchAnalysis,
-      status: 'New',
-      recruiterNotes: '',
-      uploadedBy: req.user._id
-    });
+    // 6. Check for duplicate record for the same job and candidate
+    let existingApplicant = null;
+    if (candidateEmail) {
+      existingApplicant = await applicantRepo.findOne({
+        jobId: job._id,
+        email: candidateEmail.toLowerCase()
+      });
+    }
+    if (!existingApplicant && req.file.originalname) {
+      existingApplicant = await applicantRepo.findOne({
+        jobId: job._id,
+        'resumeFile.originalName': req.file.originalname
+      });
+    }
+
+    let applicant;
+    if (existingApplicant) {
+      applicant = await applicantRepo.update(existingApplicant._id, {
+        fullName: candidateName,
+        email: candidateEmail,
+        phone: candidatePhone,
+        resumeFile: {
+          originalName: req.file.originalname,
+          filename: req.file.filename,
+          mimeType: req.file.mimetype,
+          size: req.file.size,
+          path: req.file.path
+        },
+        extractedText: rawText,
+        extractedData: {
+          skills: parsed.skills,
+          experienceYears: parsed.experienceYears,
+          educationLevel: parsed.educationLevel,
+          degreeName: parsed.degreeName,
+          contact: parsed.contact
+        },
+        matchAnalysis,
+        updatedAt: new Date()
+      });
+    } else {
+      applicant = await applicantRepo.create({
+        jobId: job._id,
+        fullName: candidateName,
+        email: candidateEmail,
+        phone: candidatePhone,
+        location: '',
+        resumeFile: {
+          originalName: req.file.originalname,
+          filename: req.file.filename,
+          mimeType: req.file.mimetype,
+          size: req.file.size,
+          path: req.file.path
+        },
+        extractedText: rawText,
+        extractedData: {
+          skills: parsed.skills,
+          experienceYears: parsed.experienceYears,
+          educationLevel: parsed.educationLevel,
+          degreeName: parsed.degreeName,
+          contact: parsed.contact
+        },
+        matchAnalysis,
+        status: 'New',
+        recruiterNotes: '',
+        uploadedBy: req.user ? req.user._id : null
+      });
+    }
 
     res.status(201).json({
       success: true,
-      message: 'Resume parsed and screened successfully.',
-      applicant
+      message: existingApplicant 
+        ? `Resume re-screened and candidate record updated for ${candidateName}.` 
+        : `Resume parsed and screened successfully for ${candidateName}.`,
+      isUpdate: Boolean(existingApplicant),
+      applicant: {
+        ...applicant,
+        jobTitle: job.title,
+        jobDepartment: job.department
+      }
     });
   } catch (error) {
     // Clean up file if processing failed

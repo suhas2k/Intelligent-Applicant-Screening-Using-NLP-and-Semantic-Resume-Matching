@@ -54,12 +54,53 @@ An intelligent recruitment screening web application built with **Node.js**, **E
 
 | Layer | Technologies |
 |---|---|
-| **Frontend** | AngularJS 1.8.2 (`angular.js`, `angular-route.js`), HTML5, CSS3, Bootstrap 5.3.3, Bootstrap Icons |
+| **Frontend UI** | AngularJS 1.8.2 (`angular.js`, `angular-route.js`), HTML5, CSS3, Bootstrap 5.3.3, Bootstrap Icons |
+| **Design System** | **Stitch UI Design System** (*"Precision Editorial Intelligence"* tokens: Midnight Navy `#0c1527`, Radiant Slate `#faf8ff`, Precision Indigo `#4f46e5`, Emerald `#10b981`, Google Fonts *Plus Jakarta Sans* & *Inter*, Material Symbols) |
 | **Backend** | Node.js (v18+ / v20+ / v24+), Express.js 5 |
 | **Database** | MongoDB with Mongoose (Dual-mode: connects to live MongoDB or operates with in-memory fallback store) |
 | **Security** | `bcryptjs` (password hashing), `jsonwebtoken` (JWT bearer tokens), `cors` |
 | **Document Processing** | `multer` (multipart upload), `pdf-parse` (PDF extraction), `mammoth` (DOCX extraction) |
 | **NLP Engine** | `natural` (Porter Stemmer, TF-IDF, Tokenizer), custom semantic synonym clusters & domain taxonomy |
+
+---
+
+## 📸 Visual Results & Stitch UI Showcase (Documentation Figures)
+
+The user interface is engineered with the **Stitch Design System** (*Precision Editorial Intelligence*), translating modern recruitment intelligence into high-clarity data dashboards, glassmorphic metric cards, and transparent semantic score dials.
+
+### Figure 1: Recruiter Executive Intelligence Dashboard
+![Recruiter Executive Dashboard](docs/screenshots/2_recruiter_dashboard.png)
+> **Key Elements**: Active requisitions KPI counter, screened resume volume, candidate conversion funnel, match score distribution, and top-tier candidate leaderboard with live benchmark tags.
+
+---
+
+### Figure 2: Recruiter Login & Authentication Gateway
+![Recruiter Login & Gateway](docs/screenshots/1_login_gateway.png)
+> **Key Elements**: Split-canvas Stitch architecture, 1-click Google OAuth authentication, dual OTP email & direct password verification tabs, and platform architecture highlights.
+
+---
+
+### Figure 3: Requisitions & Job Management Directory
+![Jobs Directory](docs/screenshots/3_jobs_directory.png)
+> **Key Elements**: Multi-card job requisition directory, required core competencies, candidate pipeline counters, and direct action triggers for resume screening and requirement editing.
+
+---
+
+### Figure 4: Job Details, Scoring Weights & Screening Center
+![Job Screening Center](docs/screenshots/4_job_details_screening.png)
+> **Key Elements**: Granular requirement sliders (Skills 40%, TF-IDF Similarity 30%, Experience 20%, Education 10%), drag-and-drop PDF/DOCX resume upload dropzone, pre-loaded test profiles, and candidate pipeline list.
+
+---
+
+### Figure 5: Global Talent Pool & Applicant Directory
+![Applicant Directory](docs/screenshots/5_applicant_directory.png)
+> **Key Elements**: Multi-parameter applicant filtering (by job requisition, recruitment status, and match score threshold slider), Hugging Face synthetic benchmark verification badges (`HF Synth R_002908`), and quick dossier triggers.
+
+---
+
+### Figure 6: Explainable Candidate AI Dossier & Match Breakdown
+![Applicant Profile Dossier](docs/screenshots/6_applicant_dossier.png)
+> **Key Elements**: Dynamic circular SVG match dial (0–100 score), multi-factor sub-score progress bars (Skills, Semantic Sim, Experience, Education), gap analysis (matched vs missing competencies), extracted raw resume inspector, and internal recruiter notepad.
 
 ---
 
@@ -104,6 +145,16 @@ An intelligent recruitment screening web application built with **Node.js**, **E
 ├── scripts/
 │   ├── seed.js                    # Demo recruiter and starter jobs seeder
 │   └── generate_sample_pdf.js     # Helper to generate test PDF files
+├── stitch_screens/                # Canonical Stitch MCP visual screen designs (HTML/Tailwind)
+│   ├── 1_login_and_registration.html
+│   ├── 2_recruiter_dashboard.html
+│   ├── 3_jobs_directory.html
+│   ├── 4_job_details_and_screening.html
+│   ├── 5_applicant_directory.html
+│   └── 6_applicant_profile_dossier.html
+├── docs/                          # Documentation & project results
+│   ├── PROJECT_RESULTS_DOCUMENTATION.md # Academic & technical results report
+│   └── screenshots/               # High-resolution full-screen captures (Figures 1-6)
 └── public/                        # Frontend Single Page Application
     ├── index.html                 # Master SPA entry point
     ├── css/

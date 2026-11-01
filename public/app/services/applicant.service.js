@@ -36,43 +36,79 @@
         .catch(handleError);
     }
 
-    function uploadResume(file, jobId, candidateInfo) {
-      const formData = new FormData();
-      formData.append('resume', file);
-      formData.append('jobId', jobId);
+    function uploadResume(file, jobId, candidateInfo, onProgress) {
+      let formData;
+      if (file instanceof FormData) {
+        formData = file;
+      } else {
+        formData = new FormData();
+        formData.append('resume', file);
+        if (jobId) formData.append('jobId', jobId);
 
-      if (candidateInfo) {
-        if (candidateInfo.fullName) formData.append('fullName', candidateInfo.fullName);
-        if (candidateInfo.email) formData.append('email', candidateInfo.email);
-        if (candidateInfo.phone) formData.append('phone', candidateInfo.phone);
+        if (candidateInfo) {
+          if (candidateInfo.fullName) formData.append('fullName', candidateInfo.fullName);
+          if (candidateInfo.email) formData.append('email', candidateInfo.email);
+          if (candidateInfo.phone) formData.append('phone', candidateInfo.phone);
+        }
       }
 
-      return $http.post('/api/applicants/upload', formData, {
+      const reqConfig = {
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
-      })
-      .then(function (res) {
-        return res.data;
-      })
-      .catch(handleError);
+      };
+
+      if (typeof onProgress === 'function') {
+        reqConfig.uploadEventHandlers = {
+          progress: function (e) {
+            if (e.lengthComputable) {
+              const pct = Math.round((e.loaded / e.total) * 100);
+              onProgress(pct);
+            }
+          }
+        };
+      }
+
+      return $http.post('/api/applicants/upload', formData, reqConfig)
+        .then(function (res) {
+          return res.data;
+        })
+        .catch(handleError);
     }
 
-    function uploadBulkResumes(files, jobId) {
-      const formData = new FormData();
-      formData.append('jobId', jobId);
+    function uploadBulkResumes(files, jobId, onProgress) {
+      let formData;
+      if (files instanceof FormData) {
+        formData = files;
+      } else {
+        formData = new FormData();
+        if (jobId) formData.append('jobId', jobId);
 
-      for (let i = 0; i < files.length; i++) {
-        formData.append('resumes', files[i]);
+        for (let i = 0; i < files.length; i++) {
+          formData.append('resumes', files[i]);
+        }
       }
 
-      return $http.post('/api/applicants/upload-bulk', formData, {
+      const reqConfig = {
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
-      })
-      .then(function (res) {
-        return res.data;
-      })
-      .catch(handleError);
+      };
+
+      if (typeof onProgress === 'function') {
+        reqConfig.uploadEventHandlers = {
+          progress: function (e) {
+            if (e.lengthComputable) {
+              const pct = Math.round((e.loaded / e.total) * 100);
+              onProgress(pct);
+            }
+          }
+        };
+      }
+
+      return $http.post('/api/applicants/upload-bulk', formData, reqConfig)
+        .then(function (res) {
+          return res.data;
+        })
+        .catch(handleError);
     }
 
     function updateStatus(id, status, recruiterNotes) {

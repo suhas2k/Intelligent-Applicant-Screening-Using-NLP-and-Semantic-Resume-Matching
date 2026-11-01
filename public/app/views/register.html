@@ -81,23 +81,64 @@
                 </div>
               </div>
 
-              <div class="mb-3">
-                <label class="form-label-iq">Work Email *</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-white border-end-0 text-muted">
-                    <span class="material-symbols-outlined" style="font-size: 18px;">mail</span>
-                  </span>
-                  <input type="email" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.registerData.email" placeholder="sarah.lin@company.com" required>
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-sm-7">
+                  <label class="form-label-iq">Work Email *</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                      <span class="material-symbols-outlined" style="font-size: 18px;">mail</span>
+                    </span>
+                    <input type="email" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.registerData.email" placeholder="sarah.lin@company.com" required>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-5">
+                  <label class="form-label-iq">Contact Phone</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                      <span class="material-symbols-outlined" style="font-size: 18px;">call</span>
+                    </span>
+                    <input type="tel" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.registerData.phone" placeholder="+1 (555) 000-0000">
+                  </div>
                 </div>
               </div>
 
-              <div class="mb-4">
-                <label class="form-label-iq">Password (min 6 characters) *</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-white border-end-0 text-muted">
-                    <span class="material-symbols-outlined" style="font-size: 18px;">lock</span>
-                  </span>
-                  <input type="password" class="form-control form-control-iq border-start-0 ps-0" ng-model="vm.registerData.password" placeholder="••••••••" minlength="6" required>
+              <div class="row g-3 mb-4">
+                <div class="col-12 col-sm-6">
+                  <label class="form-label-iq">Password (min 6 chars) *</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                      <span class="material-symbols-outlined" style="font-size: 18px;">lock</span>
+                    </span>
+                    <input type="{{ vm.showRegisterPassword ? 'text' : 'password' }}" 
+                           class="form-control form-control-iq border-start-0 border-end-0 ps-0" 
+                           ng-model="vm.registerData.password" 
+                           placeholder="••••••••" 
+                           minlength="6" 
+                           required>
+                    <button type="button" 
+                            class="input-group-text bg-white border-start-0 text-muted btn-link" 
+                            style="cursor: pointer; text-decoration: none;"
+                            ng-click="vm.toggleShowRegisterPassword()" 
+                            aria-label="Toggle password visibility">
+                      <span class="material-symbols-outlined" style="font-size: 18px;">
+                        {{ vm.showRegisterPassword ? 'visibility_off' : 'visibility' }}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label class="form-label-iq">Confirm Password *</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                      <span class="material-symbols-outlined" style="font-size: 18px;">check</span>
+                    </span>
+                    <input type="{{ vm.showRegisterPassword ? 'text' : 'password' }}" 
+                           class="form-control form-control-iq border-start-0 ps-0" 
+                           ng-model="vm.registerData.confirmPassword" 
+                           placeholder="••••••••" 
+                           minlength="6" 
+                           required>
+                  </div>
                 </div>
               </div>
 

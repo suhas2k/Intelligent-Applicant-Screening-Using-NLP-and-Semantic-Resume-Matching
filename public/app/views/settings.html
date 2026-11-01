@@ -1,0 +1,477 @@
+<div class="iq-page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <div>
+      <h1 class="iq-page-title mb-1">Settings</h1>
+      <p class="iq-page-subtitle mb-0">Configure recruiter profile, organizational settings, and NLP matching weights.</p>
+    </div>
+    <div>
+      <button class="btn btn-primary-iq d-flex align-items-center gap-2" ng-click="vm.saveSettings()" ng-disabled="vm.isSaving">
+        <span class="spinner-border spinner-border-sm" ng-if="vm.isSaving"></span>
+        <i class="bi bi-check2-circle" ng-if="!vm.isSaving"></i>
+        <span>{{ vm.isSaving ? 'Saving Changes...' : 'Save Settings' }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= TABS HEADER ================= -->
+  <div class="iq-tabs-container mb-4">
+    <button class="iq-tab-item" ng-class="{'active': vm.activeTab === 'profile'}" ng-click="vm.setActiveTab('profile')">
+      <i class="bi bi-person me-1.5"></i>
+      <span>Recruiter Profile</span>
+    </button>
+    <button class="iq-tab-item" ng-class="{'active': vm.activeTab === 'appearance'}" ng-click="vm.setActiveTab('appearance')">
+      <i class="bi bi-palette me-1.5"></i>
+      <span>Appearance & Theme</span>
+    </button>
+    <button class="iq-tab-item" ng-class="{'active': vm.activeTab === 'nlp'}" ng-click="vm.setActiveTab('nlp')">
+      <i class="bi bi-cpu me-1.5"></i>
+      <span>NLP Matching Weights</span>
+    </button>
+    <button class="iq-tab-item" ng-class="{'active': vm.activeTab === 'organization'}" ng-click="vm.setActiveTab('organization')">
+      <i class="bi bi-building me-1.5"></i>
+      <span>Organization</span>
+    </button>
+    <button class="iq-tab-item" ng-class="{'active': vm.activeTab === 'notifications'}" ng-click="vm.setActiveTab('notifications')">
+      <i class="bi bi-bell me-1.5"></i>
+      <span>Notifications</span>
+    </button>
+    <button class="iq-tab-item" ng-class="{'active': vm.activeTab === 'security'}" ng-click="vm.setActiveTab('security')">
+      <i class="bi bi-shield-lock me-1.5"></i>
+      <span>Security</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div class="text-center py-5" ng-if="vm.isLoading">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted small mt-2">Loading system preferences...</p>
+  </div>
+
+  <!-- Error State with Retry -->
+  <div class="iq-analytics-card p-5 text-center my-3" ng-if="!vm.isLoading && vm.errorMessage">
+    <div class="rounded-circle bg-danger-subtle text-danger d-inline-flex p-3 mb-3">
+      <i class="bi bi-exclamation-triangle-fill fs-2"></i>
+    </div>
+    <div class="fw-bold text-dark mb-1">{{ vm.errorMessage }}</div>
+    <p class="text-muted small mb-3">Unable to retrieve configuration parameters. Please check server connectivity.</p>
+    <button class="btn btn-sm btn-outline-iq" ng-click="vm.loadSettings()">
+      <i class="bi bi-arrow-clockwise me-1"></i> Retry Loading
+    </button>
+  </div>
+
+  <div ng-if="!vm.isLoading && !vm.errorMessage">
+    
+    <!-- ================= TAB 1: RECRUITER PROFILE ================= -->
+    <div ng-if="vm.activeTab === 'profile'">
+      <div class="row g-4">
+        
+        <div class="col-lg-8">
+          <div class="iq-analytics-card p-4">
+            <h2 class="h6 fw-bold text-dark mb-4">Personal Recruiter Information</h2>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Full Name *</label>
+                <input type="text" class="form-control" ng-model="vm.settings.profile.fullName" placeholder="Suhas">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Job Title *</label>
+                <input type="text" class="form-control" ng-model="vm.settings.profile.title" placeholder="Senior Talent Lead">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Email Address *</label>
+                <input type="email" class="form-control" ng-model="vm.settings.profile.email" placeholder="recruiter@demo.com">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Contact Phone</label>
+                <input type="text" class="form-control" ng-model="vm.settings.profile.phone" placeholder="+91 98765 43210">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Work Location</label>
+                <input type="text" class="form-control" ng-model="vm.settings.profile.location" placeholder="Hyderabad, India">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold text-dark">Primary Timezone</label>
+                <input type="text" class="form-control" ng-model="vm.settings.profile.timezone" placeholder="Asia/Kolkata (IST)">
+              </div>
+
+              <div class="col-12">
+                <label class="form-label small fw-semibold text-dark">Professional Bio</label>
+                <textarea class="form-control" rows="3" ng-model="vm.settings.profile.bio" placeholder="Brief summary of your talent acquisition domain..."></textarea>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-top text-end">
+              <button class="btn btn-primary-iq" ng-click="vm.saveSettings()">Save Profile Details</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="iq-analytics-card p-4 text-center">
+            <h2 class="h6 fw-bold text-dark mb-3">Recruiter Avatar</h2>
+            
+            <div class="profile-avatar mx-auto mb-3" style="width: 72px; height: 72px; font-size: 1.8rem; background: #ede9fe; color: #6d28d9;">
+              {{ (vm.settings.profile.fullName || 'Suhas').charAt(0) }}
+            </div>
+
+            <div class="fw-bold text-dark">{{ vm.settings.profile.fullName || 'Suhas' }}</div>
+            <div class="text-muted small mb-3">{{ vm.settings.profile.title || 'Senior Talent Lead' }}</div>
+
+            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1.5 small">
+              <i class="bi bi-shield-check me-1"></i> Authenticated Recruiter
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= TAB: APPEARANCE & THEME ================= -->
+    <div ng-if="vm.activeTab === 'appearance'">
+      <div class="iq-analytics-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <h2 class="h6 fw-bold text-dark mb-1">Theme & Display Mode</h2>
+            <p class="text-muted small mb-0">Select your preferred color theme across Light, Dark, or automatic System mode.</p>
+          </div>
+          <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-1.5 rounded-pill" style="font-size: 0.78rem;">
+            Current: {{ vm.currentTheme | uppercase }}
+          </span>
+        </div>
+
+        <div class="row g-4 mt-1">
+          <!-- Light Mode Option -->
+          <div class="col-md-4">
+            <div class="theme-option-card" ng-class="{'active': vm.currentTheme === 'light'}" ng-click="vm.setTheme('light')">
+              <div class="theme-preview-box" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                <div class="theme-preview-sidebar" style="background: #ffffff; border-right: 1px solid #f1f3f9;">
+                  <div style="height: 12px; width: 65%; background: #6366f1; border-radius: 3px; margin: 6px;"></div>
+                  <div style="height: 8px; width: 50%; background: #e2e8f0; border-radius: 2px; margin: 6px;"></div>
+                </div>
+                <div class="theme-preview-main">
+                  <div class="theme-preview-card" style="background: #ffffff; border: 1px solid #e2e8f0;"></div>
+                  <div class="theme-preview-card" style="background: #ffffff; border: 1px solid #e2e8f0;"></div>
+                  <div class="theme-preview-card" style="background: #ffffff; border: 1px solid #e2e8f0;"></div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-sun-fill text-warning fs-5"></i>
+                  <div>
+                    <div class="fw-bold text-dark small">Light Mode</div>
+                    <div class="text-muted" style="font-size: 0.72rem;">Clean white & lavender canvas</div>
+                  </div>
+                </div>
+                <i class="bi bi-check-circle-fill text-primary fs-5" ng-if="vm.currentTheme === 'light'"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dark Mode Option -->
+          <div class="col-md-4">
+            <div class="theme-option-card" ng-class="{'active': vm.currentTheme === 'dark'}" ng-click="vm.setTheme('dark')">
+              <div class="theme-preview-box" style="background: #0b1020; border: 1px solid #29354b;">
+                <div class="theme-preview-sidebar" style="background: #10172a; border-right: 1px solid #29354b;">
+                  <div style="height: 12px; width: 65%; background: #8b5cf6; border-radius: 3px; margin: 6px;"></div>
+                  <div style="height: 8px; width: 50%; background: #29354b; border-radius: 2px; margin: 6px;"></div>
+                </div>
+                <div class="theme-preview-main">
+                  <div class="theme-preview-card" style="background: #151e32; border: 1px solid #29354b;"></div>
+                  <div class="theme-preview-card" style="background: #151e32; border: 1px solid #29354b;"></div>
+                  <div class="theme-preview-card" style="background: #151e32; border: 1px solid #29354b;"></div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-moon-stars-fill fs-5" style="color: #a78bfa !important;"></i>
+                  <div>
+                    <div class="fw-bold text-dark small">Dark Mode</div>
+                    <div class="text-muted" style="font-size: 0.72rem;">Deep nocturnal #0B1020 theme</div>
+                  </div>
+                </div>
+                <i class="bi bi-check-circle-fill text-primary fs-5" ng-if="vm.currentTheme === 'dark'"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- System Default Option -->
+          <div class="col-md-4">
+            <div class="theme-option-card" ng-class="{'active': vm.currentTheme === 'system'}" ng-click="vm.setTheme('system')">
+              <div class="theme-preview-box" style="background: linear-gradient(135deg, #f8fafc 50%, #0b1020 50%); border: 1px solid #cbd5e1;">
+                <div class="theme-preview-sidebar" style="background: linear-gradient(180deg, #ffffff 50%, #10172a 50%); border-right: 1px solid rgba(100,116,139,0.3);">
+                  <div style="height: 12px; width: 65%; background: #7c3aed; border-radius: 3px; margin: 6px;"></div>
+                </div>
+                <div class="theme-preview-main">
+                  <div class="theme-preview-card" style="background: #ffffff; border: 1px solid #e2e8f0;"></div>
+                  <div class="theme-preview-card" style="background: #151e32; border: 1px solid #29354b;"></div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-display text-info fs-5"></i>
+                  <div>
+                    <div class="fw-bold text-dark small">System Default</div>
+                    <div class="text-muted" style="font-size: 0.72rem;">Auto-adapts to OS theme</div>
+                  </div>
+                </div>
+                <i class="bi bi-check-circle-fill text-primary fs-5" ng-if="vm.currentTheme === 'system'"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 mt-4 border rounded-3 bg-light d-flex align-items-center gap-3">
+          <i class="bi bi-info-circle text-primary fs-4"></i>
+          <div class="small">
+            <span class="fw-semibold text-dark">Instant Real-Time Synchronization:</span>
+            <span class="text-muted"> Themes are persisted in your browser and automatically restored on page refresh or across new sessions. You can also quick-switch themes on any page via the theme switcher in the top navigation bar.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 2: NLP MATCHING WEIGHTS ================= -->
+    <div ng-if="vm.activeTab === 'nlp'">
+      <div class="row g-4">
+        
+        <div class="col-lg-8">
+          <div class="iq-analytics-card p-4">
+            
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <div>
+                <h2 class="h6 fw-bold text-dark mb-0">AI Semantic Screening Formula</h2>
+                <p class="text-muted small mb-0">Calibrate weight distribution for candidate scoring</p>
+              </div>
+              <button class="btn btn-sm btn-outline-iq" ng-click="vm.resetNlpWeights()">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset Defaults
+              </button>
+            </div>
+
+            <!-- Total Weights Sum Progress Bar Indicator -->
+            <div class="p-3 my-3 rounded-3" ng-class="vm.getWeightsSum() === 100 ? 'bg-success-subtle border border-success' : 'bg-warning-subtle border border-warning'">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small fw-bold" ng-class="vm.getWeightsSum() === 100 ? 'text-success' : 'text-warning-emphasis'">
+                  Total Formula Weight: {{ vm.getWeightsSum() }}%
+                </span>
+                <span class="small fw-semibold" ng-if="vm.getWeightsSum() === 100">
+                  <i class="bi bi-check-circle-fill text-success"></i> Perfectly Balanced
+                </span>
+                <span class="small fw-semibold text-danger" ng-if="vm.getWeightsSum() !== 100">
+                  <i class="bi bi-exclamation-triangle-fill"></i> Must equal 100% (Difference: {{ 100 - vm.getWeightsSum() }}%)
+                </span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar" role="progressbar" 
+                     ng-style="{'width': vm.getWeightsSum() + '%', 'background-color': vm.getWeightsSum() === 100 ? '#10b981' : '#f59e0b'}"></div>
+              </div>
+            </div>
+
+            <!-- Sliders -->
+            <div class="d-flex flex-column gap-4 mt-4">
+              
+              <!-- 1. Skills Weight -->
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <div>
+                    <span class="fw-bold text-dark small">1. Required Competencies & Hard Skills</span>
+                    <div class="text-muted" style="font-size: 0.73rem;">Direct technical overlap with required job keywords</div>
+                  </div>
+                  <span class="badge bg-primary-subtle text-primary fw-bold fs-6">{{ vm.settings.nlpMatching.defaultSkillsWeight }}%</span>
+                </div>
+                <input type="range" class="form-range" min="0" max="100" step="5" ng-model="vm.settings.nlpMatching.defaultSkillsWeight">
+              </div>
+
+              <!-- 2. Semantic Similarity Weight -->
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <div>
+                    <span class="fw-bold text-dark small">2. Semantic Relevance & Project Context</span>
+                    <div class="text-muted" style="font-size: 0.73rem;">TF-IDF vector cosine similarity across candidate project descriptions</div>
+                  </div>
+                  <span class="badge bg-primary-subtle text-primary fw-bold fs-6">{{ vm.settings.nlpMatching.defaultSimilarityWeight }}%</span>
+                </div>
+                <input type="range" class="form-range" min="0" max="100" step="5" ng-model="vm.settings.nlpMatching.defaultSimilarityWeight">
+              </div>
+
+              <!-- 3. Experience Weight -->
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <div>
+                    <span class="fw-bold text-dark small">3. Experience & Seniority Depth</span>
+                    <div class="text-muted" style="font-size: 0.73rem;">Years of commercial experience matched against role level</div>
+                  </div>
+                  <span class="badge bg-primary-subtle text-primary fw-bold fs-6">{{ vm.settings.nlpMatching.defaultExperienceWeight }}%</span>
+                </div>
+                <input type="range" class="form-range" min="0" max="100" step="5" ng-model="vm.settings.nlpMatching.defaultExperienceWeight">
+              </div>
+
+              <!-- 4. Education Weight -->
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <div>
+                    <span class="fw-bold text-dark small">4. Education & Qualifications</span>
+                    <div class="text-muted" style="font-size: 0.73rem;">Degree level, field of study, and academic tier verification</div>
+                  </div>
+                  <span class="badge bg-primary-subtle text-primary fw-bold fs-6">{{ vm.settings.nlpMatching.defaultEducationWeight }}%</span>
+                </div>
+                <input type="range" class="form-range" min="0" max="100" step="5" ng-model="vm.settings.nlpMatching.defaultEducationWeight">
+              </div>
+
+            </div>
+
+            <!-- Toggles -->
+            <div class="d-flex flex-column gap-3 mt-4 pt-3 border-top">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="synonymsSwitch" ng-model="vm.settings.nlpMatching.enableSemanticSynonyms">
+                <label class="form-check-label fw-semibold text-dark small" for="synonymsSwitch">
+                  Enable Semantic Keyword Synonyms (e.g. "React.js" matches "React", "K8s" matches "Kubernetes")
+                </label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="benchmarkSwitch" ng-model="vm.settings.nlpMatching.enableBenchmarkMatching">
+                <label class="form-check-label fw-semibold text-dark small" for="benchmarkSwitch">
+                  Enable High-Performer Benchmark Embeddings Comparison
+                </label>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-top text-end">
+              <button class="btn btn-primary-iq" ng-click="vm.saveSettings()">Save AI Algorithm Calibration</button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="iq-analytics-card p-4">
+            <h2 class="h6 fw-bold text-dark mb-2">Automated Shortlisting</h2>
+            <p class="text-muted small mb-3">Applicants scoring at or above this score are automatically flagged as Shortlisted.</p>
+
+            <div class="p-3 bg-light rounded-3 text-center mb-3">
+              <div class="display-6 fw-bold text-dark mb-1">{{ vm.settings.nlpMatching.autoShortlistThreshold || 75 }}%</div>
+              <div class="text-muted small">Shortlist Cutoff Threshold</div>
+            </div>
+
+            <input type="range" class="form-range" min="50" max="95" step="1" ng-model="vm.settings.nlpMatching.autoShortlistThreshold">
+            <div class="d-flex justify-content-between text-muted" style="font-size: 0.7rem;">
+              <span>50% (Permissive)</span>
+              <span>75% (Standard)</span>
+              <span>95% (Strict)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= TAB 3: ORGANIZATION ================= -->
+    <div ng-if="vm.activeTab === 'organization'">
+      <div class="iq-analytics-card p-4">
+        <h2 class="h6 fw-bold text-dark mb-4">Enterprise Organization Settings</h2>
+        
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold text-dark">Company Legal Name</label>
+            <input type="text" class="form-control" ng-model="vm.settings.organization.name" placeholder="TechCorp Technologies">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold text-dark">Verified Web Domain</label>
+            <input type="text" class="form-control" ng-model="vm.settings.organization.domain" placeholder="techcorp.com">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold text-dark">Industry</label>
+            <input type="text" class="form-control" ng-model="vm.settings.organization.industry" placeholder="Enterprise Software">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold text-dark">Headquarters</label>
+            <input type="text" class="form-control" ng-model="vm.settings.organization.headquarters" placeholder="San Francisco, CA">
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-top text-end">
+          <button class="btn btn-primary-iq" ng-click="vm.saveSettings()">Save Organization Details</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 4: NOTIFICATIONS ================= -->
+    <div ng-if="vm.activeTab === 'notifications'">
+      <div class="iq-analytics-card p-4">
+        <h2 class="h6 fw-bold text-dark mb-2">Email & System Notification Settings</h2>
+        <p class="text-muted small mb-4">Choose which hiring pipeline alerts trigger notifications</p>
+
+        <div class="d-flex flex-column gap-3">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="notif1" ng-model="vm.settings.notifications.emailOnNewApplication">
+            <label class="form-check-label fw-semibold text-dark small" for="notif1">
+              Email alert when a new resume is uploaded & parsed
+            </label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="notif2" ng-model="vm.settings.notifications.emailOnHighMatchScore">
+            <label class="form-check-label fw-semibold text-dark small" for="notif2">
+              High-priority alert when an applicant scores above 85% match
+            </label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="notif3" ng-model="vm.settings.notifications.weeklyHiringDigest">
+            <label class="form-check-label fw-semibold text-dark small" for="notif3">
+              Weekly hiring pipeline summary digest (every Monday 9:00 AM)
+            </label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="notif4" ng-model="vm.settings.notifications.interviewReminders">
+            <label class="form-check-label fw-semibold text-dark small" for="notif4">
+              Send calendar reminders 1 hour before scheduled interviews
+            </label>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-top text-end">
+          <button class="btn btn-primary-iq" ng-click="vm.saveSettings()">Update Notifications</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 5: SECURITY ================= -->
+    <div ng-if="vm.activeTab === 'security'">
+      <div class="iq-analytics-card p-4">
+        <h2 class="h6 fw-bold text-dark mb-2">Account Security & Access Control</h2>
+        <p class="text-muted small mb-4">Configure authentication safeguards and session policies</p>
+
+        <div class="d-flex flex-column gap-4">
+          <div class="d-flex align-items-center justify-content-between p-3 border rounded-3 bg-light">
+            <div>
+              <div class="fw-bold text-dark small">Email OTP Two-Factor Authentication</div>
+              <div class="text-muted" style="font-size: 0.75rem;">Require a 6-digit one-time verification passcode sent to your registered email upon sign-in</div>
+            </div>
+            <div class="form-check form-switch fs-5">
+              <input class="form-check-input" type="checkbox" ng-model="vm.settings.security.twoFactorEnabled">
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label small fw-semibold text-dark">Recruiter Session Inactivity Timeout</label>
+            <select class="form-select" ng-model="vm.settings.security.sessionTimeoutMinutes">
+              <option ng-value="30">30 minutes</option>
+              <option ng-value="60">1 hour (Recommended)</option>
+              <option ng-value="120">2 hours</option>
+              <option ng-value="480">8 hours</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-top text-end">
+          <button class="btn btn-primary-iq" ng-click="vm.saveSettings()">Save Security Settings</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

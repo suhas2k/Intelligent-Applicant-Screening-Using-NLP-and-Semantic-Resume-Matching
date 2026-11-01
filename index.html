@@ -22,36 +22,61 @@
   <!-- Material Symbols Outlined (Stitch UI Design System) -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
+  <!-- Early Theme Restoration to eliminate Flash of Unstyled Theme (FOUT) -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('resumeiq_theme') || 'system';
+        var isDark = stored === 'dark' || (stored === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme-setting', stored);
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Google Identity Services (GIS) for Google Sign-In -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <!-- ResumeIQ Custom Stylesheet -->
+  <!-- ResumeIQ Custom Stylesheet Hierarchy -->
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 
   <div class="app-shell" ng-controller="NavController as nav">
     
-    <!-- Left Navigation Sidebar / Mobile Offcanvas Drawer (Deep Navy) -->
-    <aside class="app-sidebar" ng-class="{'mobile-open': nav.isMobileMenuOpen}" ng-if="nav.isAuthenticated()">
-      <div>
+    <!-- Left Navigation Sidebar / Mobile Offcanvas Drawer (Light Lavender / White matching IMAGE 2) -->
+    <aside class="app-sidebar" ng-class="{'mobile-open': nav.isMobileMenuOpen}" ng-if="nav.isAuthenticated() && !nav.isAuthPage()">
+      <div class="sidebar-top-section">
         <!-- Brand Header & Mobile Close Button -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-4 px-2">
           <a class="brand-box py-0 mb-0" href="#!/dashboard" ng-click="nav.closeMobileMenu()">
             <div class="brand-icon">
-              <i class="bi bi-stars"></i>
+              <!-- Stylized purple ribbon R logo matching brand -->
+              <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
+                <path d="M7 6C7 4.89543 7.89543 4 9 4H20C24.4183 4 28 7.58172 28 12C28 15.637 25.5707 18.708 22.25 19.645L28.7 30.8C29.23 31.73 28.55 32.9 27.47 32.9H22.4C21.75 32.9 21.15 32.55 20.82 31.99L15.2 21.8H13.8V31C13.8 32.1 12.9 33 11.8 33H9C7.89543 33 7 32.1 7 31V6Z" fill="url(#iq_side_r)"/>
+                <path d="M13.8 11.2H19.2C20.86 11.2 22.2 12.54 22.2 14.2C22.2 15.86 20.86 17.2 19.2 17.2H13.8V11.2Z" fill="#ffffff"/>
+                <defs>
+                  <linearGradient id="iq_side_r" x1="7" y1="4" x2="28" y2="33" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#8b5cf6"/>
+                    <stop offset="0.5" stop-color="#7c3aed"/>
+                    <stop offset="1" stop-color="#4f46e5"/>
+                  </linearGradient>
+                </defs>
+              </svg>
             </div>
             <div>
-              <div class="brand-title">ResumeIQ</div>
-              <div class="brand-tagline">Talent Intelligence</div>
+              <div class="brand-title text-dark">ResumeIQ</div>
+              <div class="brand-tagline">AI Recruitment Platform</div>
             </div>
           </a>
-          <button class="btn btn-sm btn-icon text-white-50 d-lg-none" ng-click="nav.closeMobileMenu()" aria-label="Close Navigation" style="font-size: 1.2rem; padding: 0.25rem 0.5rem;">
+          <button class="btn btn-sm btn-icon text-muted d-lg-none" ng-click="nav.closeMobileMenu()" aria-label="Close Navigation">
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
 
-        <!-- Main Navigation Links -->
+        <!-- Main Navigation Links (All 8 links from IMAGE 2) -->
         <nav aria-label="Main Navigation">
           <ul class="sidebar-nav">
             <li>
@@ -71,10 +96,50 @@
               </a>
             </li>
             <li>
-              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/applicants')}" href="#!/applicants" ng-click="nav.closeMobileMenu()">
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/candidates') || nav.isActive('/applicants')}" href="#!/candidates" ng-click="nav.closeMobileMenu()">
                 <div class="d-flex align-items-center">
                   <i class="bi bi-people-fill"></i>
-                  <span>Applicant Pool</span>
+                  <span>Candidates</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/screening')}" href="#!/screening" ng-click="nav.closeMobileMenu()">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-cpu-fill"></i>
+                  <span>Resume Screening</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/interviews')}" href="#!/interviews" ng-click="nav.closeMobileMenu()">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-calendar-event-fill"></i>
+                  <span>Interviews</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/analytics')}" href="#!/analytics" ng-click="nav.closeMobileMenu()">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-graph-up-arrow"></i>
+                  <span>Analytics</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/team')}" href="#!/team" ng-click="nav.closeMobileMenu()">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-shield-lock-fill"></i>
+                  <span>Team & Access</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-nav-item" ng-class="{'active': nav.isActive('/settings')}" href="#!/settings" ng-click="nav.closeMobileMenu()">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-gear-fill"></i>
+                  <span>Settings</span>
                 </div>
               </a>
             </li>
@@ -82,24 +147,60 @@
         </nav>
       </div>
 
-      <!-- Recruiter Profile & Logout Pill -->
-      <div>
+      <!-- Bottom of Sidebar: Organization Selector + Recruiter Profile -->
+      <div class="sidebar-bottom-block">
+        <!-- Organization Selector Card -->
+        <div class="org-selector-card mb-2.5">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+              <div class="org-icon">
+                <i class="bi bi-building"></i>
+              </div>
+              <div style="line-height: 1.2;">
+                <div class="fw-bold text-dark text-truncate" style="font-size: 0.8rem; max-width: 140px;">
+                  TechCorp Technologies
+                </div>
+                <div class="text-muted" style="font-size: 0.7rem;">Enterprise Recruiter</div>
+              </div>
+            </div>
+            <i class="bi bi-chevron-expand text-muted small"></i>
+          </div>
+        </div>
+
+        <!-- Sidebar Quick Theme Toggle Row -->
+        <div class="d-flex align-items-center justify-content-between p-2 mb-2 rounded-3" style="background: var(--bg-subtle); border: 1px solid var(--border-subtle);">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-palette text-primary" style="font-size: 0.95rem;"></i>
+            <span class="small fw-semibold text-dark" style="font-size: 0.75rem;">Theme</span>
+          </div>
+          <div class="theme-switch-group">
+            <button class="theme-switch-btn" ng-class="{'active': nav.currentTheme === 'light'}" ng-click="nav.setTheme('light')" title="Light Mode" aria-label="Light Mode">
+              <i class="bi bi-sun-fill" style="font-size: 0.78rem;"></i>
+            </button>
+            <button class="theme-switch-btn" ng-class="{'active': nav.currentTheme === 'dark'}" ng-click="nav.setTheme('dark')" title="Dark Mode" aria-label="Dark Mode">
+              <i class="bi bi-moon-stars-fill" style="font-size: 0.78rem;"></i>
+            </button>
+            <button class="theme-switch-btn" ng-class="{'active': nav.currentTheme === 'system'}" ng-click="nav.setTheme('system')" title="System Default" aria-label="System Default">
+              <i class="bi bi-display" style="font-size: 0.78rem;"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Recruiter Profile Card -->
         <div class="sidebar-profile">
           <div class="d-flex align-items-center gap-2">
             <div class="profile-avatar overflow-hidden p-0" ng-if="nav.getUser().avatar">
               <img ng-src="{{ nav.getUser().avatar }}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <div class="profile-avatar" ng-if="!nav.getUser().avatar">
-              {{ (nav.getUser().name || 'R').charAt(0) }}
+              {{ (nav.getUser().name || 'Suhas').charAt(0) }}
             </div>
             <div style="line-height: 1.2;">
-              <div class="fw-bold text-white text-truncate" style="max-width: 130px; font-size: 0.85rem;">
-                {{ nav.getUser().name || 'Recruiter' }}
+              <div class="fw-bold text-dark text-truncate" style="max-width: 130px; font-size: 0.85rem;">
+                {{ nav.getUser().name || 'Suhas' }}
               </div>
-              <div class="text-truncate d-flex align-items-center gap-1" style="max-width: 130px; font-size: 0.72rem; color: #94a3b8;">
-                <span ng-if="nav.getUser().authProvider === 'google'" class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-25 py-0 px-1" style="font-size: 0.6rem;">Google</span>
-                <span ng-if="nav.getUser().authProvider === 'otp'" class="badge bg-success bg-opacity-25 text-emerald border border-success border-opacity-25 py-0 px-1" style="font-size: 0.6rem;">OTP</span>
-                <span>{{ nav.getUser().company || 'Talent Lead' }}</span>
+              <div class="text-truncate d-flex align-items-center gap-1" style="max-width: 130px; font-size: 0.72rem; color: #64748b;">
+                <span>Senior Talent Lead</span>
               </div>
             </div>
           </div>
@@ -114,11 +215,11 @@
     <div class="mobile-drawer-backdrop" ng-if="nav.isAuthenticated() && nav.isMobileMenuOpen" ng-click="nav.closeMobileMenu()"></div>
 
     <!-- Main Content Area -->
-    <div class="app-main-content" ng-style="!nav.isAuthenticated() && {'margin-left': '0'}">
+    <div class="app-main-content" ng-style="(!nav.isAuthenticated() || nav.isAuthPage()) && {'margin-left': '0'}">
       
-      <!-- Top Bar (When Authenticated) -->
-      <header class="app-topbar" ng-if="nav.isAuthenticated()">
-        <div class="d-flex align-items-center gap-2">
+      <!-- Top Bar (Clean Horizontal Header matching IMAGE 2) -->
+      <header class="app-topbar" ng-if="nav.isAuthenticated() && !nav.isAuthPage()">
+        <div class="d-flex align-items-center gap-2 flex-grow-1" style="max-width: 480px;">
           <!-- Mobile Drawer Hamburger Toggle Button -->
           <button class="btn btn-outline-iq py-1 px-2 d-lg-none" ng-click="nav.toggleMobileMenu()" aria-label="Open Navigation Menu">
             <i class="bi bi-list fs-5"></i>
@@ -126,36 +227,65 @@
 
           <!-- Mobile Brand Mark -->
           <a class="brand-box py-0 mb-0 d-lg-none" href="#!/dashboard">
-            <div class="brand-icon" style="width: 32px; height: 32px; font-size: 0.95rem;">
-              <i class="bi bi-stars"></i>
-            </div>
             <span class="fw-bold text-dark" style="font-size: 1.05rem;">ResumeIQ</span>
           </a>
 
-          <div class="topbar-search d-none d-md-block">
+          <!-- Global Search Input with Ctrl + K badge -->
+          <div class="topbar-search w-100">
             <div class="search-input-wrapper">
               <i class="bi bi-search"></i>
-              <input type="text" class="search-input-clean" placeholder="Search candidates, skills, jobs... ⌘K" onclick="window.location.hash='#!/applicants'">
-              <span class="search-shortcut">⌘K</span>
+              <input type="text" class="search-input-clean" placeholder="Search candidates, jobs, skills..." onclick="window.location.hash='#!/candidates'">
+              <span class="search-shortcut">Ctrl + K</span>
             </div>
           </div>
         </div>
 
         <div class="d-flex align-items-center gap-2 gap-sm-3">
-          <!-- Database Mode Pill -->
-          <span class="badge bg-white border border-success border-opacity-25 text-success px-3 py-2 small fw-semibold d-none d-sm-inline-flex align-items-center shadow-sm">
-            <span class="pulse-indicator pulse-emerald"></span> Live Engine
+          <!-- Quick Global Theme Switcher (Light / Dark / System) -->
+          <div class="theme-switch-group me-1" title="Theme Selector: Light, Dark, or System">
+            <button class="theme-switch-btn" ng-class="{'active': nav.currentTheme === 'light'}" ng-click="nav.setTheme('light')" title="Light Mode" aria-label="Light Mode">
+              <i class="bi bi-sun-fill"></i>
+            </button>
+            <button class="theme-switch-btn" ng-class="{'active': nav.currentTheme === 'dark'}" ng-click="nav.setTheme('dark')" title="Dark Mode" aria-label="Dark Mode">
+              <i class="bi bi-moon-stars-fill"></i>
+            </button>
+            <button class="theme-switch-btn" ng-class="{'active': nav.currentTheme === 'system'}" ng-click="nav.setTheme('system')" title="System Default" aria-label="System Default">
+              <i class="bi bi-display"></i>
+            </button>
+          </div>
+
+          <!-- AI Engine Online Status Pill -->
+          <span class="platform-status-pill">
+            <span class="status-dot"></span> AI Engine Online
           </span>
 
-          <a href="#!/jobs" class="btn btn-primary-iq py-1 px-3">
-            <i class="bi bi-plus-lg"></i>
-            <span class="d-none d-sm-inline">Post Job</span>
-          </a>
+          <!-- Notification Bell Icon -->
+          <button class="btn btn-icon-round position-relative" title="Notifications">
+            <i class="bi bi-bell"></i>
+            <span class="topbar-badge-dot"></span>
+          </button>
+
+          <!-- Help Icon -->
+          <button class="btn btn-icon-round" title="Help & Documentation">
+            <i class="bi bi-question-circle"></i>
+          </button>
+
+          <!-- Recruiter Avatar & Dropdown -->
+          <div class="d-flex align-items-center gap-2 ps-2 border-start" style="cursor: pointer;" ng-click="nav.logout()" title="Click to Sign Out">
+            <div class="profile-avatar-sm">
+              {{ (nav.getUser().name || 'Suhas').charAt(0) }}
+            </div>
+            <div class="d-none d-md-block text-start" style="line-height: 1.2;">
+              <span class="fw-bold text-dark d-block" style="font-size: 0.82rem;">{{ nav.getUser().name || 'Suhas' }}</span>
+              <span class="text-muted" style="font-size: 0.7rem;">Senior Talent Lead</span>
+            </div>
+            <i class="bi bi-chevron-down text-muted" style="font-size: 0.75rem;"></i>
+          </div>
         </div>
       </header>
 
-      <!-- Minimal Header for Unauthenticated Views -->
-      <header class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center shadow-sm" ng-if="!nav.isAuthenticated()">
+      <!-- Minimal Header for Unauthenticated Views (used on register page; login has its own dedicated topbar matching reference) -->
+      <header class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center shadow-sm" ng-if="(!nav.isAuthenticated() || nav.isAuthPage()) && !nav.isLoginPage()">
         <a class="brand-box mb-0 py-0" href="#!/login">
           <div class="brand-icon" style="width: 34px; height: 34px; font-size: 1.1rem;">
             <i class="bi bi-stars"></i>
@@ -188,12 +318,12 @@
       </div>
 
       <!-- AngularJS Routed Views (SPA) -->
-      <main class="flex-grow-1 p-3 p-md-4">
+      <main class="flex-grow-1" ng-class="{'p-0': nav.isLoginPage(), 'p-3 p-md-4': !nav.isLoginPage()}">
         <div ng-view></div>
       </main>
 
-      <!-- Footer -->
-      <footer class="py-3 px-4 border-top bg-white d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 small text-muted">
+      <!-- Footer (Hidden on Login Landing View) -->
+      <footer class="py-3 px-4 border-top bg-white d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 small text-muted" ng-if="!nav.isLoginPage()">
         <div>
           <strong class="text-dark">ResumeIQ</strong> &bull; Intelligent Applicant Screening & Semantic Matching
         </div>
@@ -213,9 +343,9 @@
         <i class="bi bi-briefcase-fill"></i>
         <span>Jobs</span>
       </a>
-      <a href="#!/applicants" class="mobile-nav-item" ng-class="{'active': nav.isActive('/applicants')}">
+      <a href="#!/candidates" class="mobile-nav-item" ng-class="{'active': nav.isActive('/candidates') || nav.isActive('/applicants')}">
         <i class="bi bi-people-fill"></i>
-        <span>Applicants</span>
+        <span>Candidates</span>
       </a>
       <button class="mobile-nav-item border-0 bg-transparent" ng-click="nav.toggleMobileMenu()" aria-label="Open User Menu">
         <i class="bi bi-person-circle"></i>
@@ -234,10 +364,15 @@
   <script src="app/app.routes.js"></script>
 
   <!-- Services -->
+  <script src="app/services/theme.service.js"></script>
   <script src="app/services/alert.service.js"></script>
   <script src="app/services/auth.service.js"></script>
   <script src="app/services/job.service.js"></script>
   <script src="app/services/applicant.service.js"></script>
+  <script src="app/services/interview.service.js"></script>
+  <script src="app/services/analytics.service.js"></script>
+  <script src="app/services/team.service.js"></script>
+  <script src="app/services/settings.service.js"></script>
 
   <!-- Directives -->
   <script src="app/directives/file-model.directive.js"></script>
@@ -248,6 +383,12 @@
   <script src="app/controllers/dashboard.controller.js"></script>
   <script src="app/controllers/jobs.controller.js"></script>
   <script src="app/controllers/job-detail.controller.js"></script>
+  <script src="app/controllers/candidates.controller.js"></script>
+  <script src="app/controllers/screening.controller.js"></script>
+  <script src="app/controllers/interviews.controller.js"></script>
+  <script src="app/controllers/analytics.controller.js"></script>
+  <script src="app/controllers/team.controller.js"></script>
+  <script src="app/controllers/settings.controller.js"></script>
   <script src="app/controllers/applicants.controller.js"></script>
   <script src="app/controllers/applicant-detail.controller.js"></script>
 </body>

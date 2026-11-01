@@ -1,0 +1,548 @@
+<div class="dashboard-page-container">
+  
+  <!-- ================= PAGE HEADER ================= -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+      <h1 class="dashboard-greeting mb-1">Resume Screening</h1>
+      <p class="dashboard-subtitle mb-0">Upload, parse and match candidate resumes against target job requisitions in seconds.</p>
+    </div>
+
+    <!-- Target Requisition Selector -->
+    <div class="d-flex align-items-center gap-2">
+      <span class="small text-muted fw-semibold d-none d-sm-inline">Target Role:</span>
+      <select class="form-select btn-clean-select py-1 px-3" 
+              style="min-width: 240px;" 
+              ng-model="vm.selectedJobId"
+              ng-disabled="vm.isProcessing">
+        <option value="" disabled>-- Select Target Requisition --</option>
+        <option ng-repeat="job in vm.jobs" value="{{ job._id }}">
+          {{ job.title }} ({{ job.department }})
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ================= MAIN SCREENING SECTION ================= -->
+  <div class="row g-4 mb-4">
+    
+    <!-- LEFT: Resume Upload & Pipeline Execution Zone -->
+    <div class="col-12 col-lg-7">
+      <div class="iq-analytics-card h-100 d-flex flex-column justify-content-between p-4">
+        
+        <div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="small fw-bold text-dark text-uppercase" style="letter-spacing: 0.04em;">Upload Candidate Documents</span>
+            <span class="badge bg-purple-subtle text-primary border border-purple-subtle py-1 px-2.5" style="font-size: 0.72rem;">
+              <i class="bi bi-cpu-fill me-1"></i> NLP Parser Active
+            </span>
+          </div>
+
+          <!-- Drag & Drop Box with Active States -->
+          <div class="resume-dropzone-box p-4 p-md-5 rounded-4 mb-3 text-center position-relative" 
+               file-dropzone="vm.onFileDrop($files)"
+               ng-class="{'is-dragging': vm.isDragging, 'has-file': vm.selectedFile, 'is-processing': vm.isProcessing}"
+               ng-click="vm.triggerFileInput()" 
+               style="cursor: pointer; border: 2px dashed var(--border-medium, #c4b5fd); background: var(--bg-subtle, #faf9fe); transition: all 0.2s ease;">
+            
+            <input type="file" 
+                   id="fileInput" 
+                   class="d-none" 
+                   accept=".pdf,.docx,.doc" 
+                   onchange="angular.element(this).scope().vm.onFileInputChange(this)">
+
+            <!-- Default / Ready Icon -->
+            <div class="ai-assistant-icon-squircle mx-auto mb-3" 
+                 style="width: 52px; height: 52px; font-size: 1.5rem;"
+                 ng-if="!vm.isProcessing && !vm.lastScreenedApplicant">
+              <i class="bi bi-cloud-arrow-up-fill"></i>
+            </div>
+
+            <!-- Uploading / Processing Spinner -->
+            <div class="ai-assistant-icon-squircle mx-auto mb-3 text-primary bg-primary-subtle" 
+                 style="width: 52px; height: 52px; font-size: 1.5rem;"
+                 ng-if="vm.isProcessing">
+              <div class="spinner-border spinner-border-sm" role="status" style="width: 1.8rem; height: 1.8rem;"></div>
+            </div>
+
+            <!-- Screening Complete Icon -->
+            <div class="ai-assistant-icon-squircle mx-auto mb-3 text-success bg-success-subtle" 
+                 style="width: 52px; height: 52px; font-size: 1.5rem;"
+                 ng-if="!vm.isProcessing && vm.lastScreenedApplicant">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+
+            <!-- Selected File Badge (when file is loaded) -->
+            <div class="d-inline-flex align-items-center gap-2 p-2 px-3 rounded-pill bg-white border shadow-sm mb-3" 
+                 ng-if="vm.selectedFileName && !vm.lastScreenedApplicant"
+                 ng-click="$event.stopPropagation()">
+              <i class="bi bi-file-earmark-pdf-fill text-danger fs-5"></i>
+              <div class="text-start" style="line-height: 1.1;">
+                <div class="fw-bold text-dark text-truncate" style="font-size: 0.82rem; max-width: 220px;">
+                  {{ vm.selectedFileName }}
+                </div>
+                <div class="text-muted" style="font-size: 0.7rem;">{{ vm.selectedFileSize }}</div>
+              </div>
+              <button type="button" 
+                      class="btn btn-sm btn-icon text-muted p-0 ms-1" 
+                      ng-click="vm.resetUpload(); $event.stopPropagation();" 
+                      title="Clear selection">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+
+            <h3 class="h5 fw-bold text-dark mb-1" ng-if="!vm.isProcessing && !vm.lastScreenedApplicant">
+              Drag & drop resumes here
+            </h3>
+            <h3 class="h5 fw-bold text-dark mb-1" ng-if="vm.isProcessing">
+              Processing Screening Pipeline...
+            </h3>
+            <h3 class="h5 fw-bold text-success mb-1" ng-if="!vm.isProcessing && vm.lastScreenedApplicant">
+              Resume Screened Successfully!
+            </h3>
+
+            <p class="text-muted small mb-3" ng-if="!vm.isProcessing && !vm.lastScreenedApplicant">
+              Supports PDF, DOCX (Up to 15MB per file) &bull; Automatic Semantic Matching
+            </p>
+            <p class="text-muted small mb-3" ng-if="vm.isProcessing">
+              Extracting candidate information, mapping skills, and calculating semantic match score
+            </p>
+            <p class="text-muted small mb-3" ng-if="!vm.isProcessing && vm.lastScreenedApplicant">
+              Evaluated against <strong>{{ vm.lastScreenedApplicant.jobTitle || vm.getSelectedJob().title }}</strong>
+            </p>
+
+            <!-- Actions Row inside Dropzone -->
+            <div class="d-flex justify-content-center gap-2" ng-click="$event.stopPropagation()">
+              <button type="button" 
+                      class="btn btn-primary-gradient px-4 py-2" 
+                      ng-click="vm.triggerFileInput()"
+                      ng-disabled="vm.isProcessing">
+                <span ng-if="!vm.isProcessing && !vm.lastScreenedApplicant">
+                  <i class="bi bi-upload me-1.5"></i> Select Resume File
+                </span>
+                <span ng-if="vm.isProcessing">
+                  <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                  Processing... {{ vm.pipelineProgress }}%
+                </span>
+                <span ng-if="!vm.isProcessing && vm.lastScreenedApplicant">
+                  <i class="bi bi-arrow-repeat me-1.5"></i> Upload Another Resume
+                </span>
+              </button>
+
+              <button type="button" 
+                      class="btn btn-outline-iq px-3 py-2" 
+                      ng-if="!vm.isProcessing && vm.lastScreenedApplicant"
+                      ng-click="vm.viewCandidate(vm.lastScreenedApplicant._id)">
+                <span>View Full Analysis &rarr;</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- ================= 9-STAGE PIPELINE PROGRESSION ACCORDION (Phase 4) ================= -->
+          <div class="pipeline-progress-container p-3 rounded-3 mb-3 border bg-white" 
+               ng-if="vm.isProcessing || vm.errorStage || vm.lastScreenedApplicant">
+            
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="small fw-bold text-dark text-uppercase" style="letter-spacing: 0.04em;">
+                <i class="bi bi-diagram-3-fill text-primary me-1"></i> Screening Pipeline Execution
+              </span>
+              <span class="badge" 
+                    ng-class="vm.errorStage ? 'bg-danger text-white' : (vm.pipelineProgress === 100 ? 'bg-success text-white' : 'bg-primary text-white')"
+                    style="font-size: 0.75rem;">
+                {{ vm.errorStage ? 'Stage Failed' : (vm.pipelineProgress === 100 ? 'Complete' : vm.pipelineProgress + '%') }}
+              </span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress mb-3" style="height: 7px;">
+              <div class="progress-bar progress-bar-striped" 
+                   ng-class="{'progress-bar-animated bg-primary': vm.isProcessing && !vm.errorStage, 'bg-danger': vm.errorStage, 'bg-success': vm.pipelineProgress === 100 && !vm.errorStage}"
+                   role="progressbar" 
+                   style="width: {{ vm.pipelineProgress }}%;"></div>
+            </div>
+
+            <!-- Error Banner with Retry -->
+            <div class="alert alert-danger py-2 px-3 small d-flex justify-content-between align-items-center mb-3" ng-if="vm.errorStage">
+              <div>
+                <strong>Error at {{ vm.errorStage }}:</strong> {{ vm.errorMessage }}
+              </div>
+              <button class="btn btn-sm btn-outline-danger py-0.5 px-2 ms-2" ng-click="vm.retryScreening()">
+                <i class="bi bi-arrow-clockwise me-1"></i> Retry
+              </button>
+            </div>
+
+            <!-- Pipeline 9 Stages List -->
+            <div class="pipeline-stages-list d-flex flex-column gap-1.5" style="max-height: 220px; overflow-y: auto;">
+              <div class="pipeline-stage-row p-2 rounded d-flex align-items-center justify-content-between" 
+                   ng-repeat="stage in vm.pipelineStages"
+                   ng-class="{'stage-active': stage.status === 'active', 'stage-complete': stage.status === 'complete', 'stage-error': stage.status === 'error', 'stage-pending': stage.status === 'pending'}"
+                   style="font-size: 0.78rem;">
+                
+                <div class="d-flex align-items-center gap-2">
+                  <!-- Status Indicator Icon -->
+                  <div class="stage-status-icon" style="width: 20px; height: 20px; text-align: center;">
+                    <i class="bi bi-check-circle-fill text-success" ng-if="stage.status === 'complete'"></i>
+                    <div class="spinner-border spinner-border-sm text-primary" role="status" style="width: 14px; height: 14px;" ng-if="stage.status === 'active'"></div>
+                    <i class="bi bi-x-circle-fill text-danger" ng-if="stage.status === 'error'"></i>
+                    <i class="bi bi-circle text-muted" style="opacity: 0.4;" ng-if="stage.status === 'pending'"></i>
+                  </div>
+                  <div>
+                    <span class="fw-semibold text-dark">{{ stage.id }}. {{ stage.name }}</span>
+                    <span class="text-muted d-none d-sm-inline ms-1">&mdash; {{ stage.desc }}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <span class="badge" 
+                        ng-class="{'bg-success-subtle text-success': stage.status === 'complete', 'bg-primary-subtle text-primary': stage.status === 'active', 'bg-danger-subtle text-danger': stage.status === 'error', 'bg-light text-muted': stage.status === 'pending'}"
+                        style="font-size: 0.68rem;">
+                    {{ stage.status | uppercase }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ================= INSTANT CANDIDATE EVALUATION RESULT CARD (Phase 3) ================= -->
+          <div class="candidate-screened-card p-3.5 rounded-4 border bg-white mb-3 shadow-sm" 
+               ng-if="!vm.isProcessing && vm.lastScreenedApplicant">
+            
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start pb-3 mb-3 border-bottom gap-2">
+              <div class="d-flex align-items-center gap-3">
+                <div class="candidate-avatar-lg" style="width: 48px; height: 48px; font-size: 1.25rem;">
+                  {{ vm.lastScreenedApplicant.fullName.charAt(0) }}
+                </div>
+                <div>
+                  <h4 class="h6 fw-bold text-dark mb-0.5">{{ vm.lastScreenedApplicant.fullName }}</h4>
+                  <div class="text-muted small">
+                    <span ng-if="vm.lastScreenedApplicant.email"><i class="bi bi-envelope me-1"></i>{{ vm.lastScreenedApplicant.email }} &bull; </span>
+                    <span ng-if="vm.lastScreenedApplicant.phone"><i class="bi bi-telephone me-1"></i>{{ vm.lastScreenedApplicant.phone }} &bull; </span>
+                    <span><i class="bi bi-briefcase me-1"></i>{{ vm.lastScreenedApplicant.jobTitle || vm.getSelectedJob().title }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Overall Match Score Pill -->
+              <div class="text-sm-end">
+                <span class="badge match-score-pill px-3 py-1.5" 
+                      ng-class="(vm.lastScreenedApplicant.matchAnalysis.overallScore || 0) >= 80 ? 'score-pill-emerald' : 'score-pill-indigo'"
+                      style="font-size: 0.95rem;">
+                  <i class="bi bi-stars me-1"></i> {{ vm.lastScreenedApplicant.matchAnalysis.overallScore || 0 }}% Match
+                </span>
+                <div class="text-muted small mt-1" style="font-size: 0.72rem;">
+                  {{ (vm.lastScreenedApplicant.matchAnalysis.overallScore || 0) >= 80 ? 'Highly Qualified' : 'Qualified Match' }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Score Metric Breakdown -->
+            <div class="row g-2 mb-3 text-center">
+              <div class="col-3">
+                <div class="p-2 rounded-3 bg-light">
+                  <div class="small text-muted" style="font-size: 0.7rem;">Skills</div>
+                  <div class="fw-bold text-primary" style="font-size: 0.95rem;">
+                    {{ vm.lastScreenedApplicant.matchAnalysis.skillsScore || 0 }}%
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="p-2 rounded-3 bg-light">
+                  <div class="small text-muted" style="font-size: 0.7rem;">Semantic NLP</div>
+                  <div class="fw-bold text-info" style="font-size: 0.95rem;">
+                    {{ vm.lastScreenedApplicant.matchAnalysis.similarityScore || 0 }}%
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="p-2 rounded-3 bg-light">
+                  <div class="small text-muted" style="font-size: 0.7rem;">Experience</div>
+                  <div class="fw-bold text-success" style="font-size: 0.95rem;">
+                    {{ vm.lastScreenedApplicant.matchAnalysis.experienceScore || 0 }}%
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="p-2 rounded-3 bg-light">
+                  <div class="small text-muted" style="font-size: 0.7rem;">Education</div>
+                  <div class="fw-bold text-dark" style="font-size: 0.95rem;">
+                    {{ vm.lastScreenedApplicant.matchAnalysis.educationScore || 0 }}%
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Extracted Skills Tags -->
+            <div class="mb-3" ng-if="vm.lastScreenedApplicant.extractedData.skills.length > 0">
+              <div class="small fw-semibold text-muted mb-1.5" style="font-size: 0.72rem;">
+                EXTRACTED TECHNICAL SKILLS ({{ vm.lastScreenedApplicant.extractedData.skills.length }}):
+              </div>
+              <div class="d-flex flex-wrap gap-1">
+                <span class="badge bg-light text-dark border px-2 py-1" 
+                      style="font-size: 0.72rem; font-weight: 500;"
+                      ng-repeat="skill in vm.lastScreenedApplicant.extractedData.skills | limitTo: 14">
+                  {{ skill }}
+                </span>
+                <span class="badge bg-light text-muted border px-2 py-1" 
+                      style="font-size: 0.72rem;"
+                      ng-if="vm.lastScreenedApplicant.extractedData.skills.length > 14">
+                  +{{ vm.lastScreenedApplicant.extractedData.skills.length - 14 }} more
+                </span>
+              </div>
+            </div>
+
+            <!-- Matched & Missing Skills Comparison -->
+            <div class="row g-2 mb-3">
+              <div class="col-12 col-sm-6" ng-if="vm.lastScreenedApplicant.matchAnalysis.matchedRequiredSkills.length > 0">
+                <div class="p-2 rounded-3 border border-success-subtle bg-success-subtle bg-opacity-25">
+                  <div class="small fw-semibold text-success mb-1" style="font-size: 0.72rem;">
+                    <i class="bi bi-check2 me-1"></i> Matched Required Skills:
+                  </div>
+                  <div class="d-flex flex-wrap gap-1">
+                    <span class="badge bg-success text-white py-0.5 px-1.5" 
+                          style="font-size: 0.68rem;"
+                          ng-repeat="m in vm.lastScreenedApplicant.matchAnalysis.matchedRequiredSkills">
+                      {{ m }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6" ng-if="vm.lastScreenedApplicant.matchAnalysis.missingRequiredSkills.length > 0">
+                <div class="p-2 rounded-3 border border-warning-subtle bg-warning-subtle bg-opacity-25">
+                  <div class="small fw-semibold text-warning-emphasis mb-1" style="font-size: 0.72rem;">
+                    <i class="bi bi-exclamation-triangle me-1"></i> Missing Target Skills:
+                  </div>
+                  <div class="d-flex flex-wrap gap-1">
+                    <span class="badge bg-warning text-dark py-0.5 px-1.5" 
+                          style="font-size: 0.68rem;"
+                          ng-repeat="miss in vm.lastScreenedApplicant.matchAnalysis.missingRequiredSkills">
+                      {{ miss }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+              <button class="btn btn-sm btn-outline-clean" ng-click="vm.resetUpload()">
+                <i class="bi bi-arrow-left me-1"></i> Screen Another Resume
+              </button>
+              <a href="#!/applicants/{{ vm.lastScreenedApplicant._id }}" class="btn btn-sm btn-primary-gradient px-3">
+                View Full Candidate Profile &rarr;
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Quick Demo Benchmark Buttons -->
+        <div class="pt-3 border-top text-start">
+          <div class="small fw-semibold text-muted mb-2" style="font-size: 0.72rem;">
+            QUICK BENCHMARK PROFILES (TEST REAL PIPELINE):
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" 
+                    class="btn btn-sm btn-outline-clean" 
+                    ng-click="vm.screenSampleBenchmark('priya_sharma_nlp.pdf')"
+                    ng-disabled="vm.isProcessing">
+              <i class="bi bi-file-earmark-pdf text-danger me-1"></i> Priya Sharma (NLP)
+            </button>
+            <button type="button" 
+                    class="btn btn-sm btn-outline-clean" 
+                    ng-click="vm.screenSampleBenchmark('david_kim_frontend.pdf')"
+                    ng-disabled="vm.isProcessing">
+              <i class="bi bi-file-earmark-pdf text-danger me-1"></i> David Kim (Frontend)
+            </button>
+            <button type="button" 
+                    class="btn btn-sm btn-outline-clean" 
+                    ng-click="vm.screenSampleBenchmark('casey_kim_engineer.pdf')"
+                    ng-disabled="vm.isProcessing">
+              <i class="bi bi-file-earmark-pdf text-danger me-1"></i> Alex Morgan (FullStack)
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: Recent Uploads Card (Phase 6) -->
+    <div class="col-12 col-lg-5">
+      <div class="iq-analytics-card h-100 d-flex flex-column justify-content-between">
+        
+        <div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="iq-section-title mb-0">Recent Uploads</h2>
+            <span class="badge bg-light text-muted border px-2 py-1" style="font-size: 0.72rem;">
+              {{ vm.recentUploads.length }} Recent
+            </span>
+          </div>
+
+          <!-- Empty State -->
+          <div class="text-center py-4 text-muted" ng-if="vm.recentUploads.length === 0">
+            <i class="bi bi-inbox fs-2 text-muted opacity-50 d-block mb-2"></i>
+            <span class="small">No resumes uploaded recently.</span>
+          </div>
+
+          <!-- Recent Uploaded Resume Rows with Score Pills -->
+          <div class="d-flex flex-column gap-2.5" ng-if="vm.recentUploads.length > 0">
+            <div class="p-2.5 rounded-3 border bg-white d-flex align-items-center justify-content-between" 
+                 ng-repeat="upload in vm.recentUploads track by upload.id">
+              <div class="d-flex align-items-center gap-2.5">
+                <div class="iq-kpi-icon-pill icon-purple" style="width: 32px; height: 32px; font-size: 0.9rem;">
+                  <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <div>
+                  <div class="fw-bold text-dark text-truncate" style="font-size: 0.82rem; max-width: 170px;">
+                    {{ upload.name }}
+                  </div>
+                  <div class="text-muted" style="font-size: 0.7rem;">
+                    {{ upload.candidateName }} &bull; {{ upload.timeAgo }}
+                  </div>
+                  <div class="text-primary small" style="font-size: 0.68rem;">
+                    {{ upload.targetJob }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge match-score-pill" 
+                      ng-class="upload.score >= 80 ? 'score-pill-emerald' : 'score-pill-indigo'">
+                  {{ upload.score }}%
+                </span>
+                <a href="#!/applicants/{{ upload.id }}" class="btn btn-sm p-1 text-muted hover-primary" title="View Candidate">
+                  <i class="bi bi-chevron-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 pt-2 border-top text-muted small d-flex justify-content-between align-items-center">
+          <span>Parsing engine: <strong>PDFParse & Mammoth</strong></span>
+          <span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Semantic NLP Active</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= ALL SCREENING RESULTS SECTION (Phase 6) ================= -->
+  <div class="iq-analytics-card p-4">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+      <div>
+        <h2 class="iq-section-title mb-1">All Screening Results</h2>
+        <p class="iq-section-subtitle">Real-time candidate matches ranked by the ResumeIQ NLP engine</p>
+      </div>
+
+      <!-- Search & KPI Status Filters -->
+      <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
+        <div class="input-group input-group-sm" style="max-width: 220px;">
+          <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+          <input type="text" class="form-control border-start-0" placeholder="Search candidates or skills..." ng-model="vm.searchQuery">
+        </div>
+
+        <div class="d-flex align-items-center gap-1">
+          <button class="btn btn-sm btn-outline-clean" ng-class="{'active fw-bold': vm.statusFilter === 'All'}" ng-click="vm.statusFilter = 'All'">
+            All ({{ vm.stats.total }})
+          </button>
+          <button class="btn btn-sm btn-outline-clean" ng-class="{'active fw-bold': vm.statusFilter === 'High'}" ng-click="vm.statusFilter = 'High'">
+            High &ge;80% ({{ vm.stats.highMatch }})
+          </button>
+          <button class="btn btn-sm btn-outline-clean" ng-class="{'active fw-bold': vm.statusFilter === 'Medium'}" ng-click="vm.statusFilter = 'Medium'">
+            Medium ({{ vm.stats.mediumMatch }})
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screening Results Table -->
+    <div class="table-responsive">
+      <table class="table table-clean-editorial align-middle mb-0">
+        <thead>
+          <tr>
+            <th style="min-width: 220px;">Candidate</th>
+            <th style="min-width: 170px;">Target Position</th>
+            <th style="min-width: 130px;">Match Score</th>
+            <th style="min-width: 220px;">NLP Scoring Breakdown</th>
+            <th style="min-width: 100px;">Status</th>
+            <th class="text-end" style="min-width: 110px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Empty State -->
+          <tr ng-if="vm.getFilteredResults().length === 0">
+            <td colspan="6" class="text-center py-4 text-muted">
+              No matching candidate screening records found.
+            </td>
+          </tr>
+
+          <!-- Candidate Row -->
+          <tr ng-repeat="app in vm.getFilteredResults() | limitTo: 10 track by app._id">
+            
+            <!-- Candidate -->
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="candidate-table-avatar" 
+                     ng-style="{'background': $index % 4 === 0 ? '#6366f1' : ($index % 4 === 1 ? '#06b6d4' : ($index % 4 === 2 ? '#ec4899' : '#8b5cf6'))}">
+                  {{ app.fullName.charAt(0) }}
+                </div>
+                <div>
+                  <div class="fw-bold text-dark" style="font-size: 0.85rem;">{{ app.fullName }}</div>
+                  <div class="text-muted" style="font-size: 0.72rem;">{{ app.email || 'applicant@talent.iq' }}</div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Position -->
+            <td>
+              <span class="text-dark fw-semibold" style="font-size: 0.82rem;">
+                {{ app.jobId.title || (app.jobTitle || 'Software Engineer') }}
+              </span>
+            </td>
+
+            <!-- Match Score -->
+            <td>
+              <span class="badge match-score-pill" 
+                    ng-class="(app.matchAnalysis.overallScore || 0) >= 80 ? 'score-pill-emerald' : 'score-pill-indigo'">
+                {{ app.matchAnalysis.overallScore || 0 }}%
+              </span>
+            </td>
+
+            <!-- Scoring Breakdown -->
+            <td>
+              <div class="d-flex align-items-center gap-2" style="font-size: 0.7rem;">
+                <span class="text-muted">Skills: <strong class="text-primary">{{ app.matchAnalysis.skillsScore || 0 }}%</strong></span>
+                <span class="text-muted">&bull;</span>
+                <span class="text-muted">Semantic: <strong class="text-info">{{ app.matchAnalysis.similarityScore || 0 }}%</strong></span>
+                <span class="text-muted">&bull;</span>
+                <span class="text-muted">Exp: <strong class="text-success">{{ app.matchAnalysis.experienceScore || 0 }}%</strong></span>
+              </div>
+            </td>
+
+            <!-- Status -->
+            <td>
+              <span class="candidate-status-pill" 
+                    ng-class="app.status === 'Shortlisted' ? 'status-pill-shortlisted' : (app.status === 'Interview' ? 'status-pill-interview' : 'status-pill-reviewed')">
+                {{ app.status || 'New' }}
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="text-end">
+              <a href="#!/applicants/{{ app._id }}" class="btn btn-sm btn-table-action">
+                Analysis &rarr;
+              </a>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>

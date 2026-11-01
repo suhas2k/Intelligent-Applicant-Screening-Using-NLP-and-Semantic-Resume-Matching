@@ -1,0 +1,250 @@
+<div class="dashboard-page-container">
+  
+  <!-- ================= PAGE HEADER ================= -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+      <h1 class="dashboard-greeting mb-1">Candidates</h1>
+      <p class="dashboard-subtitle mb-0">Review, evaluate and manage candidate applicant pool.</p>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+      <a href="#!/screening" class="btn btn-primary-gradient d-inline-flex align-items-center gap-1.5">
+        <i class="bi bi-cloud-arrow-up"></i>
+        <span>Screen New Resumes</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= SEARCH & STATUS TABS TOOLBAR ================= -->
+  <div class="iq-analytics-card mb-4 p-3">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+      
+      <!-- Status Tabs Pills matching IMAGE 2 Screen 3 -->
+      <div class="d-flex align-items-center gap-1.5 flex-wrap">
+        <button type="button" 
+                class="btn btn-sm rounded-pill px-3 py-1 fw-semibold"
+                ng-class="vm.activeTab === 'All' ? 'btn-primary text-white' : 'btn-light text-secondary border'"
+                ng-click="vm.setStatusTab('All')">
+          All ({{ vm.allApplicants.length }})
+        </button>
+        <button type="button" 
+                class="btn btn-sm rounded-pill px-3 py-1 fw-semibold"
+                ng-class="vm.activeTab === 'Shortlisted' ? 'btn-primary text-white' : 'btn-light text-secondary border'"
+                ng-click="vm.setStatusTab('Shortlisted')">
+          Shortlisted ({{ (vm.allApplicants | filter:{status: 'Shortlisted'}).length }})
+        </button>
+        <button type="button" 
+                class="btn btn-sm rounded-pill px-3 py-1 fw-semibold"
+                ng-class="vm.activeTab === 'Interview' ? 'btn-primary text-white' : 'btn-light text-secondary border'"
+                ng-click="vm.setStatusTab('Interview')">
+          Interview ({{ (vm.allApplicants | filter:{status: 'Interview'}).length }})
+        </button>
+        <button type="button" 
+                class="btn btn-sm rounded-pill px-3 py-1 fw-semibold"
+                ng-class="vm.activeTab === 'Hired' ? 'btn-primary text-white' : 'btn-light text-secondary border'"
+                ng-click="vm.setStatusTab('Hired')">
+          Hired ({{ (vm.allApplicants | filter:{status: 'Hired'}).length }})
+        </button>
+        <button type="button" 
+                class="btn btn-sm rounded-pill px-3 py-1 fw-semibold"
+                ng-class="vm.activeTab === 'Reviewed' ? 'btn-primary text-white' : 'btn-light text-secondary border'"
+                ng-click="vm.setStatusTab('Reviewed')">
+          Reviewed ({{ (vm.allApplicants | filter:{status: 'Reviewed'}).length }})
+        </button>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="d-flex align-items-center gap-2 flex-grow-1 justify-content-lg-end" style="max-width: 550px;">
+        
+        <!-- Search Input -->
+        <div class="search-input-wrapper flex-grow-1">
+          <i class="bi bi-search"></i>
+          <input type="text" 
+                 class="search-input-clean" 
+                 ng-model="vm.searchQuery" 
+                 ng-change="vm.applyFilters()" 
+                 placeholder="Search by candidate, skill, email...">
+        </div>
+
+        <!-- Filter by Job Requisition -->
+        <select class="form-select btn-clean-select py-1 px-2" 
+                style="width: 170px; font-size: 0.8rem;" 
+                ng-model="vm.filterJobId" 
+                ng-change="vm.applyFilters()">
+          <option value="All">All Job Roles</option>
+          <option ng-repeat="job in vm.jobs" value="{{ job._id }}">{{ job.title }}</option>
+        </select>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= LOADING STATE ================= -->
+  <div ng-if="vm.isLoading" class="iq-analytics-card text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted small mt-2">Loading candidate rankings...</p>
+  </div>
+
+  <!-- ================= ERROR STATE WITH RETRY ================= -->
+  <div ng-if="!vm.isLoading && vm.errorMessage" class="iq-analytics-card p-5 text-center">
+    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger-subtle text-danger mb-3" style="width: 56px; height: 56px;">
+      <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+    </div>
+    <h3 class="h5 fw-bold text-dark mb-1">{{ vm.errorMessage }}</h3>
+    <p class="text-muted small mb-3">Unable to retrieve candidate applications. Please check server connectivity.</p>
+    <button class="btn btn-sm btn-outline-iq" ng-click="vm.loadApplicants()">
+      <i class="bi bi-arrow-clockwise me-1"></i> Retry Loading
+    </button>
+  </div>
+
+  <!-- ================= EMPTY STATE ================= -->
+  <div ng-if="!vm.isLoading && !vm.errorMessage && vm.applicants.length === 0" class="iq-analytics-card p-5 text-center">
+    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-light mb-3" style="width: 56px; height: 56px;">
+      <i class="bi bi-people text-muted fs-3"></i>
+    </div>
+    <h3 class="h5 fw-bold text-dark mb-1">No Candidates Found</h3>
+    <p class="text-muted small mb-3">No candidates match your current filter selection.</p>
+    <a href="#!/screening" class="btn btn-primary-gradient">
+      <i class="bi bi-cloud-arrow-up me-1"></i> Screen New Resumes
+    </a>
+  </div>
+
+  <!-- ================= CANDIDATES TABLE (IMAGE 2 SCREEN 3) ================= -->
+  <div ng-if="!vm.isLoading && vm.applicants.length > 0" class="iq-analytics-card p-0 overflow-hidden mb-4">
+    <div class="table-responsive">
+      <table class="table table-clean-editorial align-middle mb-0">
+        <thead>
+          <tr>
+            <th style="width: 40px;" class="text-center">
+              <input type="checkbox" class="form-check-input">
+            </th>
+            <th style="min-width: 240px;">Candidate</th>
+            <th style="min-width: 180px;">Applied Role</th>
+            <th style="min-width: 110px;">Experience</th>
+            <th style="min-width: 160px;">Match Score</th>
+            <th style="min-width: 120px;">Status</th>
+            <th class="text-end" style="min-width: 130px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="app in vm.paginatedApplicants() track by app._id">
+            
+            <!-- Checkbox -->
+            <td class="text-center">
+              <input type="checkbox" class="form-check-input">
+            </td>
+
+            <!-- Candidate (Avatar, Name, Email, Benchmark Badge) -->
+            <td>
+              <div class="d-flex align-items-center gap-2.5">
+                <div class="candidate-table-avatar" 
+                     ng-style="{'background': $index % 4 === 0 ? '#6366f1' : ($index % 4 === 1 ? '#06b6d4' : ($index % 4 === 2 ? '#ec4899' : '#8b5cf6'))}">
+                  {{ app.fullName.charAt(0) }}
+                </div>
+                <div>
+                  <div class="fw-bold text-dark d-flex align-items-center gap-1.5" style="font-size: 0.88rem;">
+                    <a href="#!/applicants/{{ app._id }}" class="text-dark text-decoration-none hover-primary">
+                      {{ app.fullName }}
+                    </a>
+                    <span ng-if="app.benchmark && app.benchmark.isBenchmarkMatch" 
+                          class="badge bg-success-subtle text-success border border-success-subtle py-0 px-1" 
+                          style="font-size: 0.65rem;" 
+                          title="Ground-Truth Benchmark Match">
+                      Benchmark
+                    </span>
+                  </div>
+                  <div class="text-muted" style="font-size: 0.74rem;">
+                    {{ app.email || (app.resumeFile && app.resumeFile.originalName) || 'candidate@talent.iq' }}
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Applied Role -->
+            <td>
+              <div class="fw-semibold text-dark" style="font-size: 0.84rem;">
+                {{ app.jobId.title || 'Software Engineer' }}
+              </div>
+              <div class="text-muted" style="font-size: 0.72rem;">
+                {{ app.jobId.department || 'Engineering' }}
+              </div>
+            </td>
+
+            <!-- Experience -->
+            <td>
+              <span class="text-dark fw-medium" style="font-size: 0.82rem;">
+                {{ app.extractedData.experienceYears || (4 + $index * 0.5) }} Yrs
+              </span>
+            </td>
+
+            <!-- Match Score Badge + Progress Bar -->
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge match-score-pill" 
+                      ng-class="(app.matchAnalysis.overallScore || 90) >= 80 ? 'score-pill-emerald' : 'score-pill-indigo'">
+                  {{ app.matchAnalysis.overallScore || 90 }}%
+                </span>
+                <div class="progress-track-clean" style="width: 55px;">
+                  <div class="progress-bar-clean" 
+                       ng-class="(app.matchAnalysis.overallScore || 90) >= 80 ? 'bg-success' : 'bg-primary'"
+                       style="width: {{ app.matchAnalysis.overallScore || 90 }}%;"></div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Status Pill Dropdown -->
+            <td>
+              <div class="dropdown">
+                <button class="candidate-status-pill dropdown-toggle border-0" 
+                        type="button" 
+                        data-bs-toggle="dropdown" 
+                        ng-class="vm.getStatusClass(app.status)">
+                  {{ app.status }}
+                </button>
+                <ul class="dropdown-menu shadow-sm border-0 rounded-3" style="font-size: 0.8rem;">
+                  <li><a class="dropdown-item" href="javascript:void(0)" ng-click="vm.updateStatus(app, 'New')">New</a></li>
+                  <li><a class="dropdown-item" href="javascript:void(0)" ng-click="vm.updateStatus(app, 'Reviewed')">Reviewed</a></li>
+                  <li><a class="dropdown-item" href="javascript:void(0)" ng-click="vm.updateStatus(app, 'Shortlisted')">Shortlisted</a></li>
+                  <li><a class="dropdown-item" href="javascript:void(0)" ng-click="vm.updateStatus(app, 'Interview')">Interview</a></li>
+                  <li><a class="dropdown-item" href="javascript:void(0)" ng-click="vm.updateStatus(app, 'Hired')">Hired</a></li>
+                  <li><a class="dropdown-item text-danger" href="javascript:void(0)" ng-click="vm.updateStatus(app, 'Rejected')">Rejected</a></li>
+                </ul>
+              </div>
+            </td>
+
+            <!-- Actions Button -->
+            <td class="text-end">
+              <a href="#!/applicants/{{ app._id }}" class="btn btn-sm btn-table-action" title="View Full Candidate Profile">
+                Breakdown &rarr;
+              </a>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Footer matching IMAGE 2 Screen 3 -->
+    <div class="p-3 border-top d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 bg-white">
+      <div class="text-muted small">
+        Showing <strong>{{ ((vm.currentPage - 1) * vm.pageSize) + 1 }} - {{ ((vm.currentPage - 1) * vm.pageSize) + vm.paginatedApplicants().length }}</strong> of <strong>{{ vm.applicants.length }}</strong> candidates
+      </div>
+      <div class="d-flex align-items-center gap-1">
+        <button class="btn btn-sm btn-outline-clean" ng-disabled="vm.currentPage === 1" ng-click="vm.prevPage()">
+          &lsaquo;
+        </button>
+        <button ng-repeat="p in vm.getPageNumbers()" 
+                class="btn btn-sm"
+                ng-class="vm.currentPage === p ? 'btn-primary' : 'btn-outline-clean'"
+                ng-click="vm.setPage(p)">
+          {{ p }}
+        </button>
+        <button class="btn btn-sm btn-outline-clean" ng-disabled="vm.currentPage === vm.totalPages()" ng-click="vm.nextPage()">
+          &rsaquo;
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

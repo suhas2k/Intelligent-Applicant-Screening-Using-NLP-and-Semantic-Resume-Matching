@@ -1,0 +1,370 @@
+<div class="iq-page-container">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <div>
+      <h1 class="iq-page-title mb-1">Team & Access</h1>
+      <p class="iq-page-subtitle mb-0">Manage your team, roles and organization settings.</p>
+    </div>
+    <div>
+      <button class="btn btn-primary-iq d-flex align-items-center gap-2" ng-click="vm.openInviteModal()">
+        <i class="bi bi-person-plus-fill"></i>
+        <span>Add Member</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= TABS HEADER (Matching IMAGE 2 Screen 9) ================= -->
+  <div class="iq-tabs-container mb-4">
+    <button class="iq-tab-item" ng-class="{'active': vm.activeTab === 'members'}" ng-click="vm.setActiveTab('members')">
+      <span>Team Members</span>
+      <span class="badge bg-light text-dark ms-1.5 border small">{{ vm.allMembers.length }}</span>
+    </button>
+    <button class="iq-tab-item" ng-class="{'active': vm.activeTab === 'roles'}" ng-click="vm.setActiveTab('roles')">
+      <span>Roles & Permissions</span>
+    </button>
+    <button class="iq-tab-item" ng-class="{'active': vm.activeTab === 'organization'}" ng-click="vm.setActiveTab('organization')">
+      <span>Organization</span>
+    </button>
+    <button class="iq-tab-item" ng-class="{'active': vm.activeTab === 'preferences'}" ng-click="vm.setActiveTab('preferences')">
+      <span>Preferences</span>
+    </button>
+  </div>
+
+  <!-- ================= TAB 1: TEAM MEMBERS ================= -->
+  <div ng-if="vm.activeTab === 'members'">
+    
+    <!-- Search & Role Filter Bar -->
+    <div class="surface-card p-3 mb-4 rounded-3 border">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-6 col-lg-5">
+          <div class="search-input-wrapper">
+            <i class="bi bi-search"></i>
+            <input type="text" class="search-input-clean" placeholder="Search team members by name, email or role..." ng-model="vm.searchQuery" ng-change="vm.applyFilters()">
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <select class="form-select form-select-sm" ng-model="vm.filterRole" ng-change="vm.applyFilters()">
+            <option value="All">All Recruiter Roles</option>
+            <option value="Super Admin">Super Admin</option>
+            <option value="Hiring Manager">Hiring Manager</option>
+            <option value="Interviewer">Interviewer</option>
+            <option value="Technical Lead">Technical Lead</option>
+          </select>
+        </div>
+        <div class="col-md-2 col-lg-4 text-md-end text-muted small">
+          {{ vm.organization.seatsUsed || vm.team.length }} of {{ vm.organization.seatsTotal || 15 }} team seats occupied
+        </div>
+      </div>
+    </div>
+
+    <!-- Members Table Card -->
+    <div class="iq-analytics-card p-0 overflow-hidden">
+      
+      <!-- Loading State -->
+      <div class="text-center py-5" ng-if="vm.isLoading">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="text-muted small mt-2">Loading organization members...</p>
+      </div>
+
+      <!-- Error State with Retry -->
+      <div class="text-center py-5" ng-if="!vm.isLoading && vm.errorMessage">
+        <div class="rounded-circle bg-danger-subtle text-danger d-inline-flex p-3 mb-3">
+          <i class="bi bi-exclamation-triangle-fill fs-2"></i>
+        </div>
+        <div class="fw-bold text-dark mb-1">{{ vm.errorMessage }}</div>
+        <p class="text-muted small mb-3">Unable to retrieve team members. Please check server connectivity.</p>
+        <button class="btn btn-sm btn-outline-iq" ng-click="vm.loadTeam()">
+          <i class="bi bi-arrow-clockwise me-1"></i> Retry Loading
+        </button>
+      </div>
+
+      <!-- Table View (Matching IMAGE 2 Screen 9) -->
+      <div class="table-responsive" ng-if="!vm.isLoading && !vm.errorMessage">
+        <table class="table table-hover align-middle mb-0 iq-jobs-table">
+          <thead>
+            <tr>
+              <th style="width: 32%;">Member</th>
+              <th style="width: 20%;">Role</th>
+              <th style="width: 28%;">Access Scope</th>
+              <th style="width: 12%;">Status</th>
+              <th style="width: 8%; text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="member in vm.team track by member._id">
+              
+              <!-- Member Name & Email -->
+              <td>
+                <div class="d-flex align-items-center gap-3">
+                  <div class="profile-avatar text-white fw-bold" 
+                       ng-style="{'background-color': member.avatarBg || '#6366f1'}"
+                       style="width: 38px; height: 38px; font-size: 0.9rem;">
+                    {{ member.name.charAt(0) }}
+                  </div>
+                  <div>
+                    <div class="fw-bold text-dark" style="font-size: 0.92rem;">
+                      {{ member.name }}
+                    </div>
+                    <div class="text-muted small">
+                      {{ member.email }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Role Pill -->
+              <td>
+                <span class="role-badge" ng-class="vm.getRoleBadgeClass(member.role)">
+                  {{ member.role }}
+                </span>
+              </td>
+
+              <!-- Access Scope -->
+              <td>
+                <span class="text-muted small">
+                  {{ member.accessScope }}
+                </span>
+              </td>
+
+              <!-- Status -->
+              <td>
+                <span class="d-inline-flex align-items-center gap-1.5 small fw-semibold text-success">
+                  <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981;"></span>
+                  {{ member.status }}
+                </span>
+              </td>
+
+              <!-- Action -->
+              <td class="text-end">
+                <button class="btn btn-sm btn-icon-round text-danger" 
+                        ng-if="member.role !== 'Super Admin'"
+                        ng-click="vm.removeMember(member)"
+                        title="Remove Member">
+                  <i class="bi bi-trash3"></i>
+                </button>
+                <span class="badge bg-light text-muted small" ng-if="member.role === 'Super Admin'">
+                  Owner
+                </span>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ================= TAB 2: ROLES & PERMISSIONS ================= -->
+  <div ng-if="vm.activeTab === 'roles'">
+    <div class="row g-4">
+      
+      <div class="col-md-6">
+        <div class="iq-analytics-card p-4 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="role-badge role-badge-admin">Super Admin</span>
+            <span class="text-muted small">Full Platform Ownership</span>
+          </div>
+          <h2 class="h6 fw-bold text-dark mb-2">Platform & Billing Administrator</h2>
+          <p class="text-muted small mb-3">Unrestricted control across all modules, configuration settings, member provisioning, API integrations and billing.</p>
+          <ul class="text-muted small ps-3 mb-0">
+            <li>Create, modify and archive job requisitions</li>
+            <li>Inspect and export candidate resumes and NLP scores</li>
+            <li>Configure semantic matching weights & AI scoring algorithms</li>
+            <li>Manage team members, roles and access permissions</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="iq-analytics-card p-4 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="role-badge role-badge-manager">Hiring Manager</span>
+            <span class="text-muted small">Requisition Lead</span>
+          </div>
+          <h2 class="h6 fw-bold text-dark mb-2">Department Hiring Manager</h2>
+          <p class="text-muted small mb-3">Responsible for managing open positions within their assigned business departments and shortlisting top talent.</p>
+          <ul class="text-muted small ps-3 mb-0">
+            <li>Create and edit departmental job requisitions</li>
+            <li>Screen, review, and shortlist applicant profiles</li>
+            <li>Schedule technical and behavioral interviews</li>
+            <li>Update candidate recruitment status</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="iq-analytics-card p-4 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="role-badge role-badge-interviewer">Interviewer</span>
+            <span class="text-muted small">Evaluation Access</span>
+          </div>
+          <h2 class="h6 fw-bold text-dark mb-2">Technical & Cultural Interviewer</h2>
+          <p class="text-muted small mb-3">Assigned to interview candidates and submit scorecards and qualitative notes.</p>
+          <ul class="text-muted small ps-3 mb-0">
+            <li>View shortlisted candidate resumes and extracted competencies</li>
+            <li>Conduct assigned video interview sessions</li>
+            <li>Record interview notes and evaluation recommendations</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="iq-analytics-card p-4 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="role-badge role-badge-techlead">Technical Lead</span>
+            <span class="text-muted small">Competency Benchmark Reviewer</span>
+          </div>
+          <h2 class="h6 fw-bold text-dark mb-2">Engineering & Tech Evaluation Lead</h2>
+          <p class="text-muted small mb-3">Defines role competency requirements and validates NLP skill parsing weights.</p>
+          <ul class="text-muted small ps-3 mb-0">
+            <li>Calibrate required skills and competency benchmarks</li>
+            <li>Inspect candidate semantic breakdown and experience verification</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= TAB 3: ORGANIZATION ================= -->
+  <div ng-if="vm.activeTab === 'organization'">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="iq-analytics-card p-4">
+          <h2 class="h6 fw-bold text-dark mb-3">Organization Profile</h2>
+          
+          <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3 mb-4">
+            <div class="org-icon" style="width: 48px; height: 48px; font-size: 1.4rem;">
+              <i class="bi bi-building"></i>
+            </div>
+            <div>
+              <div class="fw-bold text-dark fs-6">{{ vm.organization.name }}</div>
+              <div class="text-muted small">Subscription: {{ vm.organization.plan }}</div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-dark">Company Legal Name</label>
+              <input type="text" class="form-control" value="TechCorp Technologies Inc." readonly>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-dark">Corporate Email Domain</label>
+              <input type="text" class="form-control" value="techcorp.com" readonly>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-dark">Industry Vertical</label>
+              <input type="text" class="form-control" value="Enterprise Cloud & AI SaaS" readonly>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-dark">HQ Location</label>
+              <input type="text" class="form-control" value="San Francisco, CA & Bengaluru, India" readonly>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="iq-analytics-card p-4 h-100">
+          <h2 class="h6 fw-bold text-dark mb-3">License Seats Utilization</h2>
+          
+          <div class="d-flex justify-content-between mb-1 small fw-semibold">
+            <span>Occupied Seats</span>
+            <span class="text-dark">{{ vm.organization.seatsUsed || vm.team.length }} / {{ vm.organization.seatsTotal || 15 }}</span>
+          </div>
+          
+          <div class="progress mb-3" style="height: 8px;">
+            <div class="progress-bar rounded-pill" role="progressbar" 
+                 ng-style="{'width': (((vm.organization.seatsUsed || vm.team.length) / (vm.organization.seatsTotal || 15)) * 100) + '%', 'background-color': '#7c3aed'}"></div>
+          </div>
+
+          <p class="text-muted small">
+            Your organization has {{ (vm.organization.seatsTotal || 15) - (vm.organization.seatsUsed || vm.team.length) }} available recruiter seats remaining on the Enterprise tier.
+          </p>
+
+          <button class="btn btn-sm btn-outline-iq w-100 mt-2" ng-click="vm.openInviteModal()">
+            <i class="bi bi-person-plus"></i> Allocate Next Seat
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TAB 4: PREFERENCES ================= -->
+  <div ng-if="vm.activeTab === 'preferences'">
+    <div class="iq-analytics-card p-4">
+      <h2 class="h6 fw-bold text-dark mb-2">Team Collaboration Preferences</h2>
+      <p class="text-muted small mb-4">Set default access policies for newly onboarded team members</p>
+
+      <div class="d-flex flex-column gap-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="pref1" checked>
+          <label class="form-check-label fw-semibold text-dark small" for="pref1">
+            Notify hiring manager on high-confidence candidate match (> 85%)
+          </label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="pref2" checked>
+          <label class="form-check-label fw-semibold text-dark small" for="pref2">
+            Allow interviewers to view AI match breakdown and semantic notes
+          </label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="pref3" checked>
+          <label class="form-check-label fw-semibold text-dark small" for="pref3">
+            Require interview confirmation before sending candidate calendar invite
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ADD MEMBER MODAL ================= -->
+  <div class="modal-backdrop fade show" ng-if="vm.showInviteModal" style="z-index: 1050;"></div>
+  <div class="modal fade show d-block" ng-if="vm.showInviteModal" tabindex="-1" style="z-index: 1055;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+        <div class="modal-header border-bottom px-4 py-3">
+          <h2 class="modal-title h5 fw-bold text-dark mb-0">Invite Team Member</h2>
+          <button type="button" class="btn-close" ng-click="vm.closeInviteModal()"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form name="inviteForm" novalidate>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark">Full Name *</label>
+              <input type="text" class="form-control" ng-model="vm.inviteForm.name" placeholder="e.g. Vikram Malhotra" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark">Corporate Email *</label>
+              <input type="email" class="form-control" ng-model="vm.inviteForm.email" placeholder="vikram@techcorp.com" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark">Recruiter Role *</label>
+              <select class="form-select" ng-model="vm.inviteForm.role" ng-change="vm.onRoleChange()">
+                <option value="Hiring Manager">Hiring Manager</option>
+                <option value="Interviewer">Interviewer</option>
+                <option value="Technical Lead">Technical Lead</option>
+                <option value="Super Admin">Super Admin</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark">Access Scope</label>
+              <input type="text" class="form-control" ng-model="vm.inviteForm.accessScope">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-top px-4 py-3 bg-light">
+          <button type="button" class="btn btn-outline-secondary" ng-click="vm.closeInviteModal()">Cancel</button>
+          <button type="button" class="btn btn-primary-iq" ng-click="vm.submitInvite()">
+            Send Invitation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

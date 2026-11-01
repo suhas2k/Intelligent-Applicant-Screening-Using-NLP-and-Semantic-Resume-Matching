@@ -1,0 +1,386 @@
+/* ==========================================================================
+   ResumeIQ Comprehensive Responsive Design System (Mobile to 1440px+ Ultrawide)
+   Breakpoints: 360px, 390px, 480px, 768px, 1024px, 1280px, 1440px
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Base Responsive Reset & Touch Standards
+   -------------------------------------------------------------------------- */
+button, 
+a.btn, 
+.sidebar-nav-item, 
+.iq-tab-item, 
+.mobile-nav-item {
+  min-height: 40px;
+  touch-action: manipulation;
+}
+
+input, 
+select, 
+textarea {
+  font-size: 16px; /* Prevents auto-zoom on iOS safari while keeping 0.875rem on desktop */
+}
+
+@media (min-width: 768px) {
+  input, select, textarea {
+    font-size: 0.85rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Mobile Offcanvas Navigation Drawer (< 992px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+  .app-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    z-index: 1060 !important;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: none !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-sidebar.mobile-open {
+    transform: translateX(0) !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  .app-main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding-bottom: 74px !important; /* Space for mobile bottom quick nav */
+  }
+
+  /* Backdrop Overlay */
+  .mobile-drawer-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1050;
+    animation: drawerFadeIn 0.25s ease;
+  }
+
+  @keyframes drawerFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Topbar Compact Structure */
+  .app-topbar {
+    padding: 0 1rem !important;
+    height: 58px !important;
+  }
+
+  .topbar-search {
+    max-width: 180px !important;
+  }
+
+  .search-shortcut {
+    display: none !important;
+  }
+
+  .search-input-clean {
+    padding-right: 0.75rem !important;
+    height: 34px !important;
+  }
+}
+
+/* Body lock when drawer is active */
+body.drawer-open {
+  overflow: hidden !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. Mobile Bottom Quick Navigation Bar (Sticky on phones & tablets)
+   -------------------------------------------------------------------------- */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 62px;
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 1040;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  padding: 0 0.5rem;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+[data-theme="dark"] .mobile-bottom-nav {
+  background-color: var(--nav-bg);
+  border-top-color: var(--border-subtle);
+  box-shadow: 0 -2px 14px rgba(0, 0, 0, 0.35);
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-decoration: none;
+  gap: 3px;
+  transition: all 0.15s ease;
+}
+
+.mobile-nav-item i {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.mobile-nav-item:hover {
+  color: var(--primary);
+}
+
+.mobile-nav-item.active {
+  color: var(--primary) !important;
+}
+
+.mobile-nav-item.active i {
+  color: var(--primary) !important;
+}
+
+@media (min-width: 992px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Viewport Breakdown: Tablet & Mobile Adaptations (<= 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* Dashboard Page */
+  .dashboard-page-container {
+    padding: 1rem 0.75rem 2rem 0.75rem !important;
+  }
+
+  .dashboard-greeting {
+    font-size: 1.35rem !important;
+  }
+
+  .kpi-card {
+    padding: 1rem !important;
+  }
+
+  .kpi-value,
+  .iq-kpi-number {
+    font-size: 1.55rem !important;
+  }
+
+  .pipeline-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+
+  .funnel-stage-meta {
+    width: 75px !important;
+  }
+
+  .stage-label {
+    font-size: 0.74rem !important;
+  }
+
+  .funnel-stage-pct {
+    width: 44px !important;
+    font-size: 0.72rem !important;
+  }
+
+  /* Candidate Tables & Lists */
+  .candidate-card-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Job Postings Responsive */
+  .job-filter-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.65rem !important;
+  }
+
+  .job-card-actions {
+    width: 100% !important;
+    display: flex !important;
+    gap: 0.5rem !important;
+    margin-top: 0.75rem !important;
+  }
+
+  .job-card-actions .btn {
+    flex: 1 !important;
+  }
+
+  /* Interviews Responsive */
+  .interviews-container-row {
+    flex-direction: column !important;
+  }
+
+  .iq-calendar-grid {
+    gap: 4px !important;
+  }
+
+  .iq-calendar-cell {
+    font-size: 0.75rem !important;
+    border-radius: 6px !important;
+  }
+
+  /* Screening Upload */
+  .upload-dropzone-clean {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .upload-icon-circle-clean {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 1.3rem !important;
+  }
+
+  /* Charts Container */
+  .bar-chart-grid {
+    height: 180px !important;
+  }
+
+  .chart-bar-col {
+    width: 32px !important;
+  }
+
+  .chart-bar-pillar {
+    width: 22px !important;
+  }
+
+  /* Settings Tabs */
+  .iq-tabs-container {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding-bottom: 4px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .iq-tab-item {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Modals */
+  .modal-dialog {
+    margin: 0.75rem !important;
+    max-width: calc(100% - 1.5rem) !important;
+  }
+
+  .modal-content {
+    border-radius: 16px !important;
+  }
+
+  .modal-body {
+    padding: 1.25rem 1rem !important;
+  }
+
+  /* Tables: responsive scroll */
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    border-radius: 12px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Small Mobile Phones (360px - 480px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .iq-page-title,
+  .dashboard-greeting {
+    font-size: 1.2rem !important;
+  }
+
+  .dashboard-header-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  .dashboard-header-actions {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+  }
+
+  /* Topbar adjustments */
+  .platform-status-pill {
+    display: none !important; /* Hide status pill on tiny screens to preserve logo & actions */
+  }
+
+  .topbar-search {
+    max-width: 130px !important;
+  }
+
+  /* Pipeline 1-column on tiny phones */
+  .pipeline-container {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* KPI cards */
+  .kpi-row {
+    margin-right: -4px !important;
+    margin-left: -4px !important;
+  }
+
+  .kpi-col {
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+  }
+
+  .iq-kpi-subtext {
+    font-size: 0.68rem !important;
+  }
+
+  /* OTP Code digits */
+  .otp-digit-box {
+    width: 38px !important;
+    height: 46px !important;
+    font-size: 1.2rem !important;
+  }
+
+  /* Theme cards in settings */
+  .theme-option-card {
+    padding: 0.85rem !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Large Desktop & Ultrawide (> 1440px)
+   -------------------------------------------------------------------------- */
+@media (min-width: 1440px) {
+  .dashboard-page-container,
+  .iq-page-container {
+    max-width: 1680px;
+    margin: 0 auto;
+  }
+
+  .kpi-card {
+    padding: 1.5rem !important;
+  }
+
+  .iq-kpi-number {
+    font-size: 2.2rem !important;
+  }
+}

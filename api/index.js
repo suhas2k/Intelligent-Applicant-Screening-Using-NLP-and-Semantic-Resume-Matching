@@ -22,6 +22,9 @@ module.exports = (req, res) => {
   }
 
   try {
+    if (req.url && req.url.startsWith('/api/index.js/')) {
+      req.url = req.url.replace('/api/index.js', '/api');
+    }
     return app(req, res);
   } catch (runErr) {
     res.statusCode = 500;

@@ -31,20 +31,39 @@
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
+        let dragCounter = 0;
+
+        element.bind('dragenter', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dragCounter++;
+          element.addClass('is-dragging');
+        });
+
         element.bind('dragover', function (e) {
           e.preventDefault();
-          element.addClass('dragover');
+          e.stopPropagation();
+          element.addClass('is-dragging');
         });
 
         element.bind('dragleave', function (e) {
           e.preventDefault();
-          element.removeClass('dragover');
+          e.stopPropagation();
+          dragCounter--;
+          if (dragCounter <= 0) {
+            dragCounter = 0;
+            element.removeClass('is-dragging');
+          }
         });
 
         element.bind('drop', function (e) {
           e.preventDefault();
-          element.removeClass('dragover');
-          const files = e.dataTransfer ? e.dataTransfer.files : e.originalEvent.dataTransfer.files;
+          e.stopPropagation();
+          dragCounter = 0;
+          element.removeClass('is-dragging');
+
+          const dt = e.dataTransfer || (e.originalEvent && e.originalEvent.dataTransfer);
+          const files = dt ? dt.files : null;
           if (files && files.length > 0) {
             scope.$apply(function () {
               if (attrs.fileDropzone) {

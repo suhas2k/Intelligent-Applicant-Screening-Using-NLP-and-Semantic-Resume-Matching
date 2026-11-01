@@ -1,485 +1,787 @@
-<div class="row justify-content-center py-3 py-lg-4">
-  <div class="col-12 col-xl-11 col-xxl-10">
-    <div class="surface-card overflow-hidden shadow-lg border-0" style="border-radius: var(--radius-xl);">
-      <div class="row g-0">
-        
-        <!-- Left Hero & Trust Panel (Stitch Deep Navy Canvas) -->
-        <div class="col-12 col-lg-5 p-4 p-sm-5 text-white d-flex flex-column justify-content-between position-relative overflow-hidden" 
-             style="background: linear-gradient(135deg, #0c1527 0%, #111c35 50%, #090e1a 100%); min-height: 580px;">
-          
-          <!-- Ambient Glow Circles -->
-          <div style="position: absolute; top: -70px; left: -70px; width: 260px; height: 260px; border-radius: 50%; background: rgba(79, 70, 229, 0.22); filter: blur(55px); pointer-events: none;"></div>
-          <div style="position: absolute; bottom: -70px; right: -70px; width: 260px; height: 260px; border-radius: 50%; background: rgba(16, 185, 129, 0.16); filter: blur(55px); pointer-events: none;"></div>
+<div class="resumeiq-premium-landing">
 
-          <div style="position: relative; z-index: 2;">
-            <!-- Brand Mark (Stitch Precision) -->
-            <div class="d-flex align-items-center gap-3 mb-4">
-              <div class="d-flex align-items-center justify-content-center rounded-3 shadow-lg" 
-                   style="width: 44px; height: 44px; background: #4f46e5; color: #ffffff; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);">
-                <span class="material-symbols-outlined fs-4" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+  <!-- ================= TOP NAVIGATION BAR (Matching Reference) ================= -->
+  <header class="landing-header d-flex justify-content-between align-items-center px-3 px-sm-4 px-lg-5">
+    
+    <!-- Brand on Left -->
+    <div class="d-flex align-items-center gap-2">
+      <a href="#!/login" class="d-flex align-items-center gap-2 text-decoration-none">
+        <div class="d-flex align-items-center justify-content-center">
+          <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 6C7 4.89543 7.89543 4 9 4H20C24.4183 4 28 7.58172 28 12C28 15.637 25.5707 18.708 22.25 19.645L28.7 30.8C29.23 31.73 28.55 32.9 27.47 32.9H22.4C21.75 32.9 21.15 32.55 20.82 31.99L15.2 21.8H13.8V31C13.8 32.1 12.9 33 11.8 33H9C7.89543 33 7 32.1 7 31V6Z" fill="url(#iq_r_grad1)"/>
+            <path d="M13.8 11.2H19.2C20.86 11.2 22.2 12.54 22.2 14.2C22.2 15.86 20.86 17.2 19.2 17.2H13.8V11.2Z" fill="#ffffff" fill-opacity="0.95"/>
+            <defs>
+              <linearGradient id="iq_r_grad1" x1="7" y1="4" x2="28" y2="33" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#8b5cf6"/>
+                <stop offset="0.5" stop-color="#7c3aed"/>
+                <stop offset="1" stop-color="#4f46e5"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="iq-brand-title">ResumeIQ</span>
+      </a>
+    </div>
+
+    <!-- Center Navigation Links -->
+    <nav class="d-none d-md-flex align-items-center gap-4 landing-nav-links" aria-label="Landing Page Navigation">
+      <a href="#!/jobs" class="landing-nav-item">Product</a>
+      <div class="dropdown landing-nav-item">
+        <span class="dropdown-toggle" style="cursor: pointer;">Solutions</span>
+      </div>
+      <a href="#!/dashboard" class="landing-nav-item">Resources</a>
+      <a href="#!/register" class="landing-nav-item">Pricing</a>
+    </nav>
+
+    <!-- Right: Platform Online Status Badge -->
+    <div class="d-flex align-items-center gap-2 gap-sm-3">
+      <span class="platform-status-pill">
+        <span class="status-dot"></span> Platform Online
+      </span>
+    </div>
+  </header>
+
+  <!-- ================= MAIN LANDING CONTENT GRID ================= -->
+  <div class="landing-content-grid container-fluid px-3 px-sm-4 px-lg-5 py-2 py-lg-3">
+    <div class="row align-items-center g-4 g-xl-5">
+      
+      <!-- ================= LEFT COLUMN: HERO + DASHBOARD SHOWCASE ================= -->
+      <div class="col-12 col-xl-7 col-xxl-7 pe-xl-3">
+        
+        <!-- Hero Text -->
+        <div class="hero-text-block mb-3">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="hero-eyebrow mb-0">AI RECRUITMENT PLATFORM</span>
+            <span style="display:inline-block; width: 40px; height: 1.5px; background: #64748b; opacity: 0.5;"></span>
+          </div>
+          <h1 class="hero-heading mb-2">
+            Turn Resumes into<br>the <span class="purple-highlight">Right Hires.</span>
+          </h1>
+          <p class="hero-subheading mb-3">
+            AI-powered resume understanding, skill matching and candidate intelligence for faster, fairer hiring.
+          </p>
+        </div>
+
+        <!-- Row: Features on Left + 3D Laptop on Right (Matching Reference) -->
+        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 gap-lg-4">
+          
+          <!-- Left: 4 Features + Laurel Wreath -->
+          <div class="hero-features-column flex-shrink-0" style="min-width: 175px;">
+            <div class="hero-features-list mb-3">
+              <div class="feature-item">
+                <div class="feature-icon-squircle">
+                  <i class="bi bi-lightning-charge-fill"></i>
+                </div>
+                <div class="feature-text">
+                  <span class="d-block">Understand</span>
+                  <span>Resumes with AI</span>
+                </div>
               </div>
-              <div>
-                <div class="h5 fw-bold mb-0 text-white" style="letter-spacing: -0.02em;">ResumeIQ</div>
-                <div class="small text-white-50" style="font-size: 0.76rem;">Intelligent Applicant Screening</div>
+
+              <div class="feature-item">
+                <div class="feature-icon-squircle">
+                  <i class="bi bi-stack"></i>
+                </div>
+                <div class="feature-text">
+                  <span class="d-block">Match Skills</span>
+                  <span>Semantically</span>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon-squircle">
+                  <i class="bi bi-bar-chart-fill"></i>
+                </div>
+                <div class="feature-text">
+                  <span class="d-block">Score & Rank</span>
+                  <span>Candidates</span>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon-squircle">
+                  <i class="bi bi-person-bounding-box"></i>
+                </div>
+                <div class="feature-text">
+                  <span class="d-block">Discover</span>
+                  <span>Top Talent</span>
+                </div>
               </div>
             </div>
 
-            <h2 class="h4 fw-bold text-white mb-3" style="letter-spacing: -0.025em; line-height: 1.35;">
-              Precision Recruiting Intelligence with Real-Time NLP
-            </h2>
-            <p class="small text-white-50 mb-4" style="line-height: 1.65; font-size: 0.85rem;">
-              Algorithmic candidate scoring, TF-IDF semantic resume matching, and multi-factor ranking designed for modern talent leaders.
-            </p>
-
-            <!-- Feature Badges -->
-            <div class="d-flex flex-column gap-3 mb-4">
-              <div class="d-flex align-items-start gap-3">
-                <div class="d-flex align-items-center justify-content-center rounded-2 shrink-0 mt-1" 
-                     style="width: 26px; height: 26px; background: rgba(79, 70, 229, 0.25); color: #a5b4fc;">
-                  <span class="material-symbols-outlined" style="font-size: 16px;">check_circle</span>
-                </div>
-                <div class="small text-white-50" style="font-size: 0.82rem; line-height: 1.45;">
-                  <strong class="text-white">Multi-Factor Semantic Engine:</strong> Evaluates extracted skills, semantic relevance, experience, and education.
-                </div>
+            <!-- Laurel Wreath: Trusted by Growing Teams -->
+            <div class="trusted-badge d-flex align-items-center gap-2 mt-3 ps-1">
+              <svg width="20" height="26" viewBox="0 0 24 30" fill="none" stroke="#475569" stroke-width="2">
+                <path d="M10 28C6 24 3 18 4 10C5 6 7 3 9 1" stroke-linecap="round"/>
+                <path d="M5 21C3.5 19 2 17 2 14" stroke-linecap="round"/>
+                <path d="M6 15C4.5 13 3 11 3.5 8" stroke-linecap="round"/>
+                <path d="M7 9C6 7 5 5 6 3" stroke-linecap="round"/>
+              </svg>
+              <div style="font-size: 0.72rem; line-height: 1.2; color: #475569; font-weight: 600;">
+                Trusted by<br><strong style="color: #0f172a; font-weight: 800;">Growing Teams</strong>
               </div>
-
-              <div class="d-flex align-items-start gap-3">
-                <div class="d-flex align-items-center justify-content-center rounded-2 shrink-0 mt-1" 
-                     style="width: 26px; height: 26px; background: rgba(16, 185, 129, 0.22); color: #6ee7b7;">
-                  <span class="material-symbols-outlined" style="font-size: 16px;">verified_user</span>
-                </div>
-                <div class="small text-white-50" style="font-size: 0.82rem; line-height: 1.45;">
-                  <strong class="text-white">Bias-Conscious Heuristics:</strong> Protected demographic attributes are excluded from algorithmic models.
-                </div>
-              </div>
-
-              <div class="d-flex align-items-start gap-3">
-                <div class="d-flex align-items-center justify-content-center rounded-2 shrink-0 mt-1" 
-                     style="width: 26px; height: 26px; background: rgba(45, 212, 191, 0.2); color: #5eead4;">
-                  <span class="material-symbols-outlined" style="font-size: 16px;">dataset</span>
-                </div>
-                <div class="small text-white-50" style="font-size: 0.82rem; line-height: 1.45;">
-                  <strong class="text-white">Synthetic Benchmark Validated:</strong> Ground-truth tested on 50+ diverse enterprise resumes.
-                </div>
-              </div>
+              <svg width="20" height="26" viewBox="0 0 24 30" fill="none" stroke="#475569" stroke-width="2" style="transform: scaleX(-1);">
+                <path d="M10 28C6 24 3 18 4 10C5 6 7 3 9 1" stroke-linecap="round"/>
+                <path d="M5 21C3.5 19 2 17 2 14" stroke-linecap="round"/>
+                <path d="M6 15C4.5 13 3 11 3.5 8" stroke-linecap="round"/>
+                <path d="M7 9C6 7 5 5 6 3" stroke-linecap="round"/>
+              </svg>
             </div>
           </div>
 
-          <!-- Footer Status -->
-          <div class="pt-4 border-top border-white border-opacity-10 d-flex justify-content-between align-items-center small text-white-50" style="position: relative; z-index: 2;">
-            <span style="font-size: 0.75rem;">&copy; 2026 ResumeIQ Platform</span>
-            <span class="badge d-inline-flex align-items-center gap-1.5 py-1 px-2 border" 
-                  style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3) !important; font-size: 0.72rem;">
-              <span class="pulse-indicator pulse-emerald"></span> Engine Online
+          <!-- Right: LAPTOP DASHBOARD SHOWCASE (3D Metallic MacBook Displaying ResumeIQ Recruiter Dashboard) -->
+          <div class="laptop-showcase-container flex-grow-1">
+            <div class="laptop-mockup">
+              
+              <!-- Laptop Top Lid -->
+              <div class="laptop-lid">
+                <div class="laptop-camera-notch"></div>
+                
+                <!-- Laptop Screen -->
+                <div class="laptop-screen">
+                  <div class="d-flex" style="min-height: 360px;">
+                    
+                    <!-- Left Mini Sidebar -->
+                    <div class="dash-sidebar d-flex flex-column justify-content-between">
+                      <div>
+                        <!-- Brand in Screen -->
+                        <div class="d-flex align-items-center gap-1.5 mb-2.5 px-1">
+                          <svg width="13" height="13" viewBox="0 0 36 36" fill="none">
+                            <path d="M7 6C7 4.89543 7.89543 4 9 4H20C24.4183 4 28 7.58172 28 12C28 15.637 25.5707 18.708 22.25 19.645L28.7 30.8C29.23 31.73 28.55 32.9 27.47 32.9H22.4C21.75 32.9 21.15 32.55 20.82 31.99L15.2 21.8H13.8V31C13.8 32.1 12.9 33 11.8 33H9C7.89543 33 7 32.1 7 31V6Z" fill="#a855f7"/>
+                            <path d="M13.8 11.2H19.2C20.86 11.2 22.2 12.54 22.2 14.2C22.2 15.86 20.86 17.2 19.2 17.2H13.8V11.2Z" fill="#ffffff"/>
+                          </svg>
+                          <span class="fw-bold text-white" style="font-size: 9.5px;">ResumeIQ</span>
+                        </div>
+
+                        <!-- Nav items -->
+                        <div class="dash-nav-pill active">
+                          <i class="bi bi-grid-1x2-fill" style="font-size: 8.5px;"></i>
+                          <span>Dashboard</span>
+                        </div>
+                        <div class="dash-nav-pill">
+                          <i class="bi bi-briefcase-fill" style="font-size: 8.5px;"></i>
+                          <span>Jobs</span>
+                        </div>
+                        <div class="dash-nav-pill">
+                          <i class="bi bi-people-fill" style="font-size: 8.5px;"></i>
+                          <span>Candidates</span>
+                        </div>
+                        <div class="dash-nav-pill">
+                          <i class="bi bi-cpu-fill" style="font-size: 8.5px;"></i>
+                          <span>Screening</span>
+                        </div>
+                        <div class="dash-nav-pill">
+                          <i class="bi bi-bookmark-check-fill" style="font-size: 8.5px;"></i>
+                          <span>Shortlist</span>
+                        </div>
+                        <div class="dash-nav-pill">
+                          <i class="bi bi-graph-up-arrow" style="font-size: 8.5px;"></i>
+                          <span>Analytics</span>
+                        </div>
+                        <div class="dash-nav-pill">
+                          <i class="bi bi-gear-fill" style="font-size: 8.5px;"></i>
+                          <span>Settings</span>
+                        </div>
+                      </div>
+
+                      <div class="px-1 text-white-50" style="font-size: 7.5px;">
+                        v2.4 Live
+                      </div>
+                    </div>
+
+                    <!-- Dashboard Main Workspace (Light Theme matching reference image) -->
+                    <div class="dash-main-area">
+                      
+                      <!-- Dashboard Topbar -->
+                      <div class="dash-topbar pb-1.5 border-bottom border-light">
+                        <div>
+                          <div class="fw-bold text-dark" style="font-size: 11px; line-height: 1.2;">Recruiter Dashboard</div>
+                          <div class="text-muted" style="font-size: 8px;">AI-powered hiring insights</div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="d-flex align-items-center px-2 py-0.5 rounded-pill" style="background: #ffffff; border: 1px solid #e2e8f0; font-size: 8px; color: #64748b;">
+                            <i class="bi bi-search me-1" style="font-size: 7.5px;"></i> Search candidates...
+                          </div>
+                          <i class="bi bi-bell text-secondary" style="font-size: 9.5px;"></i>
+                          <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" 
+                               style="width: 17px; height: 17px; background: linear-gradient(135deg, #6366f1, #a855f7); font-size: 8.5px;">
+                            M
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Row 1: KPI Statistics (4 Cards) -->
+                      <div class="row g-1.5 mb-2 mt-0.5">
+                        <div class="col-3">
+                          <div class="dash-card">
+                            <div class="d-flex align-items-center gap-1.5 mb-1">
+                              <div class="dash-kpi-badge" style="background: #ede9fe; color: #7c3aed;">
+                                <i class="bi bi-people-fill"></i>
+                              </div>
+                              <span class="text-muted" style="font-size: 7.5px; line-height: 1.1;">Applicants</span>
+                            </div>
+                            <div class="fw-bold text-dark" style="font-size: 12px;">142</div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="dash-card">
+                            <div class="d-flex align-items-center gap-1.5 mb-1">
+                              <div class="dash-kpi-badge" style="background: #dcfce7; color: #16a34a;">
+                                <i class="bi bi-check-circle-fill"></i>
+                              </div>
+                              <span class="text-muted" style="font-size: 7.5px; line-height: 1.1;">Shortlisted</span>
+                            </div>
+                            <div class="fw-bold text-dark" style="font-size: 12px;">28</div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="dash-card">
+                            <div class="d-flex align-items-center gap-1.5 mb-1">
+                              <div class="dash-kpi-badge" style="background: #f3e8ff; color: #9333ea;">
+                                <i class="bi bi-calendar-event-fill"></i>
+                              </div>
+                              <span class="text-muted" style="font-size: 7.5px; line-height: 1.1;">Interviewing</span>
+                            </div>
+                            <div class="fw-bold text-dark" style="font-size: 12px;">12</div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="dash-card">
+                            <div class="d-flex align-items-center gap-1.5 mb-1">
+                              <div class="dash-kpi-badge" style="background: #fef3c7; color: #d97706;">
+                                <i class="bi bi-trophy-fill"></i>
+                              </div>
+                              <span class="text-muted" style="font-size: 7.5px; line-height: 1.1;">Hired</span>
+                            </div>
+                            <div class="fw-bold text-dark" style="font-size: 12px;">5</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Row 2: Top Match Candidates & Skill Radar Chart -->
+                      <div class="row g-1.5 mb-2">
+                        
+                        <!-- Top Match Candidates -->
+                        <div class="col-6">
+                          <div class="dash-card h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                              <span class="fw-bold text-dark" style="font-size: 8.5px;">Top Match Candidates</span>
+                              <span class="text-primary fw-semibold" style="font-size: 7.5px;">View All &rarr;</span>
+                            </div>
+                            
+                            <!-- Candidate 1 -->
+                            <div class="d-flex justify-content-between align-items-center py-1 border-bottom border-light">
+                              <div class="d-flex align-items-center gap-1.5">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center text-white" 
+                                     style="width: 17px; height: 17px; background: #6366f1; font-size: 7.5px;">P</div>
+                                <div>
+                                  <div class="text-dark fw-bold" style="font-size: 8px; line-height: 1;">Priya Sharma</div>
+                                  <div class="text-muted" style="font-size: 6.5px;">Software Engineer</div>
+                                </div>
+                              </div>
+                              <span class="badge py-0.5 px-1.5 rounded-pill" style="background: #dcfce7; color: #16a34a; font-size: 7.5px; font-weight: 700;">96%</span>
+                            </div>
+
+                            <!-- Candidate 2 -->
+                            <div class="d-flex justify-content-between align-items-center py-1 border-bottom border-light">
+                              <div class="d-flex align-items-center gap-1.5">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center text-white" 
+                                     style="width: 17px; height: 17px; background: #06b6d4; font-size: 7.5px;">A</div>
+                                <div>
+                                  <div class="text-dark fw-bold" style="font-size: 8px; line-height: 1;">Arjun Reddy</div>
+                                  <div class="text-muted" style="font-size: 6.5px;">Backend Developer</div>
+                                </div>
+                              </div>
+                              <span class="badge py-0.5 px-1.5 rounded-pill" style="background: #dcfce7; color: #16a34a; font-size: 7.5px; font-weight: 700;">93%</span>
+                            </div>
+
+                            <!-- Candidate 3 -->
+                            <div class="d-flex justify-content-between align-items-center py-1">
+                              <div class="d-flex align-items-center gap-1.5">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center text-white" 
+                                     style="width: 17px; height: 17px; background: #ec4899; font-size: 7.5px;">A</div>
+                                <div>
+                                  <div class="text-dark fw-bold" style="font-size: 8px; line-height: 1;">Ananya Verma</div>
+                                  <div class="text-muted" style="font-size: 6.5px;">Full Stack Developer</div>
+                                </div>
+                              </div>
+                              <span class="badge py-0.5 px-1.5 rounded-pill" style="background: #dcfce7; color: #16a34a; font-size: 7.5px; font-weight: 700;">91%</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Skill Match Analysis Radar Chart -->
+                        <div class="col-6">
+                          <div class="dash-card h-100 d-flex flex-column align-items-center justify-content-between text-center">
+                            <div class="w-100 text-start fw-bold text-dark mb-0.5" style="font-size: 8.5px;">Skill Match Analysis</div>
+                            
+                            <!-- Hexagonal Radar Chart SVG -->
+                            <svg width="105" height="90" viewBox="0 0 140 120" class="my-auto">
+                              <!-- Background Web -->
+                              <polygon points="70,10 120,38 120,92 70,120 20,92 20,38" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                              <polygon points="70,25 105,44 105,82 70,102 35,82 35,44" fill="none" stroke="#e2e8f0" stroke-width="0.8"/>
+                              <polygon points="70,40 90,52 90,74 70,86 50,74 50,52" fill="none" stroke="#cbd5e1" stroke-width="0.6"/>
+                              
+                              <!-- Connecting spokes -->
+                              <line x1="70" y1="64" x2="70" y2="10" stroke="#e2e8f0" stroke-width="1"/>
+                              <line x1="70" y1="64" x2="120" y2="38" stroke="#e2e8f0" stroke-width="1"/>
+                              <line x1="70" y1="64" x2="120" y2="92" stroke="#e2e8f0" stroke-width="1"/>
+                              <line x1="70" y1="64" x2="70" y2="120" stroke="#e2e8f0" stroke-width="1"/>
+                              <line x1="70" y1="64" x2="20" y2="92" stroke="#e2e8f0" stroke-width="1"/>
+                              <line x1="70" y1="64" x2="20" y2="38" stroke="#e2e8f0" stroke-width="1"/>
+
+                              <!-- Dynamic Radar Shape -->
+                              <polygon points="70,18 112,42 108,86 70,108 30,86 28,45" 
+                                       fill="rgba(147, 51, 234, 0.22)" 
+                                       stroke="#7c3aed" 
+                                       stroke-width="1.8"/>
+                              
+                              <!-- Dots on vertices -->
+                              <circle cx="70" cy="18" r="2.2" fill="#7c3aed"/>
+                              <circle cx="112" cy="42" r="2.2" fill="#7c3aed"/>
+                              <circle cx="108" cy="86" r="2.2" fill="#7c3aed"/>
+                              <circle cx="70" cy="108" r="2.2" fill="#7c3aed"/>
+                              <circle cx="30" cy="86" r="2.2" fill="#7c3aed"/>
+                              <circle cx="28" cy="45" r="2.2" fill="#7c3aed"/>
+
+                              <!-- Labels -->
+                              <text x="70" y="8" fill="#475569" font-size="7" font-weight="600" text-anchor="middle">React</text>
+                              <text x="124" y="38" fill="#475569" font-size="7" font-weight="600" text-anchor="start">Node.js</text>
+                              <text x="124" y="96" fill="#475569" font-size="7" font-weight="600" text-anchor="start">NLP</text>
+                              <text x="70" y="128" fill="#475569" font-size="7" font-weight="600" text-anchor="middle">MongoDB</text>
+                              <text x="16" y="96" fill="#475569" font-size="7" font-weight="600" text-anchor="end">Python</text>
+                              <text x="16" y="38" fill="#475569" font-size="7" font-weight="600" text-anchor="end">ML</text>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Row 3: Pipeline & Average Match Score -->
+                      <div class="row g-1.5">
+                        <div class="col-7">
+                          <div class="dash-card">
+                            <span class="fw-bold text-dark d-block mb-1" style="font-size: 8px;">Hiring Pipeline</span>
+                            <div class="d-flex align-items-center justify-content-between text-muted" style="font-size: 7px;">
+                              <span class="d-inline-flex align-items-center gap-1">
+                                <span class="badge rounded-circle p-1" style="background:#6366f1;"></span> Applied 142
+                              </span>
+                              &rarr;
+                              <span class="d-inline-flex align-items-center gap-1">
+                                <span class="badge rounded-circle p-1" style="background:#06b6d4;"></span> Screened 58
+                              </span>
+                              &rarr;
+                              <span class="d-inline-flex align-items-center gap-1">
+                                <span class="badge rounded-circle p-1" style="background:#a855f7;"></span> Interview 12
+                              </span>
+                              &rarr;
+                              <span class="d-inline-flex align-items-center gap-1">
+                                <span class="badge rounded-circle p-1" style="background:#f59e0b;"></span> Hired 5
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-5">
+                          <div class="dash-card">
+                            <div class="d-flex justify-content-between align-items-center mb-0.5">
+                              <span class="text-muted" style="font-size: 7.5px;">Avg. Match Score</span>
+                              <span class="fw-bold text-dark" style="font-size: 10.5px;">87%</span>
+                            </div>
+                            <!-- Purple wave graph -->
+                            <svg width="100%" height="18" viewBox="0 0 100 25" preserveAspectRatio="none">
+                              <defs>
+                                <linearGradient id="wave_grad" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.35"/>
+                                  <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.0"/>
+                                </linearGradient>
+                              </defs>
+                              <path d="M0,20 Q20,5 40,14 T80,8 T100,12 L100,25 L0,25 Z" fill="url(#wave_grad)"/>
+                              <path d="M0,20 Q20,5 40,14 T80,8 T100,12" fill="none" stroke="#7c3aed" stroke-width="1.6"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Laptop Base Deck & Notch -->
+              <div class="laptop-base">
+                <div class="laptop-notch-cutout"></div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================= RIGHT COLUMN: FLOATING TRANSLUCENT AUTH CARD ================= -->
+      <div class="col-12 col-xl-5 col-xxl-5 d-flex justify-content-center justify-content-xl-end">
+        <div class="auth-floating-card">
+          
+          <!-- Card Brand & Header -->
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <svg width="26" height="26" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 6C7 4.89543 7.89543 4 9 4H20C24.4183 4 28 7.58172 28 12C28 15.637 25.5707 18.708 22.25 19.645L28.7 30.8C29.23 31.73 28.55 32.9 27.47 32.9H22.4C21.75 32.9 21.15 32.55 20.82 31.99L15.2 21.8H13.8V31C13.8 32.1 12.9 33 11.8 33H9C7.89543 33 7 32.1 7 31V6Z" fill="url(#iq_r_grad2)"/>
+              <path d="M13.8 11.2H19.2C20.86 11.2 22.2 12.54 22.2 14.2C22.2 15.86 20.86 17.2 19.2 17.2H13.8V11.2Z" fill="#ffffff"/>
+              <defs>
+                <linearGradient id="iq_r_grad2" x1="7" y1="4" x2="28" y2="33" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#8b5cf6"/>
+                  <stop offset="0.5" stop-color="#7c3aed"/>
+                  <stop offset="1" stop-color="#4f46e5"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="fw-bold text-dark" style="font-size: 1.15rem; letter-spacing: -0.02em;">ResumeIQ</span>
+          </div>
+
+          <h2 class="auth-card-title">Welcome Back</h2>
+          <p class="auth-card-subtitle">Sign in to your intelligent recruitment workspace.</p>
+
+          <!-- Segmented Auth Selector (Email & Password | Email OTP) -->
+          <div class="auth-segmented-control" role="tablist">
+            <button type="button" 
+                    class="auth-segment-btn" 
+                    ng-class="{'active': vm.authMode === 'password'}"
+                    ng-click="vm.setAuthMode('password')" 
+                    role="tab" 
+                    aria-selected="{{ vm.authMode === 'password' }}">
+              <i class="bi bi-lock-fill"></i>
+              <span>Email & Password</span>
+            </button>
+            <button type="button" 
+                    class="auth-segment-btn" 
+                    ng-class="{'active': vm.authMode === 'otp'}"
+                    ng-click="vm.setAuthMode('otp')" 
+                    role="tab" 
+                    aria-selected="{{ vm.authMode === 'otp' }}">
+              <i class="bi bi-envelope"></i>
+              <span>Email OTP</span>
+            </button>
+          </div>
+
+          <!-- ================= TAB 1: EMAIL & PASSWORD (Active by default) ================= -->
+          <form ng-submit="vm.login()" ng-if="vm.authMode === 'password'" novalidate>
+            
+            <!-- Work Email Address -->
+            <div class="mb-3">
+              <label class="form-label small fw-bold text-dark mb-1.5" for="loginEmail">Work Email Address</label>
+              <div class="auth-input-group">
+                <i class="bi bi-envelope auth-input-icon-left"></i>
+                <input type="email" 
+                       id="loginEmail" 
+                       class="form-control auth-input-pill auth-input-with-icon" 
+                       ng-model="vm.loginData.email" 
+                       placeholder="Enter your work email" 
+                       required 
+                       autocomplete="email">
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label class="form-label small fw-bold text-dark mb-1.5" for="loginPassword">Password</label>
+              <div class="auth-input-group">
+                <i class="bi bi-lock auth-input-icon-left"></i>
+                <input type="{{ vm.showPassword ? 'text' : 'password' }}" 
+                       id="loginPassword" 
+                       class="form-control auth-input-pill auth-input-with-icon" 
+                       style="padding-right: 44px !important;"
+                       ng-model="vm.loginData.password" 
+                       placeholder="Enter your password" 
+                       required 
+                       autocomplete="current-password">
+                <button type="button" 
+                        class="auth-input-icon-right" 
+                        ng-click="vm.toggleShowPassword()" 
+                        tabindex="-1"
+                        aria-label="Toggle Password Visibility">
+                  <i class="bi" ng-class="vm.showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Keep Me Logged In & Forgot Password -->
+            <div class="d-flex justify-content-between align-items-center mb-4 small">
+              <div class="form-check mb-0">
+                <input class="form-check-input" type="checkbox" id="keepLoggedIn" ng-model="vm.keepMeLoggedIn" checked>
+                <label class="form-check-label text-dark fw-medium" for="keepLoggedIn" style="font-size: 0.86rem;">
+                  Keep me logged in
+                </label>
+              </div>
+              <a href="javascript:void(0)" ng-click="vm.openForgotPassword()" class="fw-bold text-decoration-none" style="color: #6366f1; font-size: 0.86rem;">
+                Forgot Password?
+              </a>
+            </div>
+
+            <!-- Sign In Gradient Button -->
+            <button type="submit" 
+                    class="btn btn-auth-gradient mb-3" 
+                    ng-disabled="vm.isLoading">
+              <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span ng-if="!vm.isLoading">Sign In &rarr;</span>
+            </button>
+          </form>
+
+          <!-- ================= TAB 2: EMAIL OTP AUTHENTICATION ================= -->
+          <div ng-if="vm.authMode === 'otp'">
+            
+            <!-- Step 1: Request OTP -->
+            <form ng-submit="vm.sendOtp()" ng-if="vm.otpStep === 1" novalidate>
+              <div class="mb-3">
+                <label class="form-label small fw-bold text-dark mb-1.5" for="otpEmail">Work Email Address</label>
+                <div class="auth-input-group">
+                  <i class="bi bi-envelope auth-input-icon-left"></i>
+                  <input type="email" 
+                         id="otpEmail" 
+                         class="form-control auth-input-pill auth-input-with-icon" 
+                         ng-model="vm.otpData.email" 
+                         placeholder="Enter your work email" 
+                         required 
+                         autocomplete="email">
+                </div>
+              </div>
+
+              <div class="alert alert-info py-2 px-3 small border-0 rounded-3 mb-3 d-flex align-items-center gap-2" style="background: rgba(99, 102, 241, 0.08); color: #4338ca;">
+                <i class="bi bi-shield-check fs-5"></i>
+                <span style="font-size: 0.82rem;">Sign in securely with a 6-digit verification code sent to your email.</span>
+              </div>
+
+              <!-- Send OTP Button -->
+              <button type="submit" 
+                      class="btn btn-auth-gradient mb-3" 
+                      ng-disabled="vm.isLoading">
+                <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span ng-if="!vm.isLoading">
+                  <i class="bi bi-send-fill me-1"></i> Send 6-Digit Security Code
+                </span>
+              </button>
+            </form>
+
+            <!-- Step 2: Enter 6 Digits & Verify -->
+            <div ng-if="vm.otpStep === 2">
+              <div class="p-2.5 rounded-3 mb-3 d-flex justify-content-between align-items-center" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-envelope-check text-primary fs-5"></i>
+                  <div style="line-height: 1.2;">
+                    <div class="text-muted" style="font-size: 0.72rem;">Security code sent to:</div>
+                    <strong class="text-dark" style="font-size: 0.88rem;">{{ vm.maskedEmail }}</strong>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0.5 px-2" style="font-size: 0.75rem;" ng-click="vm.changeOtpEmail()">
+                  Change
+                </button>
+              </div>
+
+              <div class="text-center mb-3">
+                <label class="form-label small fw-bold text-dark mb-2">Enter 6-Digit Security Code</label>
+                
+                <!-- 6 Segmented Input Boxes -->
+                <div class="otp-digit-group d-flex justify-content-center gap-2 mb-2">
+                  <input type="text" 
+                         inputmode="numeric" 
+                         maxlength="1" 
+                         class="otp-digit-box form-control text-center" 
+                         id="otp-digit-{{ $index }}" 
+                         ng-repeat="d in vm.otpDigits track by $index" 
+                         ng-model="vm.otpDigits[$index]" 
+                         ng-keyup="vm.onOtpKeyUp($event, $index)" 
+                         ng-paste="vm.onOtpPaste($event)" 
+                         autocomplete="off">
+                </div>
+                <div class="text-muted" style="font-size: 0.76rem;">Security code is valid for 5 minutes.</div>
+              </div>
+
+              <!-- Cooldown Countdown -->
+              <div class="text-center mb-3 small">
+                <span ng-if="vm.otpCountdown > 0" class="text-muted">
+                  <i class="bi bi-clock"></i> Resend code in <strong>{{ vm.otpCountdown }}s</strong>
+                </span>
+                <button type="button" 
+                        class="btn btn-link p-0 text-decoration-none small fw-semibold" 
+                        style="color: #6366f1;"
+                        ng-if="vm.otpCountdown === 0" 
+                        ng-click="vm.resendOtp()" 
+                        ng-disabled="vm.isLoading">
+                  Resend Security Code
+                </button>
+              </div>
+
+              <!-- Verify Button -->
+              <button type="button" 
+                      class="btn btn-auth-gradient mb-3" 
+                      ng-click="vm.verifyOtp()" 
+                      ng-disabled="vm.isLoading">
+                <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span ng-if="!vm.isLoading">Verify Security Code &rarr;</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="auth-divider">Or continue with</div>
+
+          <!-- Google Authentication Button -->
+          <button type="button" 
+                  class="btn btn-google-pill mb-2" 
+                  ng-click="vm.handleGoogleClick()" 
+                  ng-disabled="vm.isLoading || vm.isGoogleLoading"
+                  aria-label="Continue with Google">
+            <span ng-if="vm.isGoogleLoading" class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+            <svg ng-if="!vm.isGoogleLoading" width="18" height="18" viewBox="0 0 48 48">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+
+          <!-- Active Account Indicator -->
+          <div class="d-flex justify-content-between align-items-center px-1 mb-4" style="font-size: 0.78rem;">
+            <span class="text-muted d-inline-flex align-items-center gap-1">
+              <i class="bi bi-check-circle-fill text-success" style="font-size: 0.8rem;"></i>
+              <span class="text-truncate" style="max-width: 170px;">{{ vm.googleAccounts[0].email || 'manisuhas23@gmail.com' }}</span>
             </span>
+            <button type="button" class="btn btn-link p-0 text-decoration-none fw-semibold" style="font-size: 0.78rem; color: #6366f1;" ng-click="vm.openGoogleAccountSelector()">
+              Switch Account
+            </button>
+          </div>
+
+          <!-- Footer Registration Link -->
+          <div class="text-center pt-2 border-top border-light" style="font-size: 0.88rem;">
+            <span class="text-muted">New to ResumeIQ?</span>
+            <a href="#!/register" class="fw-bold text-decoration-none ms-1" style="color: #6366f1;">
+              Register Your Company
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= FORGOT PASSWORD MODAL ================= -->
+  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);" ng-if="vm.showForgotPasswordModal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; padding: 1.5rem;">
+        
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-circle d-flex align-items-center justify-content-center text-primary" style="width: 38px; height: 38px; background: rgba(99, 102, 241, 0.1);">
+              <i class="bi bi-key-fill fs-5"></i>
+            </div>
+            <h5 class="modal-title fw-bold text-dark mb-0">Reset Password</h5>
+          </div>
+          <button type="button" class="btn-close" ng-click="vm.closeForgotPassword()"></button>
+        </div>
+
+        <div ng-if="!vm.forgotSubmitted">
+          <p class="text-muted small mb-3">
+            Enter your registered recruiter work email address. We will dispatch a 6-digit security verification code to your inbox to reset your password.
+          </p>
+
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-dark">Work Email Address</label>
+            <input type="email" class="form-control auth-input-pill" ng-model="vm.forgotEmail" placeholder="Enter your work email">
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-light px-3" ng-click="vm.closeForgotPassword()">Cancel</button>
+            <button type="button" class="btn btn-auth-gradient px-4" ng-click="vm.submitForgotPassword()" ng-disabled="vm.isForgotLoading">
+              <span ng-if="vm.isForgotLoading" class="spinner-border spinner-border-sm me-1"></span>
+              Send Security Code
+            </button>
           </div>
         </div>
 
-        <!-- Right Interactive Authentication Form (Stitch Crisp White Canvas) -->
-        <div class="col-12 col-lg-7 p-4 p-sm-5 bg-white d-flex flex-column justify-content-center">
-          <div class="mx-auto w-100" style="max-width: 440px;">
-            
-            <!-- Form Header -->
-            <div class="mb-4">
-              <h1 class="h4 fw-bold mb-1 text-dark" style="letter-spacing: -0.02em;">Recruiter Sign In</h1>
-              <p class="text-muted small mb-0">Access your talent pipeline, scorecards, and candidate rankings</p>
-            </div>
-
-            <!-- 1. Real Google Authentication Button (Stitch Action) -->
-            <div class="mb-3">
-              <button type="button" 
-                      class="btn btn-google w-100 py-2.5 d-flex align-items-center justify-content-center gap-3 shadow-sm" 
-                      ng-click="vm.handleGoogleClick()"
-                      ng-disabled="vm.isLoading || vm.isGoogleLoading"
-                      aria-label="Continue with Google">
-                <span ng-if="vm.isGoogleLoading" class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
-                <svg ng-if="!vm.isGoogleLoading" width="20" height="20" viewBox="0 0 48 48" class="flex-shrink-0">
-                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                </svg>
-                <span class="fw-semibold text-dark" style="font-size: 0.9rem;">
-                  {{ vm.isGoogleLoading ? 'Authenticating with Google...' : 'Continue with Google' }}
-                </span>
-              </button>
-
-              <!-- Google Account Indicator & Switch Option -->
-              <div class="d-flex align-items-center justify-content-between mt-2 px-1">
-                <span class="small text-muted d-flex align-items-center gap-1.5" style="font-size: 0.76rem;">
-                  <span class="material-symbols-outlined text-success" style="font-size: 14px; font-variation-settings: 'FILL' 1;">check_circle</span>
-                  <span>Google Account: <strong class="text-dark">{{ vm.googleAccounts[0].email || 'manisuhas23@gmail.com' }}</strong></span>
-                </span>
-                <button type="button" 
-                        class="btn btn-link btn-sm p-0 text-decoration-none small text-primary fw-semibold" 
-                        style="font-size: 0.76rem;" 
-                        ng-click="vm.openGoogleAccountSelector()">
-                  Switch Account
-                </button>
-              </div>
-
-              <!-- Live Google Identity Services Container if Google Client ID is configured -->
-              <div id="googleGsiBtnContainer" class="w-100 mt-2" ng-show="vm.hasGoogleClientId"></div>
-            </div>
-
-            <!-- Section Divider -->
-            <div class="position-relative text-center my-3">
-              <hr class="text-muted opacity-25 m-0">
-              <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted" style="font-size: 0.77rem;">
-                or choose sign-in method
-              </span>
-            </div>
-
-            <!-- 2. Authentication Mode Switcher Tabs (Stitch Pills) -->
-            <div class="auth-tabs mb-4">
-              <button type="button" 
-                      class="auth-tab" 
-                      ng-class="{'active': vm.authMode === 'otp'}" 
-                      ng-click="vm.setAuthMode('otp')">
-                <span class="material-symbols-outlined align-middle me-1" style="font-size: 16px;">mail_lock</span>
-                Login with Email OTP
-              </button>
-              <button type="button" 
-                      class="auth-tab" 
-                      ng-class="{'active': vm.authMode === 'password'}" 
-                      ng-click="vm.setAuthMode('password')">
-                <span class="material-symbols-outlined align-middle me-1" style="font-size: 16px;">lock</span>
-                Email & Password
-              </button>
-            </div>
-
-            <!-- 3A. TAB 1: Real Login with Email OTP -->
-            <div ng-if="vm.authMode === 'otp'">
-
-              <!-- OTP STEP 1: Enter Email to request OTP -->
-              <div ng-if="vm.otpStep === 1">
-                <div class="p-3 rounded-3 mb-3" style="background-color: #f0fdf4; border: 1px solid #bbf7d0;">
-                  <div class="d-flex align-items-center gap-2 mb-1">
-                    <span class="material-symbols-outlined text-success" style="font-size: 20px; font-variation-settings: 'FILL' 1;">verified</span>
-                    <span class="small fw-bold text-success">Passwordless Email Authentication</span>
-                  </div>
-                  <p class="small text-muted mb-0" style="font-size: 0.785rem; line-height: 1.45;">
-                    Sign in securely with a 6-digit One-Time Password delivered to your email inbox.
-                  </p>
-                </div>
-
-                <form ng-submit="vm.sendOtp()" novalidate>
-                  <div class="mb-3">
-                    <label class="form-label-iq mb-1">Work Email Address</label>
-                    <div class="input-group">
-                      <span class="input-group-text bg-white border-end-0 text-muted">
-                        <span class="material-symbols-outlined" style="font-size: 18px;">mail</span>
-                      </span>
-                      <input type="email" 
-                             class="form-control form-control-iq border-start-0 ps-0" 
-                             ng-model="vm.otpData.email" 
-                             placeholder="manisuhas23@gmail.com" 
-                             required>
-                    </div>
-                  </div>
-
-                  <button type="submit" 
-                          class="btn btn-primary-iq w-100 py-2.5 mb-3 shadow-sm d-flex align-items-center justify-content-center gap-2" 
-                          ng-disabled="vm.isLoading || !vm.otpData.email">
-                    <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm" role="status"></span>
-                    <span ng-if="!vm.isLoading" class="material-symbols-outlined" style="font-size: 18px;">send</span>
-                    <span>{{ vm.isLoading ? 'Dispatching Verification Email...' : 'Send 6-Digit Security Code' }}</span>
-                  </button>
-                </form>
-              </div>
-
-              <!-- OTP STEP 2: Enter & Verify 6-digit OTP -->
-              <div ng-if="vm.otpStep === 2">
-                <!-- Sent Destination Banner -->
-                <div class="p-3 rounded-3 mb-3 d-flex align-items-center justify-content-between" style="background-color: #f1f5f9; border: 1px solid #e2e8f0;">
-                  <div class="d-flex align-items-center gap-2">
-                    <div class="d-flex align-items-center justify-content-center rounded-circle bg-white border" style="width: 32px; height: 32px;">
-                      <span class="material-symbols-outlined text-primary" style="font-size: 18px;">mark_email_read</span>
-                    </div>
-                    <div>
-                      <div class="small text-muted" style="font-size: 0.72rem;">Security code sent to:</div>
-                      <div class="fw-bold text-dark text-truncate" style="max-width: 240px; font-size: 0.88rem;">
-                        {{ vm.otpData.email }}
-                      </div>
-                    </div>
-                  </div>
-                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2.5 small d-flex align-items-center gap-1" ng-click="vm.changeOtpEmail()" title="Change Email">
-                    <span class="material-symbols-outlined" style="font-size: 14px;">edit</span>
-                    <span>Change</span>
-                  </button>
-                </div>
-
-                <!-- Real Delivery vs Live Preview Notification Banner -->
-                <div class="p-2.5 rounded-3 mb-3" 
-                     ng-if="vm.isRealDelivery"
-                     style="background-color: #f0fdf4; border: 1px solid #86efac;">
-                  <div class="d-flex align-items-center gap-2 small text-success fw-semibold">
-                    <span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span>
-                    <span>Delivered to your email inbox! Check your inbox or spam folder.</span>
-                  </div>
-                </div>
-
-                <div class="p-3 rounded-3 mb-3 d-flex align-items-center justify-content-between" 
-                     ng-if="vm.otpPreviewUrl"
-                     style="background-color: #eef2ff; border: 1px dashed #818cf8;">
-                  <div class="d-flex align-items-center gap-2">
-                    <span class="material-symbols-outlined text-primary" style="font-size: 20px;">open_in_new</span>
-                    <div>
-                      <div class="fw-bold text-primary small" style="font-size: 0.8rem;">Email Dispatched to Mailbox</div>
-                      <div class="text-muted small" style="font-size: 0.72rem;">Open delivered email to view code</div>
-                    </div>
-                  </div>
-                  <button type="button" 
-                          class="btn btn-sm btn-primary py-1 px-2.5 small fw-semibold d-flex align-items-center gap-1 shadow-sm" 
-                          ng-click="vm.openEmailPreview()"
-                          title="Open sent email in browser">
-                    <span>Open Delivered Mail</span>
-                    <span class="material-symbols-outlined" style="font-size: 14px;">north_east</span>
-                  </button>
-                </div>
-
-                <form ng-submit="vm.verifyOtp()" novalidate>
-                  <div class="mb-3">
-                    <label class="form-label-iq text-center w-100 mb-2">Enter 6-Digit Security Code Received</label>
-                    <input type="text" 
-                           class="form-control otp-code-input" 
-                           ng-model="vm.otpData.otp" 
-                           placeholder="000000" 
-                           maxlength="6" 
-                           autocomplete="one-time-code" 
-                           required>
-                    <div class="form-text text-center mt-2 small text-muted">
-                      Security code is valid for 5 minutes.
-                    </div>
-                  </div>
-
-                  <!-- Resend controls with countdown timer -->
-                  <div class="text-center mb-3">
-                    <span ng-if="vm.otpCountdown > 0" class="small text-muted">
-                      <span class="material-symbols-outlined align-middle me-1" style="font-size: 14px;">schedule</span>
-                      Resend code in <strong class="text-dark">{{ vm.otpCountdown }}s</strong>
-                    </span>
-                    <button type="button" 
-                            ng-if="vm.otpCountdown === 0" 
-                            class="btn btn-link p-0 text-decoration-none small fw-semibold text-primary d-inline-flex align-items-center gap-1" 
-                            ng-click="vm.resendOtp()" 
-                            ng-disabled="vm.isLoading">
-                      <span class="material-symbols-outlined" style="font-size: 14px;">replay</span>
-                      Resend verification code
-                    </button>
-                  </div>
-
-                  <!-- Optional recruiter name input if registering via OTP for the first time -->
-                  <div class="mb-3" ng-if="!vm.isExistingUser">
-                    <label class="form-label-iq">Your Name (Optional)</label>
-                    <input type="text" class="form-control form-control-iq" ng-model="vm.otpData.name" placeholder="e.g. Manikanta">
-                  </div>
-
-                  <button type="submit" 
-                          class="btn btn-primary-iq w-100 py-2.5 mb-3 shadow-sm d-flex align-items-center justify-content-center gap-2" 
-                          ng-disabled="vm.isLoading || !vm.otpData.otp || vm.otpData.otp.length < 6">
-                    <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm" role="status"></span>
-                    <span ng-if="!vm.isLoading" class="material-symbols-outlined" style="font-size: 18px;">verified</span>
-                    <span>{{ vm.isLoading ? 'Verifying Code...' : 'Verify Code & Sign In' }}</span>
-                  </button>
-                </form>
-              </div>
-
-            </div>
-
-            <!-- 3B. TAB 2: Email & Password Login -->
-            <div ng-if="vm.authMode === 'password'">
-              <form ng-submit="vm.login()" novalidate>
-                <div class="mb-3">
-                  <label class="form-label-iq">Work Email</label>
-                  <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0 text-muted">
-                      <span class="material-symbols-outlined" style="font-size: 18px;">mail</span>
-                    </span>
-                    <input type="email" 
-                           class="form-control form-control-iq border-start-0 ps-0" 
-                           ng-model="vm.loginData.email" 
-                           placeholder="manisuhas23@gmail.com" 
-                           required>
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                  <div class="d-flex justify-content-between align-items-center mb-1">
-                    <label class="form-label-iq mb-0">Password</label>
-                  </div>
-                  <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0 text-muted">
-                      <span class="material-symbols-outlined" style="font-size: 18px;">lock</span>
-                    </span>
-                    <input type="password" 
-                           class="form-control form-control-iq border-start-0 ps-0" 
-                           ng-model="vm.loginData.password" 
-                           placeholder="••••••••" 
-                           required>
-                  </div>
-                </div>
-
-                <button type="submit" 
-                        class="btn btn-primary-iq w-100 py-2.5 mb-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2" 
-                        ng-disabled="vm.isLoading || !vm.loginData.email || !vm.loginData.password">
-                  <span ng-if="vm.isLoading" class="spinner-border spinner-border-sm" role="status"></span>
-                  <span>{{ vm.isLoading ? 'Authenticating...' : 'Sign In to Screening Workspace' }}</span>
-                  <span ng-if="!vm.isLoading" class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
-                </button>
-              </form>
-            </div>
-
-            <!-- Footer Link -->
-            <div class="text-center pt-3 border-top">
-              <span class="text-muted small">New to ResumeIQ? </span>
-              <a href="#!/register" class="small fw-semibold text-primary">Create an organization account</a>
-            </div>
-
-          </div>
+        <div ng-if="vm.forgotSubmitted" class="text-center py-2">
+          <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-block"></i>
+          <h6 class="fw-bold text-dark">Security Code Dispatched!</h6>
+          <p class="text-muted small mb-3">
+            A verification code has been dispatched to <strong>{{ vm.forgotEmail }}</strong>. You can use it to log in passwordlessly or set a new password.
+          </p>
+          <button type="button" class="btn btn-auth-gradient w-100" ng-click="vm.closeForgotPassword(); vm.setAuthMode('otp')">
+            Enter Verification Code &rarr;
+          </button>
         </div>
 
       </div>
     </div>
   </div>
 
-  <!-- =========================================================================
-       4. REAL GOOGLE ACCOUNTS AUTHENTICATION MODAL
-       ========================================================================= -->
-  <div class="google-modal-backdrop" ng-if="vm.showGoogleModal" ng-click="vm.closeGoogleModal()">
-    <div class="google-modal-card" ng-click="$event.stopPropagation()">
-      
-      <!-- Google Modal Header -->
-      <div class="p-4 border-bottom text-center position-relative">
-        <button type="button" 
-                class="btn-close position-absolute top-0 end-0 m-3" 
-                ng-click="vm.closeGoogleModal()" 
-                aria-label="Close"></button>
-
-        <svg width="36" height="36" viewBox="0 0 48 48" class="mb-2">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-        </svg>
-        <h2 class="h5 fw-bold text-dark mb-1" style="letter-spacing: -0.015em;">Choose an account</h2>
-        <p class="small text-muted mb-0">to continue to <strong>ResumeIQ Recruiter Workspace</strong></p>
-      </div>
-
-      <!-- Account Selection Body -->
-      <div class="p-3 p-sm-4" style="max-height: 440px; overflow-y: auto;">
+  <!-- ================= GOOGLE ACCOUNT SWITCHER MODAL ================= -->
+  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);" ng-if="vm.showGoogleModal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 460px;">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; padding: 1.5rem;">
         
-        <!-- Active / Saved Google Accounts on this browser -->
-        <div class="d-flex flex-column gap-2 mb-3">
-          <div ng-repeat="acc in vm.googleAccounts" 
-               class="google-account-item d-flex align-items-center justify-content-between p-2.5 rounded border" 
-               ng-click="vm.loginWithGoogleAccount(acc)"
-               style="cursor: pointer; transition: all 0.15s ease;">
-            <div class="d-flex align-items-center gap-3 overflow-hidden">
-              <div class="google-avatar-circle" ng-style="{'background-color': acc.avatarColor || '#4285F4'}">
-                {{ acc.name.charAt(0) }}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="d-flex align-items-center gap-2">
+            <svg width="22" height="22" viewBox="0 0 48 48">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            <h5 class="modal-title fw-bold text-dark mb-0">Choose Google Account</h5>
+          </div>
+          <button type="button" class="btn-close" ng-click="vm.closeGoogleModal()"></button>
+        </div>
+
+        <p class="text-muted small mb-3">
+          Select an account to authenticate with ResumeIQ Recruiter Workspace:
+        </p>
+
+        <!-- Saved Accounts List -->
+        <div class="list-group list-group-flush mb-3 border rounded-3 overflow-hidden">
+          <div class="list-group-item list-group-item-action d-flex align-items-center justify-content-between p-2.5" 
+               ng-repeat="acc in vm.googleAccounts track by acc.email"
+               ng-click="vm.loginWithGoogleAccount(acc)" 
+               style="cursor: pointer;">
+            <div class="d-flex align-items-center gap-2.5">
+              <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" 
+                   style="width: 34px; height: 34px; background: {{ acc.avatarColor || '#4f46e5' }}; font-size: 0.9rem;">
+                {{ (acc.name || 'G').charAt(0) }}
               </div>
-              <div class="text-truncate">
-                <div class="fw-bold text-dark small mb-0">{{ acc.name }}</div>
-                <div class="text-muted small text-truncate" style="font-size: 0.78rem;">{{ acc.email }}</div>
+              <div style="line-height: 1.2;">
+                <div class="fw-bold text-dark" style="font-size: 0.88rem;">{{ acc.name }}</div>
+                <div class="text-muted" style="font-size: 0.78rem;">{{ acc.email }}</div>
               </div>
             </div>
-            <button type="button" 
-                    class="btn btn-sm btn-link text-muted p-0" 
-                    ng-if="vm.googleAccounts.length > 1"
-                    ng-click="vm.removeGoogleAccount($index, $event)" 
-                    title="Remove from saved accounts">
-              <span class="material-symbols-outlined" style="font-size: 16px;">close</span>
+            <i class="bi bi-chevron-right text-muted"></i>
+          </div>
+        </div>
+
+        <!-- Add Another Account Accordion / Input -->
+        <div class="mb-3">
+          <button type="button" class="btn btn-sm btn-link p-0 text-decoration-none fw-semibold" style="color: #6366f1;" ng-click="vm.toggleUseAnotherAccount()">
+            <i class="bi bi-person-plus-fill me-1"></i> Use another Google account
+          </button>
+
+          <div ng-if="vm.useAnotherAccount" class="mt-2.5 p-3 rounded-3" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+            <div class="mb-2">
+              <label class="form-label small fw-bold text-dark mb-1">Your Full Name</label>
+              <input type="text" class="form-control form-control-sm" ng-model="vm.customGoogleName" placeholder="e.g. Manikanta Suhas">
+            </div>
+            <div class="mb-2">
+              <label class="form-label small fw-bold text-dark mb-1">Google Email Address</label>
+              <input type="email" class="form-control form-control-sm" ng-model="vm.customGoogleEmail" placeholder="your.name@gmail.com">
+            </div>
+            <button type="button" class="btn btn-sm btn-primary-iq w-100" ng-click="vm.loginWithCustomGoogleAccount()">
+              Sign In with this Account &rarr;
             </button>
           </div>
         </div>
 
-        <!-- Option: Use another Google account -->
-        <div class="border-top pt-3">
-          <button type="button" 
-                  class="btn btn-outline-secondary w-100 py-2 d-flex align-items-center justify-content-center gap-2 small fw-semibold" 
-                  ng-click="vm.toggleUseAnotherAccount()" 
-                  ng-if="!vm.useAnotherAccount">
-            <span class="material-symbols-outlined" style="font-size: 18px;">person_add</span>
-            <span>Use another Google account</span>
-          </button>
-
-          <!-- Input form when Use another Google account is expanded -->
-          <div ng-if="vm.useAnotherAccount" class="p-3 bg-light rounded border">
-            <div class="small fw-semibold text-dark mb-2 d-flex align-items-center gap-1.5">
-              <span class="material-symbols-outlined text-primary" style="font-size: 18px;">account_circle</span>
-              <span>Add Google Account:</span>
-            </div>
-            <div class="mb-2">
-              <label class="form-label-iq mb-1" style="font-size: 0.72rem;">Google Email Address</label>
-              <input type="email" 
-                     class="form-control form-control-sm form-control-iq" 
-                     ng-model="vm.customGoogleEmail" 
-                     placeholder="your.name@gmail.com"
-                     required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label-iq mb-1" style="font-size: 0.72rem;">Recruiter Name (Optional)</label>
-              <input type="text" 
-                     class="form-control form-control-sm form-control-iq" 
-                     ng-model="vm.customGoogleName" 
-                     placeholder="e.g. Manikanta">
-            </div>
-            <div class="d-flex gap-2">
-              <button type="button" 
-                      class="btn btn-sm btn-outline-secondary flex-grow-1" 
-                      ng-click="vm.toggleUseAnotherAccount()">
-                Cancel
-              </button>
-              <button type="button" 
-                      class="btn btn-sm btn-primary-iq flex-grow-1 d-flex align-items-center justify-content-center gap-1" 
-                      ng-click="vm.loginWithCustomGoogleAccount()"
-                      ng-disabled="!vm.customGoogleEmail || vm.isLoading || vm.isGoogleLoading">
-                <span>Sign In</span>
-                <span class="material-symbols-outlined" style="font-size: 14px;">arrow_forward</span>
-              </button>
-            </div>
-          </div>
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-sm btn-light px-3" ng-click="vm.closeGoogleModal()">Close</button>
         </div>
 
-        <!-- Optional: Developer Google Cloud OAuth 2.0 Client ID Setup -->
-        <div class="mt-3 pt-3 border-top">
-          <details class="small">
-            <summary class="text-muted cursor-pointer" style="font-size: 0.74rem; cursor: pointer;">
-              <span class="material-symbols-outlined align-middle" style="font-size: 14px;">settings</span>
-              Developer: Configure Google Cloud OAuth Client ID
-            </summary>
-            <div class="mt-2 p-2 rounded bg-light border">
-              <p class="text-muted mb-2" style="font-size: 0.72rem; line-height: 1.4;">
-                To enable Google's native popup on <code>localhost:5000</code>, enter your Google Cloud OAuth Client ID:
-              </p>
-              <input type="text" 
-                     class="form-control form-control-sm mb-2" 
-                     style="font-size: 0.75rem;" 
-                     ng-model="vm.newGoogleClientId" 
-                     placeholder="...apps.googleusercontent.com">
-              <button type="button" 
-                      class="btn btn-sm btn-dark w-100 py-1" 
-                      style="font-size: 0.75rem;" 
-                      ng-click="vm.saveGoogleClientId()"
-                      ng-disabled="!vm.newGoogleClientId || vm.isLoading">
-                Save & Initialize Google OAuth
-              </button>
-            </div>
-          </details>
-        </div>
-
-      </div>
-
-      <!-- Google Modal Footer -->
-      <div class="p-3 bg-light border-top d-flex justify-content-between align-items-center small text-muted">
-        <span style="font-size: 0.74rem;" class="d-flex align-items-center gap-1">
-          <span class="material-symbols-outlined text-success" style="font-size: 14px; font-variation-settings: 'FILL' 1;">lock</span>
-          <span>Google OAuth 2.0 Verified</span>
-        </span>
-        <button type="button" class="btn btn-sm btn-link text-decoration-none text-muted p-0" ng-click="vm.closeGoogleModal()">
-          Close
-        </button>
       </div>
     </div>
   </div>

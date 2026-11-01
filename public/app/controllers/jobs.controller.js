@@ -5,17 +5,29 @@
     .module('screeningApp')
     .controller('JobsController', JobsController);
 
-  JobsController.$inject = ['JobService', 'AlertService', '$location'];
-  function JobsController(JobService, AlertService, $location) {
+  JobsController.$inject = ['JobService', 'AlertService', '$location', '$scope'];
+  function JobsController(JobService, AlertService, $location, $scope) {
     const vm = this;
 
     vm.jobs = [];
+    vm.allJobs = [];
     vm.isLoading = true;
-    vm.filterStatus = 'All';
+    vm.viewMode = 'table'; // 'table' (IMAGE 2 Screen 2) or 'cards' (rich cards)
+    vm.activeTab = 'All';  // 'All', 'Active', 'Draft', 'Closed'
     vm.searchQuery = '';
+    vm.filterDepartment = 'All';
+    vm.filterLocation = 'All';
+
+    // Pagination
+    vm.currentPage = 1;
+    vm.pageSize = 5;
 
     vm.isEditing = false;
     vm.selectedJob = null;
+    vm.jobToDelete = null;
+
+    vm.departments = ['Engineering', 'Design & UX', 'Platform', 'AI/ML', 'Marketing', 'Product'];
+    vm.locations = ['Remote', 'San Francisco', 'Hyderabad', 'Bangalore', 'New York'];
 
     vm.jobForm = {
       title: '',
@@ -37,13 +49,26 @@
     };
 
     vm.loadJobs = loadJobs;
+    vm.setStatusTab = setStatusTab;
+    vm.applyFilters = applyFilters;
+    vm.setViewMode = setViewMode;
     vm.openCreateModal = openCreateModal;
     vm.openEditModal = openEditModal;
     vm.saveJob = saveJob;
-    vm.deleteJob = deleteJob;
+    vm.confirmDeleteJob = confirmDeleteJob;
+    vm.executeDeleteJob = executeDeleteJob;
     vm.viewJobDetail = viewJobDetail;
+    vm.screenJob = screenJob;
     vm.getTotalWeight = getTotalWeight;
     vm.normalizeWeights = normalizeWeights;
+
+    // Pagination helpers
+    vm.totalPages = totalPages;
+    vm.paginatedJobs = paginatedJobs;
+    vm.setPage = setPage;
+    vm.prevPage = prevPage;
+    vm.nextPage = nextPage;
+    vm.getPageNumbers = getPageNumbers;
 
     init();
 
@@ -53,16 +78,97 @@
 
     function loadJobs() {
       vm.isLoading = true;
-      JobService.getJobs({ status: vm.filterStatus, search: vm.searchQuery })
+      vm.errorMessage = '';
+      JobService.getJobs({ status: 'All' })
         .then(function (data) {
-          vm.jobs = data.jobs || [];
+          vm.allJobs = data.jobs || [];
+          applyFilters();
         })
         .catch(function (err) {
-          AlertService.error(err.message || 'Failed to load job postings.');
+          vm.errorMessage = err.message || 'Failed to load job postings.';
+          AlertService.error(vm.errorMessage);
         })
         .finally(function () {
           vm.isLoading = false;
         });
+    }
+
+    function setStatusTab(tab) {
+      vm.activeTab = tab;
+      vm.currentPage = 1;
+      applyFilters();
+    }
+
+    function setViewMode(mode) {
+      vm.viewMode = mode;
+    }
+
+    function applyFilters() {
+      let list = [...vm.allJobs];
+
+      // Status tab
+      if (vm.activeTab !== 'All') {
+        list = list.filter(j => j.status === vm.activeTab);
+      }
+
+      // Department filter
+      if (vm.filterDepartment !== 'All') {
+        list = list.filter(j => j.department === vm.filterDepartment);
+      }
+
+      // Location filter
+      if (vm.filterLocation !== 'All') {
+        list = list.filter(j => (j.location || '').toLowerCase().includes(vm.filterLocation.toLowerCase()));
+      }
+
+      // Search query
+      if (vm.searchQuery && vm.searchQuery.trim()) {
+        const q = vm.searchQuery.trim().toLowerCase();
+        list = list.filter(j =>
+          j.title.toLowerCase().includes(q) ||
+          (j.department && j.department.toLowerCase().includes(q)) ||
+          (j.location && j.location.toLowerCase().includes(q)) ||
+          (j.requiredSkills && j.requiredSkills.some(s => s.toLowerCase().includes(q)))
+        );
+      }
+
+      vm.jobs = list;
+    }
+
+    function totalPages() {
+      return Math.max(1, Math.ceil(vm.jobs.length / vm.pageSize));
+    }
+
+    function paginatedJobs() {
+      const start = (vm.currentPage - 1) * vm.pageSize;
+      return vm.jobs.slice(start, start + vm.pageSize);
+    }
+
+    function setPage(p) {
+      if (p >= 1 && p <= totalPages()) {
+        vm.currentPage = p;
+      }
+    }
+
+    function prevPage() {
+      if (vm.currentPage > 1) {
+        vm.currentPage--;
+      }
+    }
+
+    function nextPage() {
+      if (vm.currentPage < totalPages()) {
+        vm.currentPage++;
+      }
+    }
+
+    function getPageNumbers() {
+      const total = totalPages();
+      const pages = [];
+      for (let i = 1; i <= total; i++) {
+        pages.push(i);
+      }
+      return pages;
     }
 
     function openCreateModal() {
@@ -123,24 +229,32 @@
       }
     }
 
+    function getTotalWeight() {
+      const w = vm.jobForm.weights;
+      return (Number(w.skills) || 0) + (Number(w.similarity) || 0) + (Number(w.experience) || 0) + (Number(w.education) || 0);
+    }
+
+    function normalizeWeights() {
+      const total = getTotalWeight();
+      if (total === 0) return;
+      const w = vm.jobForm.weights;
+      w.skills = Math.round((w.skills / total) * 100);
+      w.similarity = Math.round((w.similarity / total) * 100);
+      w.experience = Math.round((w.experience / total) * 100);
+      w.education = 100 - (w.skills + w.similarity + w.experience);
+    }
+
     function saveJob() {
       if (!vm.jobForm.title || !vm.jobForm.description) {
-        AlertService.error('Job title and description are required.');
+        AlertService.error('Please enter a job title and description.');
         return;
       }
 
-      const reqSkills = vm.jobForm.requiredSkillsInput
-        ? vm.jobForm.requiredSkillsInput.split(',').map(s => s.trim()).filter(Boolean)
-        : [];
-
-      if (reqSkills.length === 0) {
-        AlertService.error('Please enter at least one required skill (comma-separated).');
+      const totalWeight = getTotalWeight();
+      if (totalWeight !== 100) {
+        AlertService.warning('Total matching weights should equal 100%. Click Auto-Balance to adjust.');
         return;
       }
-
-      const prefSkills = vm.jobForm.preferredSkillsInput
-        ? vm.jobForm.preferredSkillsInput.split(',').map(s => s.trim()).filter(Boolean)
-        : [];
 
       const payload = {
         title: vm.jobForm.title,
@@ -148,51 +262,53 @@
         location: vm.jobForm.location,
         employmentType: vm.jobForm.employmentType,
         description: vm.jobForm.description,
-        requiredSkills: reqSkills,
-        preferredSkills: prefSkills,
+        requiredSkills: vm.jobForm.requiredSkillsInput,
+        preferredSkills: vm.jobForm.preferredSkillsInput,
         minExperience: Number(vm.jobForm.minExperience),
         education: vm.jobForm.education,
-        weights: {
-          skills: Number(vm.jobForm.weights.skills),
-          similarity: Number(vm.jobForm.weights.similarity),
-          experience: Number(vm.jobForm.weights.experience),
-          education: Number(vm.jobForm.weights.education)
-        },
+        weights: vm.jobForm.weights,
         status: vm.jobForm.status
       };
 
-      if (vm.isEditing && vm.selectedJob) {
-        JobService.updateJob(vm.selectedJob._id, payload)
-          .then(function (res) {
-            AlertService.success(res.message || 'Job posting updated successfully!');
-            closeModal();
-            loadJobs();
-          })
-          .catch(function (err) {
-            AlertService.error(err.message || 'Failed to update job posting.');
-          });
-      } else {
-        JobService.createJob(payload)
-          .then(function (res) {
-            AlertService.success('Job posting created successfully!');
-            closeModal();
-            loadJobs();
-          })
-          .catch(function (err) {
-            AlertService.error(err.message || 'Failed to create job posting.');
-          });
+      const request = vm.isEditing
+        ? JobService.updateJob(vm.selectedJob._id, payload)
+        : JobService.createJob(payload);
+
+      request
+        .then(function () {
+          AlertService.success(vm.isEditing ? 'Job posting updated successfully.' : 'Job posting created successfully.');
+          const modalEl = document.getElementById('jobModal');
+          if (modalEl && window.bootstrap) {
+            const modal = window.bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+          }
+          loadJobs();
+        })
+        .catch(function (err) {
+          AlertService.error(err.message || 'Failed to save job posting.');
+        });
+    }
+
+    function confirmDeleteJob(job) {
+      vm.jobToDelete = job;
+      const modalEl = document.getElementById('deleteJobModal');
+      if (modalEl && window.bootstrap) {
+        const modal = new window.bootstrap.Modal(modalEl);
+        modal.show();
       }
     }
 
-    function deleteJob(job, event) {
-      if (event) event.stopPropagation();
-      if (!confirm('Are you sure you want to delete "' + job.title + '"? This will remove all associated applicants.')) {
-        return;
-      }
-
-      JobService.deleteJob(job._id)
+    function executeDeleteJob() {
+      if (!vm.jobToDelete) return;
+      JobService.deleteJob(vm.jobToDelete._id)
         .then(function () {
-          AlertService.success('Job posting deleted successfully.');
+          AlertService.success(`Job "${vm.jobToDelete.title}" deleted.`);
+          const modalEl = document.getElementById('deleteJobModal');
+          if (modalEl && window.bootstrap) {
+            const modal = window.bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+          }
+          vm.jobToDelete = null;
           loadJobs();
         })
         .catch(function (err) {
@@ -200,30 +316,12 @@
         });
     }
 
-    function closeModal() {
-      const modalEl = document.getElementById('jobModal');
-      if (modalEl && window.bootstrap) {
-        const modal = window.bootstrap.Modal.getInstance(modalEl);
-        if (modal) modal.hide();
-      }
-    }
-
     function viewJobDetail(id) {
       $location.path('/jobs/' + id);
     }
 
-    function getTotalWeight() {
-      const w = vm.jobForm.weights;
-      return (Number(w.skills) || 0) + (Number(w.similarity) || 0) + (Number(w.experience) || 0) + (Number(w.education) || 0);
-    }
-
-    function normalizeWeights() {
-      vm.jobForm.weights = {
-        skills: 40,
-        similarity: 30,
-        experience: 20,
-        education: 10
-      };
+    function screenJob(id) {
+      $location.path('/screening').search({ jobId: id });
     }
   }
 })();

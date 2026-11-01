@@ -39,7 +39,29 @@ function normalizeText(rawText) {
  */
 async function extractResumeText(filePath, originalName) {
   const ext = (path.extname(originalName || filePath) || '').toLowerCase();
+  
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`File not found at: ${filePath}`);
+  }
+
   const fileBuffer = await fs.promises.readFile(filePath);
+  if (!fileBuffer || fileBuffer.length === 0) {
+    throw new Error('The uploaded file is empty (0 bytes). Please upload a valid resume document.');
+  }
+
+  // Signature / Magic Bytes Validation
+  if (ext === '.pdf') {
+    const magic = fileBuffer.slice(0, 5).toString('ascii');
+    if (!magic.startsWith('%PDF')) {
+      throw new Error('Invalid PDF file signature. The uploaded file is corrupted or not a valid PDF document.');
+    }
+  } else if (ext === '.docx') {
+    // DOCX is a zip archive starting with PK (0x50 0x4B 0x03 0x04)
+    const isZip = fileBuffer.length > 4 && fileBuffer[0] === 0x50 && fileBuffer[1] === 0x4B;
+    if (!isZip) {
+      throw new Error('Invalid DOCX file signature. The uploaded file is corrupted or not a valid Microsoft Word document.');
+    }
+  }
 
   let extractedText = '';
 
@@ -93,6 +115,10 @@ async function extractResumeText(filePath, originalName) {
       }
     }
   } catch (error) {
+    const msg = (error.message || '').toLowerCase();
+    if (msg.includes('password') || msg.includes('encrypt')) {
+      throw new Error('This PDF resume is password-protected or encrypted. Please upload an unprotected copy.');
+    }
     console.error(`[Text Extraction Error for ${originalName}]:`, error.message);
     throw new Error(`Failed to extract text from ${originalName}: ${error.message}`);
   }

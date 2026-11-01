@@ -14,11 +14,11 @@
       register: register,
       login: login,
       sendOtp: sendOtp,
+      resendOtp: resendOtp,
       verifyOtp: verifyOtp,
       googleAuth: googleAuth,
       getGoogleConfig: getGoogleConfig,
       setGoogleConfig: setGoogleConfig,
-      setMailConfig: setMailConfig,
       logout: logout,
       getToken: getToken,
       getUser: getUser,
@@ -46,32 +46,40 @@
           return response.data;
         })
         .catch(function (error) {
-          return $q.reject(error.data || { message: 'Login failed.' });
+          return $q.reject(error.data || { message: 'Login failed. Please check credentials.' });
         });
     }
 
     function sendOtp(identifier) {
-      const payload = identifier && identifier.includes('@')
-        ? { email: identifier }
-        : { phone: identifier, email: identifier };
-
-      return $http.post('/api/auth/otp/send', payload)
+      const email = (identifier || '').toString().trim();
+      return $http.post('/api/auth/send-otp', { email: email })
         .then(function (response) {
           return response.data;
         })
         .catch(function (error) {
-          return $q.reject(error.data || { message: 'Failed to send OTP code.' });
+          return $q.reject(error.data || { message: 'Failed to send security verification code.' });
+        });
+    }
+
+    function resendOtp(identifier) {
+      const email = (identifier || '').toString().trim();
+      return $http.post('/api/auth/resend-otp', { email: email })
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (error) {
+          return $q.reject(error.data || { message: 'Failed to resend verification code.' });
         });
     }
 
     function verifyOtp(otpData) {
-      return $http.post('/api/auth/otp/verify', otpData)
+      return $http.post('/api/auth/verify-otp', otpData)
         .then(function (response) {
           saveSession(response.data.token, response.data.user);
           return response.data;
         })
         .catch(function (error) {
-          return $q.reject(error.data || { message: 'OTP verification failed.' });
+          return $q.reject(error.data || { message: 'Verification code validation failed.' });
         });
     }
 
@@ -92,7 +100,7 @@
           return response.data;
         })
         .catch(function () {
-          return { clientId: null };
+          return { clientId: null, hasGoogleClientId: false };
         });
     }
 
@@ -103,16 +111,6 @@
         })
         .catch(function (error) {
           return $q.reject(error.data || { message: 'Failed to update Google configuration.' });
-        });
-    }
-
-    function setMailConfig(smtpData) {
-      return $http.post('/api/auth/mail/config', smtpData)
-        .then(function (response) {
-          return response.data;
-        })
-        .catch(function (error) {
-          return $q.reject(error.data || { message: 'Failed to update SMTP configuration.' });
         });
     }
 

@@ -23,6 +23,8 @@ yarn-error.log*
 *.parquet
 *.arrow
 .cache/
+test_resumes/
+.vercel/
 
 # OS files
 .DS_Store
